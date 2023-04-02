@@ -10,7 +10,6 @@ export default function Accordion({ isActive, dynamicData, title }) {
 
     useEffect(() => {
         setExpanded(isActive)
-        setSelected(dynamicData[0]?.payload)
     }, [isActive])
 
     return (

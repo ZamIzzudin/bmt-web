@@ -1,0 +1,40 @@
+.modal-content-cta {
+    border-radius: 0 !important;
+}
+
+.cta-modal-body {
+    background-color: var(--white) !important;
+    border-radius: 10px !important;
+}
+
+.cta-modal-body span {
+    display: block;
+    text-align: center;
+    font-size: 1.5em;
+    font-weight: bold;
+}
+
+.modal-cta {
+    margin-top: 10px;
+    gap: 20px;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+}
+
+.modal-cta-cancel,
+.modal-cta-make {
+    border: 2px solid var(--primaryColor2);
+    font-size: 1.5em;
+    padding: 10px 30px;
+    border-radius: 8px;
+    background-color: var(--white);
+    color: var(--primaryColor2);
+    font-weight: bold;
+}
+
+.modal-cta-make {
+    border: 2px solid var(--primaryColor2);
+    background-color: var(--primaryColor2);
+    color: var(--white);
+}

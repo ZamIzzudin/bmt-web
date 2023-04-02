@@ -1,0 +1,26 @@
+.error-page {
+    z-index: 100;
+    position: relative;
+    width: 100vw;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.error-btn {
+    background-color: var(--primaryColor2);
+    padding: 15px 70px;
+    color: var(--white);
+    font-size: 1.8em;
+    border: 2px solid var(--primaryColor2);
+    transition: .3s;
+    box-sizing: border-box;
+    border-radius: 10px;
+}
+
+.error-btn:hover {
+    border: 2px solid var(--primaryColor2);
+    background-color: transparent;
+    color: var(--primaryColor2);
+}

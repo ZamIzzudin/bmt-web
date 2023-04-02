@@ -1,0 +1,39 @@
+header {
+    background-color: #fff;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1;
+    box-shadow: 10px 30px 40px rgba(0, 2, 103, 0.05);
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    padding: 10px 30px;
+}
+
+.header-cta {
+    display: flex;
+    gap: 20px;
+    align-items: center;
+}
+
+.logout-button {
+    background-color: transparent;
+    box-sizing: border-box;
+    font-size: 1.6em;
+    border: none;
+    border-radius: 12px;
+    color: var(--white);
+    transition: .3s;
+}
+
+.logout-button:hover {
+    background-color: var(--white);
+    color: var(--primaryColor2);
+}
+
+.role-name {
+    font-size: 1.6em;
+    text-transform: capitalize;
+}

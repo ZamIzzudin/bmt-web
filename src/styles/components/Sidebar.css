@@ -1,0 +1,68 @@
+nav {
+    min-width: 19vw;
+    height: 92vh;
+    position: fixed;
+    bottom: 3%;
+    left: 2%;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    box-sizing: border-box;
+    padding: 20px 20px;
+    box-shadow: 0px 4px 30px rgba(0, 2, 103, 0.15);
+    background-color: #082240;
+    border-radius: 18px;
+    z-index: 2;
+    overflow: auto;
+}
+
+nav::-webkit-scrollbar {
+    width: 5px;
+}
+
+/* Track */
+nav::-webkit-scrollbar-track {
+    margin: 15px 0 !important;
+    border-radius: 10px;
+}
+
+/* Handle */
+nav::-webkit-scrollbar-thumb {
+    background: var(--primaryColor2);
+    border-radius: 10px;
+}
+
+.navbar-link-container {
+    display: flex;
+    flex-direction: column;
+    list-style: none;
+    width: 100%;
+    padding: 0;
+    gap: 10px;
+}
+
+.navbar-link-item a {
+    padding: 10px 15px;
+    border-radius: 8px;
+    box-sizing: border-box;
+    width: 100%;
+    display: inline-block;
+    transition: all .2s;
+    color: #fff;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 1.4em;
+    line-height: 25px;
+    top: 18px;
+    left: 16px;
+}
+
+.navbar-link-item a:hover {
+    background-color: var(--black20);
+    color: white;
+}
+
+.active {
+    background-color: var(--black20);
+    color: white;
+}

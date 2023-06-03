@@ -47,6 +47,17 @@ textarea:focus-visible {
     border-radius: 10px;
 }
 
+.form-back-button {
+    font-size: 1.6em;
+    font-weight: 700;
+    padding: 16px 48px;
+    border: none;
+    background-color: #fff;
+    color: #000;
+    border-radius: 10px;
+    border: 2px solid var(--primaryColor2);
+}
+
 .form-draft-button {
     font-size: 1.6em;
     font-weight: 700;

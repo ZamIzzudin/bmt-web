@@ -41,7 +41,7 @@ export default function Router() {
                             <Sidebar />
                             <Switch>
                                 <Route exact path="/" component={Dashboard} />
-                                <Route exact path="/keanggotaan" component={Keanggotaan} />
+                                <Route exact path="/keanggotaan/nasabah" component={Keanggotaan} />
                                 <Route exact path="/pembiayaan/kerjasama" component={PembiayaanKerjasama} />
                                 <Route exact path="/pembiayaan/jual-beli" component={PembiayaanJualBeli} />
                                 <Route exact path="/simpanan/pokok" component={SimpananPokok} />

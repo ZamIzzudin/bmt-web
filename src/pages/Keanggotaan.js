@@ -13,54 +13,54 @@ export default function Keanggotaan() {
         {
             no: 1,
             id: "NSB-002",
-            role: "Admin",
             email: "agus@gmail.com",
             nama: "Agus",
+            jenis_kelamin: "Laki-laki"
         },
         {
             no: 2,
             id: "NSB-002",
-            role: "Officer",
             email: "agus@gmail.com",
             nama: "Agus",
+            jenis_kelamin: "Laki-laki"
         },
         {
             no: 3,
             id: "NSB-002",
-            role: "Manager",
             email: "agus@gmail.com",
             nama: "Agus",
+            jenis_kelamin: "Laki-laki"
         },
         {
             no: 4,
             id: "NSB-002",
-            role: "Anggota",
             email: "agus@gmail.com",
             nama: "Agus",
+            jenis_kelamin: "Laki-laki"
         },
         {
             no: 5,
             id: "NSB-002",
-            role: "Anggota",
             email: "agus@gmail.com",
             nama: "Agus",
+            jenis_kelamin: "Laki-laki"
         },
         {
             no: 6,
             id: "NSB-002",
-            role: "Anggota",
             email: "agus@gmail.com",
             nama: "Agus",
+            jenis_kelamin: "Laki-laki"
         }
     ]
 
     if (showAddForm) {
         return (
             <main>
-                <h1 className="page-header">Tambah Keanggotaan</h1>
+                <h1 className="page-header">Tambah Nasabah</h1>
                 <section className="content-section">
                     <div className="section-header-container">
-                        <h4 className="section-header">Form Keanggotaan</h4>
+                        <h4 className="section-header">Form Tambah Nasabah</h4>
                         <button onClick={() => { setShowAddForm(false) }} className="section-add-btn">-</button>
                     </div>
                     <div className="section-body">
@@ -83,9 +83,9 @@ export default function Keanggotaan() {
                     <table>
                         <tr>
                             <th>No.</th>
-                            <th>ID Anggota</th>
-                            <th>Role</th>
+                            <th>ID Nasabah</th>
                             <th>Nama</th>
+                            <th>Jenis Kelamin</th>
                             <th>Email</th>
                             <th className="text-center">Action</th>
                         </tr>
@@ -93,8 +93,8 @@ export default function Keanggotaan() {
                             <tr>
                                 <td>{each.no}</td>
                                 <td>{each.id}</td>
-                                <td>{each.role}</td>
                                 <td>{each.nama}</td>
+                                <td>{each.jenis_kelamin}</td>
                                 <td>{each.email}</td>
                                 <td className="table-cta">
                                     <div className="table-cta-container">

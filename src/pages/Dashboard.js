@@ -16,65 +16,75 @@ export default function Dashboard() {
   const nasabah = 3
   const saldo_sementara = kas_masuk - kas_keluar
 
+  function formatMoney(amount: number) {
+    return new Intl.NumberFormat('id-ID', { maximumSignificantDigits: 3 }).format(amount);
+  }
+
   return (
     <main>
-      <h1 className="page-header">Dashboard</h1>
+      <div className='header-dashboard-section'>
+        <p>Selamat datang di <span>BMT AL FATH IKMI,</span></p>
+        <h1 className="dashboard-page-header">DASHBOARD</h1>
+      </div>
       {auth.role !== 'user' ? (
         <section className="dashboard">
           <div className="dashboard-item dashboard-anggota">
             <span>
-              Anggota
+              Jumlah Nasabah
             </span>
-            <span>
+            <span style={{fontSize: '40px', fontWeight: 'normal'}}>
               {anggota}
             </span>
           </div>
           <div className="dashboard-item dashboard-nasabah">
             <span>
-              Nasabah
+              Total Simpanan Sukarela
             </span>
-            <span>
+            <span style={{fontSize: '40px', fontWeight: 'normal'}}>
               {nasabah}
             </span>
           </div>
           <div className="dashboard-item dashboard-kas-masuk">
             <span>
-              Total Kas Masuk
+              Total Simpanan Pokok
             </span>
-            <span>
-              Rp.{kas_masuk}
+            <span style={{fontSize: '32px', fontWeight: 'normal'}}>
+            Rp. {formatMoney(kas_masuk)}
             </span>
           </div>
           <div className="dashboard-item dashboard-kas-keluar">
             <span>
-              Total Kas Keluar
+              Total Simpanan Wajib
             </span>
-            <span>
-              Rp.{kas_keluar}
+            <span style={{fontSize: '32px', fontWeight: 'normal'}}>
+            Rp. {formatMoney(kas_keluar)}
             </span>
           </div>
           <div className="dashboard-item dashboard-simpanan-pokok">
             <span>
-              Total Simpanan Pokok
+              Total Kas Masuk
             </span>
-            <span>
-              Rp.{simpanan_pokok}
+            <span style={{fontSize: '32px', fontWeight: 'normal'}}>
+            Rp. {formatMoney(simpanan_pokok)}
             </span>
           </div>
           <div className="dashboard-item dashboard-simpanan-wajib">
             <span>
-              Total Simpanan Wajib
+              Total Kas Keluar
             </span>
-            <span>
-              Rp.{simpanan_wajib}
+            <span style={{fontSize: '32px', fontWeight: 'normal'}}>
+            Rp. {formatMoney(simpanan_wajib)}
             </span>
           </div>
           <div className="dashboard-item dashboard-saldo">
             <span>
               Total Saldo Sementara
             </span>
-            <span>
-              Rp.{saldo_sementara}
+            <span style={{fontWeight: 'normal', fontSize:'16px'}}>
+              Akumulasi total saldo dari tiap transaksi
+            </span>
+            <span style={{fontSize: '32px', fontWeight: 'normal'}}>
+              Rp. {formatMoney(saldo_sementara)}
             </span>
           </div>
         </section>

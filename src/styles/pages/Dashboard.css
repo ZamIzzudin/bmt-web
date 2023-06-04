@@ -14,9 +14,9 @@
     min-height: 100px;
     display: flex;
     flex-direction: column;
-    align-items: center;
-    justify-content: center;
     gap: 5px;
+    padding: 25px;
+    padding-left: 55px;
 }
 
 .dashboard-item span {
@@ -27,4 +27,24 @@
 
 .dashboard-saldo {
     flex-grow: 1;
+}
+
+.header-dashboard-section p{
+    /* color: var(--white); */
+    font-size: 1.8em;
+    /* text-align: center; */
+    margin-top: 10px;
+}
+
+.header-dashboard-section span{
+    font-size: 18px;
+    font-weight: 700;
+}
+
+.dashboard-page-header{
+    text-transform: capitalize;
+    font-family: var(--textHeader);
+    font-size: 5em;
+    font-weight: 700;
+    color: var(--primaryColor);
 }

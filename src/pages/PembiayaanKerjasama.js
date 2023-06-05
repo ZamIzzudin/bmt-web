@@ -1,13 +1,15 @@
 import { useState } from 'react'
 import { useLocation } from 'react-router-dom'
-import { useSelector } from 'react-redux'
+// import { useSelector } from 'react-redux'
 
 import TambahPembiayaan from '../components/Form/TambahPembiayaan'
 import DetailPembiayaan from '../components/Detail/DetailPembiayaan'
 
+import { ReactComponent as Search } from "../assets/icons/search.svg";
+
 
 export default function PembiayaanKerjasama() {
-    const { auth = { status: false, role: null } } = useSelector(states => states)
+    // const { auth = { status: false, role: null } } = useSelector(states => states)
 
     const location = useLocation().pathname
     const type = location.split('/')[2]
@@ -88,17 +90,51 @@ export default function PembiayaanKerjasama() {
 
     return (
         <main>
-            <h1 className="page-header">Daftar Pembiayaan</h1>
-            <div>
-                {auth.role !== 'user' ? (
-                    <button className="section-edit-btn" >Cetak</button>
-                ) : null}
+            <div
+                style={{
+                display: "flex",
+                justifyContent: "space-between",
+                flexDirection: 'column'
+                }}
+            >
+                <h1 className="page-header">Daftar Pembiayaan</h1>
+                <div style={{ paddingRight: "50px", display: 'flex', alignItems:'center', justifyContent: 'space-between', paddingTop: '35px' }}>
+                <button
+                    className="button-not-lunas"
+                >Lihat Belum Lunas</button>
+                <button
+                    onClick={() => setShowAddForm(true)}
+                    className={`section-add-btn ${type === "rekap" ? "hidden" : null}`}
+                >+</button>
+                </div>
             </div>
             <section className="content-section">
-                <div className="section-header-container">
-                    <h4 className="section-header">Pembiayaan {type}</h4>
-                    <button onClick={() => { setShowAddForm(true) }} className={`section-add-btn ${(auth.role === 'admin' || auth.role === 'officer') ? null : 'hidden'}`}>+</button>
-                </div>
+            <div className="section-header-container">
+          <h4 className="section-header">Pembiayaan {type}</h4>
+          <div style={{ position: "relative" }}>
+            <input
+              type="text"
+              className="section-search"
+              required
+              style={{
+                width: "100%",
+                height: "24px",
+                padding: "15px 25px",
+                borderRadius: "18px",
+                fontSize: "16px",
+              }}
+            />
+            <Search
+              style={{
+                position: "absolute",
+                top: "50%",
+                left: "90%",
+                transform: "translate(-50%, -50%)",
+                cursor: "pointer",
+              }}
+            />
+          </div>
+        </div>
                 <div className="section-body">
                     <table>
                         <tr>
@@ -110,7 +146,6 @@ export default function PembiayaanKerjasama() {
                             <th>Pelunasan</th>
                             <th>Durasi</th>
                             <th>Min Angsuran</th>
-                            <th>Laba</th>
                             <th>Tenggat</th>
                             <th>Status</th>
                             <th className="text-center">Action</th>
@@ -125,7 +160,6 @@ export default function PembiayaanKerjasama() {
                                 <td>{each.pelunasan}</td>
                                 <td>{each.durasi}</td>
                                 <td>{each.angsuran}</td>
-                                <td>{each.laba}</td>
                                 <td>{each.tenggat}</td>
                                 <td>{each.status}</td>
                                 <td className="table-cta">

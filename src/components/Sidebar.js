@@ -16,11 +16,11 @@ export default function Sidebar() {
     const pembiayaan = [
         {
             payload: 'kerjasama',
-            nama: 'Kerjasama'
+            nama: 'Pembiayaan Kerjasama'
         },
         {
             payload: 'jual-beli',
-            nama: 'Jual Beli'
+            nama: 'Pembiayaan Jual Beli'
         }
     ]
 
@@ -95,6 +95,9 @@ export default function Sidebar() {
                 <ul className="navbar-link-container">
                     <li className="navbar-link-item">
                         <Link to='/' className={location === '/' ? 'active' : null}>Home</Link>
+                    </li>
+                    <li className="navbar-link-item">
+                        <Link to='/profile' className={location === '/profile' ? 'active' : null}>Profile</Link>
                     </li>
                     <li className="navbar-link-item">
                         <Accordion isActive={location.includes('/keanggotaan/') ? true : false} dynamicData={keanggotaan} title={{ title: 'Keanggotaan', payload: 'keanggotaan' }} />

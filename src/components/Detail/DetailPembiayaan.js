@@ -1,5 +1,5 @@
 import { useSelector } from 'react-redux'
-import { useLocation } from 'react-router-dom'
+import { useLocation, Link } from 'react-router-dom'
 import { useState } from 'react'
 
 import SetorModal from '../Modal/SetorModal'
@@ -19,7 +19,6 @@ export default function DetailPembiayaan({ backButton }) {
         nominal_pembiayaan: "Rp. 800.000",
         nominal_pelunasasn: "Rp. 805.000",
         angsuran_bulanan: "Rp. 200.000",
-        laba: "0%",
         durasi_pembiayaan: "4 Bulan",
         tanggal_pembuatan: "09/06/2020",
         tanggal_pembayaran: "12/11/2023",
@@ -80,7 +79,11 @@ export default function DetailPembiayaan({ backButton }) {
                     </table>
                     {auth.role === 'admin' || auth.role === 'officer' ? (
                         <div className="form-cta gap-3">
-                            <button onClick={() => backButton()} className="form-submit-button" type="button">Kembali</button>
+                            {location.includes('/pembiayaan/kerjasama') ? (                 
+                                <Link to={'/rekapitulasi-pembiayaan-kerjasama'} className="form-submit-button">Cetak Transaksi</Link>
+                                ) : (
+                                <Link to={'/rekapitulasi-pembiayaan-jualbeli'} className="form-submit-button">Cetak Transaksi</Link>
+                            )}
                             <button onClick={() => setShowModal(true)} className="form-submit-button" type="button">Setor</button>
                         </div>
                     ) : (

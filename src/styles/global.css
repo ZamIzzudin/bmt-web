@@ -173,6 +173,21 @@ main {
     color: var(--primaryColor2)
 }
 
+.button-not-lunas{
+    height: 49px;
+    width: 158px;
+    left: 400px;
+    top: 285px;
+    border-radius: 12px;
+    border: 1px solid #F49C45;
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 22px;
+    letter-spacing: 0em;
+    text-align: center;
+    background-color: #fff;
+}
+
 table {
     width: 100%;
     border-bottom-left-radius: 12px !important;

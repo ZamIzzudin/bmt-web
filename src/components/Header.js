@@ -19,7 +19,7 @@ export default function Header() {
         <header>
             <Loading />
             <section className="header-cta">
-                <span className="role-name">Halo, Wildan Nur Rahman</span>
+                <span className="role-name">Halo, Amir</span>
                 <button onClick={() => handleLogout()} className="logout-button"><Logout /></button>
             </section>
         </header>

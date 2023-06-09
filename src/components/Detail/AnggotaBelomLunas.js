@@ -1,15 +1,12 @@
-// import { useSelector } from "react-redux";
 import { useState } from "react";
 
 import SetorModal from "../Modal/SetorModal";
+import { Form, Row } from "react-bootstrap";
+import "../../styles/components/FormLayout.css";
 
 import { ReactComponent as BackButton } from "../../assets/icons/arrow_back.svg";
 
-export default function DetailSimpananWajib({ backButton }) {
-//   const { auth = { status: false, role: null } } = useSelector(
-//     (states) => states
-//   );
-
+export default function AnggotaBelomLunas({ backButton }) {
   const [showModal, setShowModal] = useState(false);
 
   const transaksi = [
@@ -56,20 +53,70 @@ export default function DetailSimpananWajib({ backButton }) {
           alignItems: "center",
         }}
       >
-        <h1 className="page-header">Daftar Pembiayaan</h1>
+        <h1 className="page-header">Anggota yang belum lunas</h1>
         <div style={{ paddingRight: "100px", cursor: "pointer" }}>
           <BackButton onClick={() => backButton()} />
         </div>
       </div>
       <section className="content-section">
         <div className="section-header-container">
-          <h4 className="section-header">Detail Transaksi</h4>
+          <h4 className="section-header">Cek yang belum lunas</h4>
+        </div>
+        <div className="section-body">
+          <Form>
+            <Row>
+              <Form.Group>
+                <Form.Label>
+                  Periode Bulan<span className="required">*</span>
+                </Form.Label>
+                <Form.Select>
+                  <option></option>
+                  <option value={"Laki-laki"}>Januari</option>
+                  <option value={"Laki-laki"}>Februari</option>
+                  <option value={"Laki-laki"}>Maret</option>
+                  <option value={"Laki-laki"}>April</option>
+                  <option value={"Laki-laki"}>Mei</option>
+                  <option value={"Laki-laki"}>Juni</option>
+                  <option value={"Laki-laki"}>Juli</option>
+                  <option value={"Laki-laki"}>Agustus</option>
+                  <option value={"Laki-laki"}>September</option>
+                  <option value={"Laki-laki"}>October</option>
+                  <option value={"Laki-laki"}>November</option>
+                  <option value={"Laki-laki"}>Desember</option>
+                </Form.Select>
+              </Form.Group>
+            </Row>
+            <Row>
+              <Form.Group>
+                <Form.Label>
+                  Periode Tahun<span className="required">*</span>
+                </Form.Label>
+                <Form.Select>
+                  <option></option>
+                  <option value={"Laki-laki"}>2023</option>
+                </Form.Select>
+              </Form.Group>
+            </Row>
+          </Form>
+          <div className="form-cta gap-3">
+            <button
+              className="form-submit-button"
+              type="button"
+            >
+              Cek
+            </button>
+          </div>
+        </div>
+      </section>
+      <section className="content-section">
+        <div className="section-header-container">
+          <h4 className="section-header">Daftar yang belum lunas</h4>
         </div>
         <div className="section-body">
           <table>
             <tr>
               <th>No.</th>
-              <th>Name</th>
+              <th>Nama</th>
               <th>Bulan</th>
               <th>Tahun</th>
               <th>Teller</th>
@@ -96,7 +143,7 @@ export default function DetailSimpananWajib({ backButton }) {
                       color: "#fff",
                       borderRadius: "12px",
                       border: "none",
-                      transform: 'translateX(-10px)'
+                      transform: "translateX(-10px)",
                     }}
                   >
                     Setor
@@ -114,7 +161,7 @@ export default function DetailSimpananWajib({ backButton }) {
                         <div className="form-cta gap-3">
                             <button onClick={() => backButton()} className="form-submit-button" type="button">Kembali</button>
                         </div>
-                    )} */}
+        )} */}
         </div>
       </section>
       <SetorModal show={showModal} setShow={setShowModal} />

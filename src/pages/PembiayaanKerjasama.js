@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { useLocation } from 'react-router-dom'
-// import { useSelector } from 'react-redux'
+import { useSelector } from 'react-redux'
 
 import TambahPembiayaan from '../components/Form/TambahPembiayaan'
 import DetailPembiayaan from '../components/Detail/DetailPembiayaan'
@@ -9,7 +9,7 @@ import { ReactComponent as Search } from "../assets/icons/search.svg";
 
 
 export default function PembiayaanKerjasama() {
-    // const { auth = { status: false, role: null } } = useSelector(states => states)
+    const { auth = { status: false, role: null } } = useSelector(states => states)
 
     const location = useLocation().pathname
     const type = location.split('/')[2]
@@ -98,15 +98,17 @@ export default function PembiayaanKerjasama() {
                 }}
             >
                 <h1 className="page-header">Daftar Pembiayaan</h1>
-                <div style={{ paddingRight: "50px", display: 'flex', alignItems:'center', justifyContent: 'space-between', paddingTop: '35px' }}>
-                <button
-                    className="button-not-lunas"
-                >Lihat Belum Lunas</button>
-                <button
-                    onClick={() => setShowAddForm(true)}
-                    className={`section-add-btn ${type === "rekap" ? "hidden" : null}`}
-                >+</button>
-                </div>
+                {auth.role === "admin" ? (
+                    <div style={{ paddingRight: "50px", display: 'flex', alignItems:'center', justifyContent: 'space-between', paddingTop: '35px' }}>
+                    <button
+                        className="button-not-lunas"
+                    >Lihat Belum Lunas</button>
+                    <button
+                        onClick={() => setShowAddForm(true)}
+                        className={`section-add-btn ${type === "rekap" ? "hidden" : null}`}
+                    >+</button>
+                    </div>
+                ) : (null)}
             </div>
             <section className="content-section">
             <div className="section-header-container">

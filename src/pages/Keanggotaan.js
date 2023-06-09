@@ -2,6 +2,7 @@ import { useLocation } from 'react-router-dom'
 import { useState } from 'react'
 
 import TambahKeanggotaan from '../components/Form/TambahKeanggotaan'
+import EditProfileNasabah from '../components/Form/EditAnggota'
 import { ReactComponent as Search } from '../assets/icons/search.svg'
 
 export default function Keanggotaan() {
@@ -9,6 +10,7 @@ export default function Keanggotaan() {
     const type = location.split('/')[2]
 
     const [showAddForm, setShowAddForm] = useState(false)
+    const [showEditForm, setShowEditForm] = useState(false)
 
     let data = [
         {
@@ -72,6 +74,12 @@ export default function Keanggotaan() {
         )
     }
 
+    if(showEditForm) {
+        return (
+         <EditProfileNasabah backButton={() => setShowEditForm(false)}/>
+        )
+    }
+
     return (
         <main>
             <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}>
@@ -108,7 +116,7 @@ export default function Keanggotaan() {
                                 <td>{each.email}</td>
                                 <td className="table-cta">
                                     <div className="table-cta-container">
-                                        <button className="section-edit-btn" onClick={() => setShowAddForm(true)} >Edit</button>
+                                        <button className="section-edit-btn" onClick={() => setShowEditForm(true)} >Edit</button>
                                     </div>
                                 </td>
                             </tr>

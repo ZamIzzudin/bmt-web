@@ -64,26 +64,26 @@ export default function Sidebar() {
     const admin_simpanan = [
         {
             payload: 'pokok',
-            nama: 'Pokok'
+            nama: 'Simpanan Pokok'
         },
         {
             payload: 'wajib',
-            nama: 'Wajib'
+            nama: 'Simpanan Wajib'
         },
         {
             payload: 'sukarela',
-            nama: 'Sukarela'
+            nama: 'Simpanan Sukarela'
         }
     ]
 
     const user_simpanan = [
         {
             payload: 'wajib',
-            nama: 'Wajib'
+            nama: 'Simpanan Wajib'
         },
         {
             payload: 'sukarela',
-            nama: 'Sukarela'
+            nama: 'Simpanan Sukarela'
         }
     ]
 

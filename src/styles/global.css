@@ -38,6 +38,7 @@
     justify-content: flex-end;
 }
 
+
 a {
     text-decoration: none !important;
     color: black
@@ -173,7 +174,7 @@ main {
     color: var(--primaryColor2)
 }
 
-.button-not-lunas{
+.button-not-lunas {
     height: 49px;
     width: 158px;
     left: 400px;
@@ -279,4 +280,15 @@ tr:first-child {
 .detail-table tr td:first-child {
     text-transform: capitalize;
     width: 20%;
+}
+
+.centered {
+    background-color: salmon;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.padding-l-50 {
+    padding-left: 50px !important;
 }

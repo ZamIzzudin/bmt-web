@@ -2,8 +2,10 @@ import { useLocation } from 'react-router-dom'
 import { useState } from 'react'
 import { useSelector } from 'react-redux'
 
-import FormPengajuanPembiayaan from '../components/Form/FormPengajuanPembiayaan'
-import DetailPengajuan from '../components/Detail/DetailPengajuan'
+import { ReactComponent as Search } from "../assets/icons/search.svg";
+
+import FormPengajuanPembiayaan from '../components/Form/FormPengajuanPembiayaanJualBeli'
+import DetailPengajuan from '../components/Detail/DetailPengajuanKerjasama'
 
 export default function PengajuanPembiayaan() {
     const { auth = { status: false, role: null } } = useSelector(states => states)
@@ -88,11 +90,41 @@ export default function PengajuanPembiayaan() {
     return (
         <main>
             <h1 className="page-header">Pengajuan Pembiayaan</h1>
+            <div style={{ paddingRight: "50px", display: 'flex', alignItems: 'center', justifyContent: 'space-between', paddingTop: '35px' }}>
+                <button
+                    className={`section-add-btn hidden`}
+                >+</button>
+                <button
+                    onClick={() => setShowAddForm(true)}
+                    className={`section-add-btn ${auth.role !== "user" ? "hidden" : null}`}
+                >+</button>
+            </div>
             <section className="content-section">
                 <div className="section-header-container">
                     <h4 className="section-header">Pembiayaan {type}</h4>
-                    <button onClick={() => { setShowAddForm(true) }} className={`section-add-btn ${(auth.role === 'user') ? null : 'hidden'}`} >+</button>
-                </div>
+                    <div style={{ position: "relative" }}>
+                        <input
+                            type="text"
+                            className="section-search"
+                            required
+                            style={{
+                                width: "100%",
+                                height: "24px",
+                                padding: "15px 25px",
+                                borderRadius: "18px",
+                                fontSize: "16px",
+                            }}
+                        />
+                        <Search
+                            style={{
+                                position: "absolute",
+                                top: "50%",
+                                left: "90%",
+                                transform: "translate(-50%, -50%)",
+                                cursor: "pointer",
+                            }}
+                        />
+                    </div>                </div>
                 <div className="section-body">
                     <table>
                         <tr>

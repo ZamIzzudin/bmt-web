@@ -12,6 +12,7 @@ import RekapitulasiJualBeli from './pages/rekapitulasi/RekapitulasiJualBeli';
 import PembiayaanJualBeli from './pages/PembiayaanJualBeli'
 import PengajuanSimpanan from './pages/PengajuanSimpanan'
 import PengajuanPembiayaan from './pages/PengajuanPembiayaan'
+import PengajuanKerjasama from './pages/PengajuanKerjasama'
 import Kas from "./pages/Kas"
 import Keanggotaan from "./pages/Keanggotaan"
 
@@ -53,7 +54,7 @@ export default function Router() {
                                 <Route exact path="/simpanan/pokok" component={SimpananPokok} />
                                 <Route exact path="/simpanan/wajib" component={SimpananWajib} />
                                 <Route exact path="/simpanan/sukarela" component={SimpananSukarela} />
-                                <Route exact path="/pengajuan/pembiayaan-kerjasama" component={PengajuanPembiayaan} />
+                                <Route exact path="/pengajuan/pembiayaan-kerjasama" component={PengajuanKerjasama} />
                                 <Route exact path="/pengajuan/pembiayaan-jual-beli" component={PengajuanPembiayaan} />
                                 <Route exact path="/pengajuan/simpanan-sukarela" component={PengajuanSimpanan} />
                                 <Route exact path="/kas/masuk" component={Kas} />
@@ -74,7 +75,7 @@ export default function Router() {
                                 <Route exact path="/pembiayaan/jual-beli" component={PembiayaanJualBeli} />
                                 <Route exact path="/simpanan/wajib" component={SimpananWajib} />
                                 <Route exact path="/simpanan/sukarela" component={SimpananSukarela} />
-                                <Route exact path="/pengajuan/pembiayaan-kerjasama" component={PengajuanPembiayaan} />
+                                <Route exact path="/pengajuan/pembiayaan-kerjasama" component={PengajuanKerjasama} />
                                 <Route exact path="/pengajuan/pembiayaan-jual-beli" component={PengajuanPembiayaan} />
                                 <Route exact path="/pengajuan/simpanan-sukarela" component={PengajuanSimpanan} />
 
@@ -93,7 +94,7 @@ export default function Router() {
                                 <Route exact path="/simpanan/pokok" component={SimpananPokok} />
                                 <Route exact path="/simpanan/wajib" component={SimpananWajib} />
                                 <Route exact path="/simpanan/sukarela" component={SimpananSukarela} />
-                                <Route exact path="/pengajuan/pembiayaan-kerjasama" component={PengajuanPembiayaan} />
+                                <Route exact path="/pengajuan/pembiayaan-kerjasama" component={PengajuanKerjasama} />
                                 <Route exact path="/pengajuan/pembiayaan-jual-beli" component={PengajuanPembiayaan} />
                                 <Route exact path="/pengajuan/simpanan-sukarela" component={PengajuanSimpanan} />
                                 <Route exact path="/kas/masuk" component={Kas} />

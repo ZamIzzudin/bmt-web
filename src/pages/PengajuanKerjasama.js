@@ -1,11 +1,17 @@
+import { useLocation } from 'react-router-dom'
 import { useState } from 'react'
 import { useSelector } from 'react-redux'
 
-import FormPengajuanSimpanan from '../components/Form/FormPengajuanSimpanan'
-import DetailPengajuanSimpanan from '../components/Detail/DetailPengajuanSimpanan'
+import { ReactComponent as Search } from "../assets/icons/search.svg";
 
-export default function PengajuanSimpanan() {
+import FormPengajuanPembiayaan from '../components/Form/FormPengajuanPembiayaanKerjaSama'
+import DetailPengajuan from '../components/Detail/DetailPengajuanKerjasama'
+
+export default function PengajuanKerjasama() {
     const { auth = { status: false, role: null } } = useSelector(states => states)
+
+    const location = useLocation().pathname
+    const type = location.split('/')[2].split('-')[1]
 
     const [showAddForm, setShowAddForm] = useState(false)
     const [showDetail, setShowDetail] = useState(false)
@@ -17,42 +23,49 @@ export default function PengajuanSimpanan() {
     const data = [
         {
             no: 1,
-            id: "NSB-325",
-            nama: "Joko",
-            jenis: "Simpanan Kurban",
+            id: "NSB-001",
+            nama: "Agus",
+            jenis: "Hawalah",
+            nominal: "Rp.200.000",
+            pelunasan: "Rp.205.000",
+            durasi: "3 bln",
+            angsuran: "Rp.68.333",
+            laba: "0%",
+            tanggal: "09/05/2022",
             status: "Diajukan",
-            setoran: "Rp.50.000",
         },
         {
             no: 2,
-            id: "NSB-328",
-            nama: "Supriadi",
-            jenis: "Simpanan Haji",
-            status: "Diajukan",
-            setoran: "Rp.50.000",
+            id: "NSB-001",
+            nama: "Agus",
+            jenis: "Mudharabah",
+            nominal: "Rp.200.000",
+            pelunasan: "Rp.205.000",
+            durasi: "5 bln",
+            angsuran: "Rp.68.333",
+            laba: "5%",
+            tanggal: "09/05/2022",
+            status: "Ditolak",
         },
         {
             no: 3,
             id: "NSB-001",
             nama: "Agus",
-            jenis: "Simpanan Hari Tua",
+            jenis: "Qardul Hasan",
+            nominal: "Rp.200.000",
+            pelunasan: "Rp.205.000",
+            durasi: "3 bln",
+            angsuran: "Rp.68.333",
+            laba: "0%",
+            tanggal: "09/05/2022",
             status: "Disetujui",
-            setoran: "Rp.50.000",
-        },
-        {
-            no: 4,
-            id: "NSB-001",
-            nama: "Agus",
-            jenis: "Simpanan Haji",
-            status: "Ditolak",
-            setoran: "Rp.50.000",
         }
     ]
 
     // Form that shown when parameter (true)
     if (showDetail) {
         return (
-            <DetailPengajuanSimpanan backButton={backButton} />
+            <DetailPengajuan backButton={backButton} />
         )
     }
 
@@ -66,7 +79,7 @@ export default function PengajuanSimpanan() {
                         <button onClick={() => { setShowAddForm(false) }} className="section-add-btn">-</button>
                     </div>
                     <div className="section-body">
-                        <FormPengajuanSimpanan showForm={setShowAddForm} />
+                        <FormPengajuanPembiayaan showForm={setShowAddForm} />
                     </div>
                 </section>
             </main>
@@ -76,20 +89,42 @@ export default function PengajuanSimpanan() {
 
     return (
         <main>
-            <h1 className="page-header">Pengajuan Simpanan</h1>
+            <h1 className="page-header">Pengajuan Pembiayaan</h1>
             <div style={{ paddingRight: "50px", display: 'flex', alignItems: 'center', justifyContent: 'space-between', paddingTop: '35px' }}>
                 <button
                     className={`section-add-btn hidden`}
                 >+</button>
                 <button
                     onClick={() => setShowAddForm(true)}
-                    className={`section-add-btn ${auth.role !== "simpanan" ? "hidden" : null}`}
+                    className={`section-add-btn ${auth.role !== "user" ? "hidden" : null}`}
                 >+</button>
             </div>
             <section className="content-section">
                 <div className="section-header-container">
-                    <h4 className="section-header">Simpanan Sukarela</h4>
-                    <button onClick={() => setShowAddForm(true)} className={`section-add-btn hidden`} >+</button>
+                    <h4 className="section-header">Pembiayaan {type}</h4>
+                    <div style={{ position: "relative" }}>
+                        <input
+                            type="text"
+                            className="section-search"
+                            required
+                            style={{
+                                width: "100%",
+                                height: "24px",
+                                padding: "15px 25px",
+                                borderRadius: "18px",
+                                fontSize: "16px",
+                            }}
+                        />
+                        <Search
+                            style={{
+                                position: "absolute",
+                                top: "50%",
+                                left: "90%",
+                                transform: "translate(-50%, -50%)",
+                                cursor: "pointer",
+                            }}
+                        />
+                    </div>
                 </div>
                 <div className="section-body">
                     <table>
@@ -98,7 +133,9 @@ export default function PengajuanSimpanan() {
                             <th>ID</th>
                             <th>Nama</th>
                             <th>Jenis</th>
-                            <th>Setoran Awal</th>
+                            <th>Nominal</th>
+                            <th>Durasi</th>
+                            <th>Tanggal Pengajuan</th>
                             <th>Status</th>
                             <th className="text-center">Action</th>
                         </tr>
@@ -108,7 +145,9 @@ export default function PengajuanSimpanan() {
                                 <td>{each.id}</td>
                                 <td>{each.nama}</td>
                                 <td>{each.jenis}</td>
-                                <td>{each.setoran}</td>
+                                <td>{each.nominal}</td>
+                                <td>{each.durasi}</td>
+                                <td>{each.tanggal}</td>
                                 <td>{each.status}</td>
                                 <td className="table-cta">
                                     <div className="table-cta-container">
@@ -121,6 +160,6 @@ export default function PengajuanSimpanan() {
                     </table>
                 </div>
             </section>
-        </main>
+        </main >
     )
 }

@@ -55,7 +55,7 @@ export default function DetailTabunganSimpananSukarela({ backButton }) {
       </div>
       <section className="content-section">
         <div className="section-header-container">
-          <h4 className="section-header">Detail Transaksi</h4>
+          <h4 className="section-header">Detail Tabungan</h4>
           <button className="section-add-btn hidden">+</button>
         </div>
         <div className="section-body">

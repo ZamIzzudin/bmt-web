@@ -7,13 +7,9 @@ import SetorModal from "../Modal/SetorModal";
 import { ReactComponent as BackButton } from "../../assets/icons/arrow_back.svg";
 
 export default function DetailPembiayaan({ backButton, data }) {
-  const { auth = { status: false, role: null } } = useSelector(
-    (states) => states
-  );
+  const { auth = { status: false, role: null } } = useSelector((states) => states);
 
   const location = useLocation().pathname;
-//   const type = location.split("/")[2];
-
   const [showModal, setShowModal] = useState(false);
 
   const detail = {
@@ -73,7 +69,11 @@ export default function DetailPembiayaan({ backButton, data }) {
           alignItems: "center",
         }}
       >
-        <h1 className="page-header">Daftar Pembiayaan Pembiayaan</h1>
+        {location.includes("/pembiayaan/kerjasama") ? (
+          <h1 className="page-header">Daftar Pembiayaan Kerjasama</h1>
+          ) : (
+          <h1 className="page-header">Daftar Pembiayaan Jual Beli</h1>
+        )}
         <div style={{ paddingRight: "100px", cursor: "pointer" }}>
           <BackButton onClick={() => backButton()} />
         </div>

@@ -68,7 +68,7 @@ export default function DetailSimpananSukarela({ backButton }) {
           alignItems: "center",
         }}
       >
-        <h1 className="page-header">Daftar Pembiayaan</h1>
+        <h1 className="page-header">Daftar Simpanan Sukarela</h1>
         <div style={{ paddingRight: "100px", cursor: "pointer" }}>
           <BackButton onClick={() => backButton()} />
         </div>

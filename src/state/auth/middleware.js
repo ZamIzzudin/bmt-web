@@ -32,6 +32,10 @@ function asyncLogin(email, password) {
                     data.status = true
                     data.role = 'officer'
                     break;
+                case 'adminmaster@adminmaster.com':
+                    data.status= true
+                    data.role = 'admin_master'
+                    break;    
                 default:
                     break;
             }
@@ -40,7 +44,6 @@ function asyncLogin(email, password) {
                 data.status = false
                 data.status = null
             }
-
             // Pass to Action
             dispatch(LoginAction(data))
             dispatch(HideError())

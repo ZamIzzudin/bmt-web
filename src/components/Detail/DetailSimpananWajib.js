@@ -56,7 +56,7 @@ export default function DetailSimpananWajib({ backButton }) {
           alignItems: "center",
         }}
       >
-        <h1 className="page-header">Daftar Pembiayaan</h1>
+        <h1 className="page-header">Detail Simpanan Wajib</h1>
         <div style={{ paddingRight: "100px", cursor: "pointer" }}>
           <BackButton onClick={() => backButton()} />
         </div>

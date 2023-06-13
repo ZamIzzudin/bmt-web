@@ -128,10 +128,10 @@ export default function Profile() {
             <Row>
               <Col md={6}>
                 <Form.Group>
-                  {auth.role === 'admin' ? (
+                  {auth.role === 'ADMIN' ? (
 
                     <Form.Label>Id Admin <span className="required">*</span></Form.Label>
-                    ) : auth.role === 'manager' ? (
+                    ) : auth.role === 'MANAGER' ? (
                     <Form.Label>Id Manager <span className="required">*</span></Form.Label>
                   ) : (
                     null

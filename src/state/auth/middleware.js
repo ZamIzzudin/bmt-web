@@ -10,42 +10,25 @@ function asyncLogin(email, password) {
         dispatch(showLoading())
 
         try {
-            let data = {
-                status: false,
-                role: null,
+            const response = await api.Login(email, password);
+            console.info(response)
+            cookies.remove("refreshToken");
+            cookies.add("refreshToken", response.data.accessToken, 7);
+
+            const data = {
+                username: response.data.data.username,
+                role: response.data.data.role,
+                id: response.data.data.id,
+                name: response.data.data.nama_admin_master,
+                email: response.data.data.email_admin_master,
+                token: response.data.accessToken
             }
 
-            switch (email) {
-                case 'admin@admin.com':
-                    data.status = true
-                    data.role = 'admin'
-                    break;
-                case 'user@user.com':
-                    data.status = true
-                    data.role = 'user'
-                    break;
-                case 'manager@manager.com':
-                    data.status = true
-                    data.role = 'manager'
-                    break;
-                case 'officer@officer.com':
-                    data.status = true
-                    data.role = 'officer'
-                    break;
-                case 'adminmaster@adminmaster.com':
-                    data.status= true
-                    data.role = 'admin_master'
-                    break;    
-                default:
-                    break;
-            }
-
-            if (password === '' || password === null) {
-                data.status = false
-                data.status = null
-            }
-            // Pass to Action
+            axios.defaults.headers.common['Authorization'] = `Bearer ${response.data.accessToken}`
+            sessionStorage.setItem('bmt_login_data', JSON.stringify(data))
             dispatch(LoginAction(data))
+            // Pass to Action
+            // dispatch(LoginAction(data))
             dispatch(HideError())
         } catch (err) {
             dispatch(ShowError('Cannot Login'))
@@ -61,14 +44,14 @@ function asyncCheckLogin() {
 
         try {
             // Get From Session Storage
-            let auth_data = JSON.parse(sessionStorage.getItem('dashboard_himsi_login'));
+            let auth_data = JSON.parse(sessionStorage.getItem('bmt_login_data'));
 
             //Setup Cookies 
             cookies.remove('refreshToken')
             cookies.add('refreshToken', auth_data.token, 7)
 
             axios.defaults.headers.common['Authorization'] = `Bearer ${auth_data.token}`
-            sessionStorage.setItem('dashboard_himsi_login', JSON.stringify(auth_data))
+            sessionStorage.setItem('bmt_login_data', JSON.stringify(auth_data))
 
             // Pass to Action
             dispatch(LoginAction(auth_data))

@@ -31,6 +31,17 @@ export default function Sidebar() {
         },
     ]
 
+    const adminMasterViewKeanggotaan = [
+        {
+            payload: 'nasabah',
+            nama: 'Nasabah'
+        },
+        {
+            payload: 'admin',
+            nama: 'Admin'
+        }
+    ]
+
     const pengajuan = [
         {
             payload: 'pembiayaan-kerjasama',
@@ -91,7 +102,7 @@ export default function Sidebar() {
 
     return (
         <nav>
-            {(auth?.role === 'admin' || auth?.role === 'officer') && (
+        {(auth?.role === 'ADMIN' || auth?.role === 'officer' || auth?.role === 'ADMIN_MASTER') && (
                 <ul className="navbar-link-container">
                     <li className="navbar-link-item">
                         <Link to='/' className={location === '/' ? 'active' : null}>Home</Link>
@@ -99,9 +110,15 @@ export default function Sidebar() {
                     <li className="navbar-link-item">
                         <Link to='/profile' className={location === '/profile' ? 'active' : null}>Profile</Link>
                     </li>
-                    <li className="navbar-link-item">
-                        <Accordion isActive={location.includes('/keanggotaan/') ? true : false} dynamicData={keanggotaan} title={{ title: 'Keanggotaan', payload: 'keanggotaan' }} />
-                    </li>
+                    {auth.role === 'ADMIN' ? (
+                        <li className="navbar-link-item">
+                            <Accordion isActive={location.includes('/keanggotaan/') ? true : false} dynamicData={keanggotaan} title={{ title: 'Keanggotaan', payload: 'keanggotaan' }} />
+                        </li>
+                    ) : (
+                        <li className="navbar-link-item">
+                            <Accordion isActive={location.includes('/keanggotaan/') ? true : false} dynamicData={adminMasterViewKeanggotaan} title={{ title: 'Keanggotaan', payload: 'keanggotaan' }} />
+                        </li>
+                    )}
                     <li className="navbar-link-item">
                         <Accordion isActive={location.includes('/pembiayaan/') ? true : false} dynamicData={pembiayaan} title={{ title: 'Angsuran Pembiayaan', payload: 'pembiayaan' }} />
                     </li>

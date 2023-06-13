@@ -2,11 +2,12 @@ import { useLocation } from 'react-router-dom'
 import { useState } from 'react'
 import { useSelector } from 'react-redux'
 
-import TambahKeanggotaan from '../components/Form/TambahKeanggotaan'
-import EditProfileNasabah from '../components/Form/EditAnggota'
+import TambahAdmin from '../components/Form/TambahAdmin'
+import EditAdmin from '../components/Form/EditAdmin'
+
 import { ReactComponent as Search } from '../assets/icons/search.svg'
 
-export default function Keanggotaan() {
+export default function KeanggotaanAdmin() {
     const { auth = {} } = useSelector(states => states);
     const location = useLocation().pathname
     const type = location.split('/')[2]
@@ -61,32 +62,21 @@ export default function Keanggotaan() {
 
     if (showAddForm) {
         return (
-            <main>
-                <h1 className="page-header">Tambah Nasabah</h1>
-                <section className="content-section">
-                    <div className="section-header-container">
-                        <h4 className="section-header">Form Tambah Nasabah</h4>
-                        <button onClick={() => { setShowAddForm(false) }} className="section-add-btn">-</button>
-                    </div>
-                    <div className="section-body">
-                        <TambahKeanggotaan showForm={setShowAddForm} />
-                    </div>
-                </section>
-            </main>
+           <TambahAdmin backButton={() => setShowAddForm(false)}/>
         )
     }
 
     if(showEditForm) {
         return (
-         <EditProfileNasabah backButton={() => setShowEditForm(false)}/>
+         <EditAdmin backButton={() => setShowEditForm(false)}/>
         )
     }
-  if(auth.role === 'ADMIN_MASTER' || auth.role === 'ADMIN' || auth.role === 'MANAGER' || auth.role === 'ACCOUNT_OFFICER'){
+  if(auth.role === 'ADMIN_MASTER'){
       return (
           <main>
               <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}>
-                  <h1 className="page-header">Daftar Nasabah</h1>
-                  {(auth.role === 'ADMIN_MASTER' || auth.role === 'ADMIN') && (
+                  <h1 className="page-header">Daftar Admin</h1>
+                  {auth.role === 'ADMIN_MASTER' && (
                       <div style={{paddingRight:'50px'}}>
                           <button onClick={() => setShowAddForm(true)} className={`section-add-btn ${type === 'rekap' ? 'hidden' : null}`}>+</button>
                       </div>
@@ -94,7 +84,7 @@ export default function Keanggotaan() {
               </div>
               <section className="content-section">
                   <div className="section-header-container" style={{display: 'flex', justifyContent: 'space-between'}}>
-                      <h4 className="section-header">List Akun Nasabah</h4>
+                      <h4 className="section-header">List Akun Admin</h4>
                       <div style={{position: 'relative'}}>
                           <input type="text" className='section-search' required 
                               style={{width: '100%', height: '24px', padding:'15px 25px', borderRadius:'18px', fontSize:'16px'}} />
@@ -119,16 +109,9 @@ export default function Keanggotaan() {
                                   <td>{each.jenis_kelamin}</td>
                                   <td>{each.email}</td>
                                   <td className="table-cta">
-                                    {(auth.role === "MANAGER" || auth.role === "ACCOUNT_OFFICER") ? (
-                                      <div className="table-cta-container">
-                                          <button className="section-edit-btn" onClick={() => setShowEditForm(true)} >Detail</button>
-                                      </div>
-                                    ): (
                                       <div className="table-cta-container">
                                           <button className="section-edit-btn" onClick={() => setShowEditForm(true)} >Edit</button>
                                       </div>
-
-                                    )}
                                   </td>
                               </tr>
                           ))}
@@ -138,8 +121,5 @@ export default function Keanggotaan() {
           </main>
       )
   }
-    return (
-        <EditProfileNasabah />
-       )
-  
+
 }

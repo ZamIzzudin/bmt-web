@@ -13,7 +13,7 @@ export default function Login() {
     const { error = { status: false } } = useSelector(states => states)
     const dispatch = useDispatch()
 
-    const [username, setUsername] = useState('')
+    const [email, setEmail] = useState('')
     const [pass, setPass] = useState('')
 
     const [showPass, setShowPass] = useState(false)
@@ -22,8 +22,7 @@ export default function Login() {
     async function handleLogin(e) {
         e.preventDefault()
         // Middleware pass
-        dispatch(asyncLogin(username, pass))
-
+        dispatch(asyncLogin(email, pass))
     }
 
     return (
@@ -40,7 +39,7 @@ export default function Login() {
                 {/* Form Login Card **posible to be component** */}
                 <Form className="login-form" onSubmit={(e) => handleLogin(e)}>
                     <Form.Group>
-                        <Form.Control className="input-login" placeholder="Username" value={username} onChange={(e) => setUsername(e.target.value)} type="text" required />
+                        <Form.Control className="input-login" placeholder="Username" value={email} onChange={(e) => setEmail(e.target.value)} type="text" required />
                     </Form.Group>
                     <Form.Group>
                         <InputGroup>

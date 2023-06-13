@@ -1,10 +1,12 @@
 import { Form, Row, Col } from 'react-bootstrap'
+import { useSelector } from 'react-redux';
 // import { useSelector } from 'react-redux';
 
 import '../../styles/components/FormLayout.css'
 import { ReactComponent as BackButton } from '../../assets/icons/arrow_back.svg';
 
-export default function EditProfileNasabah({ backButton }) {
+export default function EditProfileNasabah({ backButton, data }) {
+    const { auth = {} } = useSelector(states => states);
     return(
       <main>
       <div
@@ -14,15 +16,22 @@ export default function EditProfileNasabah({ backButton }) {
           alignItems: "center",
         }}
       >
-        <h1 className="page-header">Daftar Pembiayaan Pembiayaan</h1>
+    {(auth.role === "ADMIN_MASTER" || auth.role === "ADMIN") ? (
+      <h1 className="page-header">Edit Anggota</h1>
+      ):(
+      <h1 className="page-header">Detail Data Nasabah</h1>
+    )}
         <div style={{ paddingRight: "100px", cursor: "pointer" }}>
           <BackButton onClick={() => backButton()} />
         </div>
       </div>
       <section className="content-section">
         <div className="section-header-container">
-          <h4 className="section-header">Edit Profile</h4>
-          <button className="section-add-btn hidden">+</button>
+        {(auth.role === "ADMIN_MASTER" || auth.role === "ADMIN") ? (
+          <h4 className="section-header">Form Edit Anggota</h4>
+          ):(
+          <h4 className="section-header">Form Detail Data Nasabah</h4>
+        )}
         </div>
         <div className="section-body">
           <Form>

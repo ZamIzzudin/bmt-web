@@ -22,15 +22,15 @@ import Page404 from './pages/404'
 import Loading from './components/Loading'
 import Sidebar from './components/Sidebar'
 import Header from './components/Header'
+import KeanggotaanAdmin from "./pages/KeanggotaanAdmin"
 
 
 export default function Router() {
-    const { auth = { status: false, role: null } } = useSelector(states => states)
-
+    const { auth = {} } = useSelector(states => states)
     return (
         <BrowserRouter>
             <Loading />
-            {!auth.status ? (
+            {!auth.role ? (
                 // Route if user doesnt Login
                 <Switch>
                     <Route exact path="/" component={Login} />
@@ -39,7 +39,7 @@ export default function Router() {
             ) : (
                 // Route if user already Login
                 <>
-                    {(auth?.role === 'admin' || auth.role === 'officer') && (
+                    {(auth?.role === 'ADMIN' || auth.role === 'OFFICER' || auth.role === 'ADMIN_MASTER') && (
                         <>
                             <Header />
                             <Sidebar />
@@ -47,6 +47,7 @@ export default function Router() {
                                 <Route exact path="/" component={Dashboard} />
                                 <Route exact path="/profile" component={Profile} />
                                 <Route exact path="/keanggotaan/nasabah" component={Keanggotaan} />
+                                <Route exact path="/keanggotaan/admin" component={KeanggotaanAdmin} />
                                 <Route exact path="/pembiayaan/kerjasama" component={PembiayaanKerjasama} />
                                 <Route exact path="/rekapitulasi-pembiayaan-kerjasama" component={RekapitulasiKerjasama} />
                                 <Route exact path="/pembiayaan/jual-beli" component={PembiayaanJualBeli} />

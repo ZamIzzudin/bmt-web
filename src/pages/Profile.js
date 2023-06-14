@@ -5,15 +5,14 @@ import '../styles/components/FormLayout.css'
 
 export default function Profile() {
   const { auth = { status: false, role: null } } = useSelector(states => states)
-
-  if(auth.role === 'user') {
+  
+  if(auth.role === 'ANGGOTA') {
     return(
       <main>
       <h1 className="page-header">Profile</h1>
       <section className="content-section">
         <div className="section-header-container">
           <h4 className="section-header">Edit Profile</h4>
-          <button className="section-add-btn hidden">+</button>
         </div>
         <div className="section-body">
           <Form>
@@ -105,9 +104,9 @@ export default function Profile() {
                 </Form.Group>
               </Col>
             </Row>
-            <div className="form-cta">
+            {/* <div className="form-cta">
               <button className="form-submit-button" type="submit">Simpan</button>
-            </div>
+            </div> */}
           </Form>
         </div>
       </section>
@@ -121,7 +120,6 @@ export default function Profile() {
       <section className="content-section">
         <div className="section-header-container">
           <h4 className="section-header">Edit Profile</h4>
-          <button className="section-add-btn hidden">+</button>
         </div>
         <div className="section-body">
           <Form>

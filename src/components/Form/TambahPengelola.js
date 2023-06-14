@@ -1,10 +1,29 @@
 import { Form, Row, Col } from 'react-bootstrap'
+import { useState } from 'react';
 // import { useSelector } from 'react-redux';
 
 import '../../styles/components/FormLayout.css'
 import { ReactComponent as BackButton } from '../../assets/icons/arrow_back.svg';
 
-export default function EditAdmin({ backButton, data }) {
+export default function TambahPengelola({ backButton }) {
+  const [role, setRole] = useState('');
+
+  // const handleAddPengelola = () => {
+  //   if(role === '') return alert('Role tidak boleh kosong');
+
+  //   switch (role) {
+  //     case 'Admin':
+  //       break;
+  //     case 'Manager':
+  //       break;
+  //     case 'Officer':
+  //       break;
+  //     case 'Admin Master':
+  //       break;
+  //     default:
+  //       alert('Role tidak ditemukan');       
+  //   }
+  // }
     return(
       <main>
       <div
@@ -14,14 +33,14 @@ export default function EditAdmin({ backButton, data }) {
           alignItems: "center",
         }}
       >
-        <h1 className="page-header">Edit Admin</h1>
+        <h1 className="page-header">Tambah Pengelola</h1>
         <div style={{ paddingRight: "100px", cursor: "pointer" }}>
           <BackButton onClick={() => backButton()} />
         </div>
       </div>
       <section className="content-section">
         <div className="section-header-container">
-          <h4 className="section-header">Form Edit Admin</h4>
+          <h4 className="section-header">Form Tambah Pengelola</h4>
         </div>
         <div className="section-body">
           <Form>
@@ -43,13 +62,13 @@ export default function EditAdmin({ backButton, data }) {
               <Col md={6}>
                 <Form.Group>
                     <Form.Label>No Telp<span className="required">*</span></Form.Label>
-                  <Form.Control type='date' required disabled />
+                  <Form.Control type='date' required />
                 </Form.Group>
               </Col>
             </Row>
             <Form.Group>
               <Form.Label>Username <span className="required">*</span></Form.Label>
-              <Form.Control required disabled />
+              <Form.Control required />
             </Form.Group>
             <Row>
                <Col>
@@ -73,18 +92,18 @@ export default function EditAdmin({ backButton, data }) {
               <Col md={6}>
                 <Form.Group>
                     <Form.Label>Role<span className="required">*</span></Form.Label>
-                    <Form.Select>
+                        <Form.Select value={role} onChange={e => setRole(e.target.value)}>
                             <option></option>
-                            <option value={1}>Admin</option>
-                            <option value={2}>Manager</option>
-                            <option value={3}>Account Officer</option>
-                            <option value={4}>Admin Master</option>
+                            <option value="Admin">Admin</option>
+                            <option value="Manager">Manager</option>
+                            <option value="Officer">Account Officer</option>
+                            <option value="Admin Master">Admin Master</option>
                         </Form.Select>
                 </Form.Group>
               </Col>
             </Row>
             <div className="form-cta">
-              <button className="form-submit-button" type="submit">Simpan</button>
+              <button className="form-submit-button" type="submit">Tambah</button>
             </div>
           </Form>
         </div>

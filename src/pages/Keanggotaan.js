@@ -1,63 +1,29 @@
 import { useLocation } from 'react-router-dom'
-import { useState } from 'react'
-import { useSelector } from 'react-redux'
+import { useState,useEffect } from 'react'
+import { useSelector, useDispatch } from 'react-redux'
 
 import TambahKeanggotaan from '../components/Form/TambahKeanggotaan'
 import EditProfileNasabah from '../components/Form/EditAnggota'
+
+import { AsyncGetAnggota } from '../state/keanggotaan/middleware'
+
 import { ReactComponent as Search } from '../assets/icons/search.svg'
 
 export default function Keanggotaan() {
-    const { auth = {} } = useSelector(states => states);
+    const { auth = {}, anggota = [] } = useSelector(states => states);
+    const dispatch = useDispatch();
+
     const location = useLocation().pathname
     const type = location.split('/')[2]
 
     const [showAddForm, setShowAddForm] = useState(false)
     const [showEditForm, setShowEditForm] = useState(false)
 
-    let data = [
-        {
-            no: 1,
-            id: "NSB-002",
-            email: "agus@gmail.com",
-            nama: "Agus",
-            jenis_kelamin: "Laki-laki"
-        },
-        {
-            no: 2,
-            id: "NSB-002",
-            email: "agus@gmail.com",
-            nama: "Agus",
-            jenis_kelamin: "Laki-laki"
-        },
-        {
-            no: 3,
-            id: "NSB-002",
-            email: "agus@gmail.com",
-            nama: "Agus",
-            jenis_kelamin: "Laki-laki"
-        },
-        {
-            no: 4,
-            id: "NSB-002",
-            email: "agus@gmail.com",
-            nama: "Agus",
-            jenis_kelamin: "Laki-laki"
-        },
-        {
-            no: 5,
-            id: "NSB-002",
-            email: "agus@gmail.com",
-            nama: "Agus",
-            jenis_kelamin: "Laki-laki"
-        },
-        {
-            no: 6,
-            id: "NSB-002",
-            email: "agus@gmail.com",
-            nama: "Agus",
-            jenis_kelamin: "Laki-laki"
-        }
-    ]
+    const [selectedData, setSelectedData] = useState(null)
+
+    useEffect(() => {
+        dispatch(AsyncGetAnggota());
+    }, [dispatch])
 
     if (showAddForm) {
         return (
@@ -78,7 +44,7 @@ export default function Keanggotaan() {
 
     if(showEditForm) {
         return (
-         <EditProfileNasabah backButton={() => setShowEditForm(false)}/>
+            <EditProfileNasabah backButton={() => setShowEditForm(false)} currentData={selectedData}/>
         )
     }
   if(auth.role === 'ADMIN_MASTER' || auth.role === 'ADMIN' || auth.role === 'MANAGER' || auth.role === 'ACCOUNT_OFFICER'){
@@ -111,21 +77,21 @@ export default function Keanggotaan() {
                               <th>Email</th>
                               <th className="text-center">Action</th>
                           </tr>
-                          {data.map(each => (
+                          {anggota?.map((each, index) => (
                               <tr>
-                                  <td>{each.no}</td>
-                                  <td>{each.id}</td>
-                                  <td>{each.nama}</td>
+                                  <td>{index + 1}</td>
+                                  <td>{`NSB-${each.id_anggota.substring(0,3)}`}</td>
+                                  <td>{each.nama_anggota}</td>
                                   <td>{each.jenis_kelamin}</td>
-                                  <td>{each.email}</td>
+                                  <td>{each.email_anggota}</td>
                                   <td className="table-cta">
                                     {(auth.role === "MANAGER" || auth.role === "ACCOUNT_OFFICER") ? (
                                       <div className="table-cta-container">
-                                          <button className="section-edit-btn" onClick={() => setShowEditForm(true)} >Detail</button>
+                                        <button className="section-edit-btn" onClick={() => { setShowEditForm(true); setSelectedData(each) }} >Detail</button>
                                       </div>
                                     ): (
                                       <div className="table-cta-container">
-                                          <button className="section-edit-btn" onClick={() => setShowEditForm(true)} >Edit</button>
+                                        <button className="section-edit-btn" onClick={() => { setShowEditForm(true); setSelectedData(each) }} >Edit</button>
                                       </div>
 
                                     )}

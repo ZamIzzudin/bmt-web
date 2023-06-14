@@ -4,7 +4,7 @@ import { Form, Row, Col } from 'react-bootstrap'
 import '../../styles/components/FormLayout.css'
 import { ReactComponent as BackButton } from '../../assets/icons/arrow_back.svg';
 
-export default function TambahAdmin({ backButton }) {
+export default function EditPengelola({ backButton, currentData }) {
     return(
       <main>
       <div
@@ -14,14 +14,14 @@ export default function TambahAdmin({ backButton }) {
           alignItems: "center",
         }}
       >
-        <h1 className="page-header">Tambah Admin</h1>
+        <h1 className="page-header">Edit Admin</h1>
         <div style={{ paddingRight: "100px", cursor: "pointer" }}>
           <BackButton onClick={() => backButton()} />
         </div>
       </div>
       <section className="content-section">
         <div className="section-header-container">
-          <h4 className="section-header">Form Tambah Admin</h4>
+          <h4 className="section-header">Form Edit Admin</h4>
         </div>
         <div className="section-body">
           <Form>
@@ -49,7 +49,7 @@ export default function TambahAdmin({ backButton }) {
             </Row>
             <Form.Group>
               <Form.Label>Username <span className="required">*</span></Form.Label>
-              <Form.Control required />
+              <Form.Control required disabled />
             </Form.Group>
             <Row>
                <Col>
@@ -84,7 +84,7 @@ export default function TambahAdmin({ backButton }) {
               </Col>
             </Row>
             <div className="form-cta">
-              <button className="form-submit-button" type="submit">Tambah</button>
+              <button className="form-submit-button" type="submit">Simpan</button>
             </div>
           </Form>
         </div>

@@ -38,7 +38,7 @@ export default function Sidebar() {
         },
         {
             payload: 'admin',
-            nama: 'Admin'
+            nama: 'Pengelola'
         }
     ]
 

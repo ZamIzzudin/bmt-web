@@ -70,7 +70,7 @@ const api = (() => {
   }
 
   async function editAnggota(data) {
-    const url = baseUrl + "/anggota";
+    const url = baseUrl + `/anggota/${data.id}`;
     const data_create = {
       username: data.username,
       password_anggota: data.password_anggota,
@@ -120,7 +120,7 @@ const api = (() => {
   }
 
   async function editAdmin(data) {
-    const url = baseUrl + "/admin";
+    const url = baseUrl + `/admin/${data.id}`;
     const data_edit = {
       username: data.username,
       nama_admin: data.nama_admin,
@@ -141,6 +141,147 @@ const api = (() => {
     const response = await axios.delete(url);
     return response;
   }
+
+  //Manager
+  async function getManager(id) {
+    const url = baseUrl + `/manager/${id ? id : ""}`;
+
+    const response = await axios.get(url);
+    return response.data.data;
+  }
+  async function createManager(data) {
+    const url = baseUrl + "/manager";
+    const data_create = {
+      username: data.username,
+      nama_manager: data.nama_manager,
+      password_manager: data.password,
+      no_hp_manager: data.no_hp_manager,
+      jenis_kelamin: data.jenis_kelamin,
+      email_manager: data.email_manager,
+      alamat_manager: data.alamat_manager,
+      level_manager: data.level_manager,
+    };
+    const response = await axios.post(url, data_create);
+
+    return response;
+  }
+
+  async function editManager(data) {
+    const url = baseUrl + `/manager/${data.id}`;
+    const data_edit = {
+      username: data.username,
+      nama_manager: data.nama_manager,
+      password_manager: data.password,
+      no_hp_manager: data.no_hp_manager,
+      jenis_kelamin: data.jenis_kelamin,
+      email_manager: data.email_manager,
+      alamat_manager: data.alamat_manager,
+      level_manager: data.level_manager,
+    };
+    const response = await axios.put(url, data_edit);
+
+    return response;
+  }
+
+  async function deleteManager(id) {
+    const url = baseUrl + `/manager/${id}`;
+    const response = await axios.delete(url);
+    return response;
+  }
+
+  //Officer
+  async function getOfficer(id) {
+    const url = baseUrl + `/account-officer/${id ? id : ""}`;
+
+    const response = await axios.get(url);
+    return response.data.data;
+  }
+  async function createOfficer(data) {
+    const url = baseUrl + "/account-officer";
+    const data_create = {
+      username: data.username,
+      nama_account_officer: data.nama_account_officer,
+      password_account_officer: data.password,
+      no_hp_account_officer: data.no_hp_account_officer,
+      jenis_kelamin: data.jenis_kelamin,
+      email_account_officer: data.email_account_officer,
+      alamat_account_officer: data.alamat_account_officer,
+      level_account_officer: data.level_account_officer,
+    };
+    const response = await axios.post(url, data_create);
+
+    return response;
+  }
+
+  async function editOfficer(data) {
+    const url = baseUrl + `/account-officer/${data.id}`;
+    const data_edit = {
+      username: data.username,
+      nama_account_officer: data.nama_account_officer,
+      password_account_officer: data.password,
+      no_hp_account_officer: data.no_hp_account_officer,
+      jenis_kelamin: data.jenis_kelamin,
+      email_account_officer: data.email_account_officer,
+      alamat_account_officer: data.alamat_account_officer,
+      level_account_officer: data.level_account_officer,
+    };
+    const response = await axios.put(url, data_edit);
+
+    return response;
+  }
+
+  async function deleteOfficer(id) {
+    const url = baseUrl + `/account-officer/${id}`;
+    const response = await axios.delete(url);
+    return response;
+  }
+
+  //Master Admin
+  async function getAdminMaster(id) {
+    const url = baseUrl + `/admin-master/${id ? id : ""}`;
+
+    const response = await axios.get(url);
+    return response.data.data;
+  }
+  async function createAdminMaster(data) {
+    const url = baseUrl + "/admin-master";
+    const data_create = {
+      username: data.username,
+      nama_admin_master: data.nama_admin_master,
+      password_admin_master: data.password,
+      no_hp_admin_master: data.no_hp_admin_master,
+      jenis_kelamin: data.jenis_kelamin,
+      email_admin_master: data.email_admin_master,
+      alamat_admin_master: data.alamat_admin_master,
+      level_admin_master: data.level_admin_master,
+    };
+    const response = await axios.post(url, data_create);
+
+    return response;
+  }
+
+  async function editAdminMaster(data) {
+    const url = baseUrl + `/admin-master/${data.id}`;
+    const data_edit = {
+      username: data.username,
+      nama_admin_master: data.nama_admin_master,
+      password_admin_master: data.password,
+      no_hp_admin_master: data.no_hp_admin_master,
+      jenis_kelamin: data.jenis_kelamin,
+      email_admin_master: data.email_admin_master,
+      alamat_admin_master: data.alamat_admin_master,
+      level_admin_master: data.level_admin_master,
+    };
+    const response = await axios.put(url, data_edit);
+
+    return response;
+  }
+
+  async function deleteAdminMaster(id) {
+    const url = baseUrl + `/admin-master/${id}`;
+    const response = await axios.delete(url);
+    return response;
+  }
   return {
     Login,
     Refresh,
@@ -153,6 +294,18 @@ const api = (() => {
     createAdmin,
     editAdmin,
     deleteAdmin,
+    getManager,
+    createManager,
+    editManager,
+    deleteManager,
+    getOfficer,
+    createOfficer,
+    editOfficer,
+    deleteOfficer,
+    getAdminMaster,
+    createAdminMaster,
+    editAdminMaster,
+    deleteAdminMaster,
   };
 })();
 

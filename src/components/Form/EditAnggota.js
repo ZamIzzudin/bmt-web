@@ -5,7 +5,7 @@ import { useSelector } from 'react-redux';
 import '../../styles/components/FormLayout.css'
 import { ReactComponent as BackButton } from '../../assets/icons/arrow_back.svg';
 
-export default function EditProfileNasabah({ backButton, data }) {
+export default function EditProfileNasabah({ backButton, currentData }) {
     const { auth = {} } = useSelector(states => states);
     return(
       <main>

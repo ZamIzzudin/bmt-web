@@ -1,74 +1,43 @@
 import { useLocation } from 'react-router-dom'
-import { useState } from 'react'
-import { useSelector } from 'react-redux'
+import { useState, useEffect } from 'react'
+import { useSelector, useDispatch } from 'react-redux'
 
-import TambahAdmin from '../components/Form/TambahAdmin'
-import EditAdmin from '../components/Form/EditAdmin'
+import { AsyncGetAdmin } from '../state/admin/middleware'
+import { AsyncGetManager } from '../state/manager/middleware'
+import { AsyncGetOfficer } from '../state/account_officer/middleware'
+
+import TambahPengelola from '../components/Form/TambahPengelola'
+import EditPengelola from '../components/Form/EditPengelola'
 
 import { ReactComponent as Search } from '../assets/icons/search.svg'
 
 export default function KeanggotaanAdmin() {
-    const { auth = {} } = useSelector(states => states);
+    const { auth = {}, admin = [], manager = [], officer = [] } = useSelector(states => states);
+    const dispatch = useDispatch();
+
     const location = useLocation().pathname
     const type = location.split('/')[2]
 
     const [showAddForm, setShowAddForm] = useState(false)
     const [showEditForm, setShowEditForm] = useState(false)
+    const [selectedData, setSelectedData] = useState(null)
 
-    let data = [
-        {
-            no: 1,
-            id: "NSB-002",
-            email: "agus@gmail.com",
-            nama: "Agus",
-            jenis_kelamin: "Laki-laki"
-        },
-        {
-            no: 2,
-            id: "NSB-002",
-            email: "agus@gmail.com",
-            nama: "Agus",
-            jenis_kelamin: "Laki-laki"
-        },
-        {
-            no: 3,
-            id: "NSB-002",
-            email: "agus@gmail.com",
-            nama: "Agus",
-            jenis_kelamin: "Laki-laki"
-        },
-        {
-            no: 4,
-            id: "NSB-002",
-            email: "agus@gmail.com",
-            nama: "Agus",
-            jenis_kelamin: "Laki-laki"
-        },
-        {
-            no: 5,
-            id: "NSB-002",
-            email: "agus@gmail.com",
-            nama: "Agus",
-            jenis_kelamin: "Laki-laki"
-        },
-        {
-            no: 6,
-            id: "NSB-002",
-            email: "agus@gmail.com",
-            nama: "Agus",
-            jenis_kelamin: "Laki-laki"
-        }
-    ]
+    useEffect(() => {
+        dispatch(AsyncGetAdmin());
+        dispatch(AsyncGetManager());
+        dispatch(AsyncGetOfficer());
+    }, [dispatch])
+
 
     if (showAddForm) {
         return (
-           <TambahAdmin backButton={() => setShowAddForm(false)}/>
+           <TambahPengelola backButton={() => setShowAddForm(false)}/>
         )
     }
 
     if(showEditForm) {
         return (
-         <EditAdmin backButton={() => setShowEditForm(false)}/>
+        <EditPengelola backButton={() => setShowEditForm(false)} currentData={selectedData}/>
         )
     }
   if(auth.role === 'ADMIN_MASTER'){
@@ -95,22 +64,104 @@ export default function KeanggotaanAdmin() {
                       <table>
                           <tr>
                               <th>No.</th>
-                              <th>ID Nasabah</th>
+                              <th>ID Admin</th>
                               <th>Nama</th>
                               <th>Jenis Kelamin</th>
                               <th>Email</th>
                               <th className="text-center">Action</th>
                           </tr>
-                          {data.map(each => (
+                          {admin.map((each, index) => (
                               <tr>
-                                  <td>{each.no}</td>
-                                  <td>{each.id}</td>
-                                  <td>{each.nama}</td>
+                                  <td>{index + 1}</td>
+                                  <td>{`ADM-${each.id_admin.substring(0,3)}`}</td>
+                                  <td>{each.nama_admin}</td>
+                                  <td>{each.jenis_kelamin.charAt(0).toUpperCase() + each.jenis_kelamin.slice(1)}</td>
+                                  <td>{each.email_admin}</td>
+                                  <td className="table-cta">
+                                      <div className="table-cta-container">
+                                        <button className="section-edit-btn" onClick={() => {setShowEditForm(true); setSelectedData(each)}} >Edit</button>
+                                      </div>
+                                  </td>
+                              </tr>
+                          ))}
+                      </table>
+                  </div>
+              </section>
+
+              {/* Manager */}
+              <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}>
+                  <h1 className="page-header">Daftar Manager</h1>
+              </div>
+              <section className="content-section">
+                  <div className="section-header-container" style={{display: 'flex', justifyContent: 'space-between'}}>
+                      <h4 className="section-header">List Akun Manager</h4>
+                      <div style={{position: 'relative'}}>
+                          <input type="text" className='section-search' required 
+                              style={{width: '100%', height: '24px', padding:'15px 25px', borderRadius:'18px', fontSize:'16px'}} />
+                          <Search style={{position: 'absolute', top: '50%', left: '90%', transform: 'translate(-50%, -50%)', cursor: 'pointer'}} />
+                      </div>
+                  </div>
+                  <div className="section-body">
+                      <table>
+                          <tr>
+                              <th>No.</th>
+                              <th>ID Manager</th>
+                              <th>Nama</th>
+                              <th>Jenis Kelamin</th>
+                              <th>Email</th>
+                              <th className="text-center">Action</th>
+                          </tr>
+                          {manager?.map((each, index) => (
+                              <tr>
+                                  <td>{index + 1}</td>
+                                  <td>{`MNG-${each.id_manager.substring(0,3)}`}</td>
+                                  <td>{each.nama_manager}</td>
                                   <td>{each.jenis_kelamin}</td>
                                   <td>{each.email}</td>
                                   <td className="table-cta">
                                       <div className="table-cta-container">
-                                          <button className="section-edit-btn" onClick={() => setShowEditForm(true)} >Edit</button>
+                                      <button className="section-edit-btn" onClick={() => {setShowEditForm(true); setSelectedData(each)}} >Edit</button>
+                                      </div>
+                                  </td>
+                              </tr>
+                          ))}
+                      </table>
+                  </div>
+              </section>
+
+              {/* ACCOUNT OFFICER */}
+              <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}>
+                  <h1 className="page-header">Daftar Account Officer</h1>
+              </div>
+              <section className="content-section">
+                  <div className="section-header-container" style={{display: 'flex', justifyContent: 'space-between'}}>
+                      <h4 className="section-header">List Akun Officer</h4>
+                      <div style={{position: 'relative'}}>
+                          <input type="text" className='section-search' required 
+                              style={{width: '100%', height: '24px', padding:'15px 25px', borderRadius:'18px', fontSize:'16px'}} />
+                          <Search style={{position: 'absolute', top: '50%', left: '90%', transform: 'translate(-50%, -50%)', cursor: 'pointer'}} />
+                      </div>
+                  </div>
+                  <div className="section-body">
+                      <table>
+                          <tr>
+                              <th>No.</th>
+                              <th>ID Officer</th>
+                              <th>Nama</th>
+                              <th>Jenis Kelamin</th>
+                              <th>Email</th>
+                              <th className="text-center">Action</th>
+                          </tr>
+                          {officer.map((each, index) => (
+                              <tr>
+                                  <td>{index + 1}</td>
+                                  <td>{`OFC-${each.id_account_officer.substring(0,3)}`}</td>
+                                  <td>{each.nama_account_officer}</td>
+                                  <td>{each.jenis_kelamin}</td>
+                                  <td>{each.email_account_officer}</td>
+                                  <td className="table-cta">
+                                      <div className="table-cta-container">
+                                         <button className="section-edit-btn" onClick={() => {setShowEditForm(true); setSelectedData(each)}} >Edit</button>
                                       </div>
                                   </td>
                               </tr>

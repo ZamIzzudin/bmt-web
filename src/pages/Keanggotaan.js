@@ -5,12 +5,18 @@ import { useSelector, useDispatch } from 'react-redux'
 import TambahKeanggotaan from '../components/Form/TambahKeanggotaan'
 import EditProfileNasabah from '../components/Form/EditAnggota'
 
-import { AsyncGetAnggota } from '../state/keanggotaan/middleware'
+import { HideError } from '../state/error/middleware'
+import { HideSuccess } from '../state/success/middleware'
+
+import { AsyncGetAnggota, AsyncDeleteAnggota } from '../state/keanggotaan/middleware'
+
+import InfoModal from '../components/InfoModal'
 
 import { ReactComponent as Search } from '../assets/icons/search.svg'
+import { ReactComponent as Delete } from '../assets/icons/Delete.svg'
 
 export default function Keanggotaan() {
-    const { auth = {}, anggota = [] } = useSelector(states => states);
+    const { auth = {}, anggota = [], success, error } = useSelector(states => states);
     const dispatch = useDispatch();
 
     const location = useLocation().pathname
@@ -20,6 +26,11 @@ export default function Keanggotaan() {
     const [showEditForm, setShowEditForm] = useState(false)
 
     const [selectedData, setSelectedData] = useState(null)
+
+    function handleModal() {
+        dispatch(HideError())
+        dispatch(HideSuccess())
+    }
 
     useEffect(() => {
         dispatch(AsyncGetAnggota());
@@ -92,6 +103,7 @@ export default function Keanggotaan() {
                                     ): (
                                       <div className="table-cta-container">
                                         <button className="section-edit-btn" onClick={() => { setShowEditForm(true); setSelectedData(each) }} >Edit</button>
+                                        <Delete onClick={() => dispatch(AsyncDeleteAnggota(each.id_anggota))} cursor={'pointer'} />
                                       </div>
 
                                     )}
@@ -101,6 +113,10 @@ export default function Keanggotaan() {
                       </table>
                   </div>
               </section>
+            {/* Error Modal */}
+            <InfoModal show={error.status} setShow={handleModal} value={error.message} type="error" />
+            {/* Success Draft*/}
+            <InfoModal show={success.status} setShow={handleModal} value={success.message} type="success" />
           </main>
       )
   }

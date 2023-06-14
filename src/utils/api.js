@@ -68,7 +68,7 @@ const api = (() => {
   }
 
   async function editAnggota(data) {
-    const url = baseUrl + `/anggota/${data.id}`;
+    const url = baseUrl + `/anggota/${data.id_anggota}`;
     const data_create = {
       username: data.username,
       password_anggota: data.password_anggota,
@@ -118,7 +118,7 @@ const api = (() => {
   }
 
   async function editAdmin(data) {
-    const url = baseUrl + `/admin/${data.id}`;
+    const url = baseUrl + `/admin/${data.id_admin}`;
     const data_edit = {
       username: data.username,
       nama_admin: data.nama_admin,
@@ -165,7 +165,7 @@ const api = (() => {
   }
 
   async function editManager(data) {
-    const url = baseUrl + `/manager/${data.id}`;
+    const url = baseUrl + `/manager/${data.id_manager}`;
     const data_edit = {
       username: data.username,
       nama_manager: data.nama_manager,
@@ -212,7 +212,7 @@ const api = (() => {
   }
 
   async function editOfficer(data) {
-    const url = baseUrl + `/account-officer/${data.id}`;
+    const url = baseUrl + `/account-officer/${data.id_account_officer}`;
     const data_edit = {
       username: data.username,
       nama_account_officer: data.nama_account_officer,
@@ -259,7 +259,7 @@ const api = (() => {
   }
 
   async function editAdminMaster(data) {
-    const url = baseUrl + `/admin-master/${data.id}`;
+    const url = baseUrl + `/admin-master/${data.id_admin_master}`;
     const data_edit = {
       username: data.username,
       nama_admin_master: data.nama_admin_master,

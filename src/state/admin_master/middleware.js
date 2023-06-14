@@ -2,6 +2,9 @@ import { GetAdminMasterAction } from './action'
 import api from "../../utils/api";
 import { showLoading, hideLoading } from "react-redux-loading-bar";
 
+import { ShowSuccess } from '../success/middleware';
+import { ShowError } from '../error/middleware';
+
 function AsyncGetAdminMaster(id) {
     return async dispatch => {
         dispatch(showLoading());
@@ -32,10 +35,12 @@ function AsyncCreateAdminMaster(data) {
                 level_admin_master: data.level_admin_master,
             }
             const result = await api.createAdminMaster(createData);
+            dispatch(ShowSuccess("Berhasil membuat Admin Master"));
             console.info(result)
             dispatch(AsyncGetAdminMaster());
         } catch (err) {
             console.error(err);
+            dispatch(ShowError("Gagal membuat Admin Master"));
         }
     }
 }
@@ -47,6 +52,7 @@ function AsyncEditAdminMaster(data) {
                 throw new Error()
             }
             const editData = {
+                id_admin_master: data.id_admin_master,
                 username: data.username,
                 nama_admin_master: data.nama_admin_master,
                 password_admin_master: data.password,
@@ -57,10 +63,12 @@ function AsyncEditAdminMaster(data) {
                 level_admin_master: data.level_admin_master,
             }
             const result = await api.editAdminMaster(editData);
+            dispatch(ShowSuccess("Berhasil mengedit Admin Master"));
             console.info(result)
             dispatch(AsyncGetAdminMaster());
         } catch (err) {
             console.error(err);
+            dispatch(ShowError("Gagal mengedit Admin Master"));
         }
     }
 }
@@ -72,10 +80,12 @@ function AsyncDeleteAdminMaster(id) {
                 throw new Error()
             }
             const result = await api.deleteAdminMaster(id);
+            dispatch(ShowSuccess("Berhasil menghapus Admin Master"));
             console.info(result)
             dispatch(AsyncGetAdminMaster());
         } catch (err) {
             console.error(err);
+            dispatch(ShowError("Gagal menghapus Admin Master"));
         }
     }
 }

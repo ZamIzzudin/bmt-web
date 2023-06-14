@@ -72,7 +72,7 @@ function asyncRefreshToken() {
             cookies.remove('refreshToken')
             cookies.add('refreshToken', response.data.accessToken, 7)
 
-            let auth_data = JSON.parse(sessionStorage.getItem('dashboard_himsi_login'));
+            let auth_data = JSON.parse(sessionStorage.getItem('bmt_login_data'));
             auth_data.token = response.data.accessToken
 
             axios.defaults.headers.common['Authorization'] = `Bearer ${response.data.accessToken}`

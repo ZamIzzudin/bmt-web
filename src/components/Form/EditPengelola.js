@@ -14,8 +14,9 @@ export default function EditPengelola({ backButton, currentData }) {
   const dispatch = useDispatch();
   const [role, setRole] = useState();
   const [username, setUsername] = useState(currentData.username);
-  const [jenisKelamin, setJenisKelamin] = useState(currentData.jenis_kelamin);
+  const id = currentData.id_admin || currentData.id_manager || currentData.id_account_officer || currentData.id_admin_master;
   const [nama, setNama] = useState(currentData.nama_admin || currentData.nama_manager || currentData.nama_account_officer || currentData.nama_admin_master);
+  const [jenisKelamin, setJenisKelamin] = useState(currentData.jenis_kelamin);
   const [password, setPassword] = useState(currentData.password_admin || currentData.password_manager || currentData.password_account_officer || currentData.password_admin_master);
   const [email, setEmail] = useState(currentData.email_admin || currentData.email_manager || currentData.email_account_officer || currentData.email_admin_master);
   const [noTelp, setNoTelp] = useState(currentData.no_hp_admin || currentData.no_hp_manager || currentData.no_hp_account_officer || currentData.no_hp_admin_master);
@@ -26,16 +27,16 @@ export default function EditPengelola({ backButton, currentData }) {
     if(role === '') return alert('Isi data secara menyeluruh!');
     switch (role) {
       case 'Admin':
-        dispatch(AsyncEditAdmin({nama, password, email, username, jenisKelamin, noTelp, alamat}));
+        dispatch(AsyncEditAdmin({id, nama, password, email, username, jenisKelamin, noTelp, alamat}));
         break;
       case 'Manager':
-        dispatch(AsyncEditManager({nama, password, email, username, jenisKelamin, noTelp, alamat}));
+        dispatch(AsyncEditManager({id, nama, password, email, username, jenisKelamin, noTelp, alamat}));
         break;
       case 'Officer':
-        dispatch(AsyncEditOfficer({nama, password, email, username, jenisKelamin, noTelp, alamat}));
+        dispatch(AsyncEditOfficer({id, nama, password, email, username, jenisKelamin, noTelp, alamat}));
         break;
       case 'Admin Master':
-        dispatch(AsyncEditAdminMaster({nama, password, email, username, jenisKelamin, noTelp, alamat}));
+        dispatch(AsyncEditAdminMaster({id, nama, password, email, username, jenisKelamin, noTelp, alamat}));
         break;
       default:
         alert('Role tidak ditemukan');       

@@ -1,4 +1,5 @@
-import { BrowserRouter, Switch, Route, } from "react-router-dom"
+import { BrowserRouter, Switch, Route } from "react-router-dom"
+// import { useEffect } from "react"
 import { useSelector } from 'react-redux'
 
 import Dashboard from './pages/Dashboard'
@@ -24,9 +25,12 @@ import Sidebar from './components/Sidebar'
 import Header from './components/Header'
 import KeanggotaanAdmin from "./pages/KeanggotaanAdmin"
 
+// import { asyncLogout, asyncRefreshToken, asyncCheckLogin } from "./state/auth/middleware"
 
 export default function Router() {
     const { auth = {} } = useSelector(states => states)
+    // const dispatch = useDispatch()
+
     return (
         <BrowserRouter>
             <Loading />

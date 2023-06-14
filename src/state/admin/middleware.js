@@ -23,13 +23,13 @@ function AsyncCreateAdmin(data) {
             }
             const createData = {
                 username: data.username,
-                nama_admin: data.nama_admin,
+                nama_admin: data.nama,
                 password_admin: data.password,
-                no_hp_admin: data.no_hp_admin,
-                jenis_kelamin: data.jenis_kelamin,
-                email_admin: data.email_admin,
-                alamat_admin: data.alamat_admin,
-                level_admin: data.level_admin,
+                no_hp_admin: data.noTelp,
+                jenis_kelamin: data.jenisKelamin,
+                email_admin: data.email,
+                alamat_admin: data.alamat,
+                level_admin: 1,
             }
             const result = await api.createAdmin(createData);
             console.info(result)
@@ -48,13 +48,13 @@ function AsyncEditAdmin(data) {
             }
             const editData = {
                 username: data.username,
-                nama_admin: data.nama_admin,
+                nama_admin: data.nama,
                 password_admin: data.password,
-                no_hp_admin: data.no_hp_admin,
-                jenis_kelamin: data.jenis_kelamin,
-                email_admin: data.email_admin,
-                alamat_admin: data.alamat_admin,
-                level_admin: data.level_admin,
+                no_hp_admin: data.noTelp,
+                jenis_kelamin: data.jenisKelamin,
+                email_admin: data.email,
+                alamat_admin: data.alamat,
+                level_admin: 1,
             }
             const result = await api.editAdmin(editData);
             console.info(result)

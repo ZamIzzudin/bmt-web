@@ -1,29 +1,48 @@
 import { Form, Row, Col } from 'react-bootstrap'
 import { useState } from 'react';
-// import { useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
+
+import { AsyncCreateAdmin } from '../../state/admin/middleware';
+import { AsyncCreateManager } from '../../state/manager/middleware';
+import { AsyncCreateOfficer } from '../../state/account_officer/middleware';
+import { AsyncCreateAdminMaster } from '../../state/admin_master/middleware';
 
 import '../../styles/components/FormLayout.css'
 import { ReactComponent as BackButton } from '../../assets/icons/arrow_back.svg';
 
 export default function TambahPengelola({ backButton }) {
+  const dispatch = useDispatch();
+
   const [role, setRole] = useState('');
+  const [nama, setNama] = useState('');
+  const [password, setPassword] = useState('');
+  const [email, setEmail] = useState('');
+  const [username, setUsername] = useState('');
+  const [jenisKelamin, setJenisKelamin] = useState('');
+  const [noTelp, setNoTelp] = useState('');
+  const [alamat, setAlamat] = useState('');
 
-  // const handleAddPengelola = () => {
-  //   if(role === '') return alert('Role tidak boleh kosong');
+  const handleAddPengelola = (e) => {
+    e.preventDefault();
+    if(role === '') return alert('Isi data secara menyeluruh!');
 
-  //   switch (role) {
-  //     case 'Admin':
-  //       break;
-  //     case 'Manager':
-  //       break;
-  //     case 'Officer':
-  //       break;
-  //     case 'Admin Master':
-  //       break;
-  //     default:
-  //       alert('Role tidak ditemukan');       
-  //   }
-  // }
+    switch (role) {
+      case 'Admin':
+        dispatch(AsyncCreateAdmin({nama, password, email, username, jenisKelamin, noTelp, alamat}));
+        break;
+      case 'Manager':
+        dispatch(AsyncCreateManager({nama, password, email, username, jenisKelamin, noTelp, alamat}));
+        break;
+      case 'Officer':
+        dispatch(AsyncCreateOfficer({nama, password, email, username, jenisKelamin, noTelp, alamat}));
+        break;
+      case 'Admin Master':
+        dispatch(AsyncCreateAdminMaster({nama, password, email, username, jenisKelamin, noTelp, alamat}));
+        break;
+      default:
+        alert('Role tidak ditemukan');       
+    }
+  }
     return(
       <main>
       <div
@@ -43,18 +62,18 @@ export default function TambahPengelola({ backButton }) {
           <h4 className="section-header">Form Tambah Pengelola</h4>
         </div>
         <div className="section-body">
-          <Form>
+          <Form onSubmit={handleAddPengelola}>
             <Form.Group>
               <Form.Label>Nama Lengkap <span className="required">*</span></Form.Label>
-              <Form.Control required />
+              <Form.Control required value={nama} onChange={(e) => setNama(e.target.value)} />
             </Form.Group>
             <Row>
               <Col md={6}>
               <Form.Group>
                         <Form.Label>Jenis Kelamin<span className="required">*</span></Form.Label>
-                        <Form.Select>
+                        <Form.Select value={jenisKelamin} onChange={(e) => setJenisKelamin(e.target.value)}>
                             <option></option>
-                            <option value={'Laki-laki'}>Laki-laki</option>
+                            <option value={'Pria'}>Pria</option>
                             <option value={'Perempuan'}>Perempuan</option>
                         </Form.Select>
                     </Form.Group>
@@ -62,31 +81,31 @@ export default function TambahPengelola({ backButton }) {
               <Col md={6}>
                 <Form.Group>
                     <Form.Label>No Telp<span className="required">*</span></Form.Label>
-                  <Form.Control type='date' required />
+                    <Form.Control required value={noTelp} onChange={(e) => setNoTelp(e.target.value)} />
                 </Form.Group>
               </Col>
             </Row>
             <Form.Group>
               <Form.Label>Username <span className="required">*</span></Form.Label>
-              <Form.Control required />
+              <Form.Control required value={username} onChange={(e) => setUsername(e.target.value)} />
             </Form.Group>
             <Row>
                <Col>
                  <Form.Group>
                         <Form.Label>Email <span className="required">*</span></Form.Label>
-                        <Form.Control required />
+                        <Form.Control required value={email} onChange={(e) => setEmail(e.target.value)} />
                 </Form.Group>
                 </Col>
               <Col>
                 <Form.Group>
                   <Form.Label>Password <span className="required">*</span></Form.Label>
-                  <Form.Control required type='password' />
+                  <Form.Control required type='password' value={password} onChange={(e) => setPassword(e.target.value)} />
                 </Form.Group>
               </Col>
             </Row>
             <Form.Group>
               <Form.Label>Alamat <span className="required">*</span></Form.Label>
-              <Form.Control required />
+              <Form.Control required value={alamat} onChange={(e) => setAlamat(e.target.value)} />
             </Form.Group>
             <Row>
               <Col md={6}>

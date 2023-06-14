@@ -3,8 +3,6 @@ import axios from "axios";
 const api = (() => {
   const baseUrl = "https://be-bmt.vercel.app";
 
-  axios.defaults.withCredentials = true;
-
   // Auth
   async function Login(email, password) {
     const url = baseUrl + "/login";
@@ -107,7 +105,7 @@ const api = (() => {
     const data_create = {
       username: data.username,
       nama_admin: data.nama_admin,
-      password_admin: data.password,
+      password_admin: data.password_admin,
       no_hp_admin: data.no_hp_admin,
       jenis_kelamin: data.jenis_kelamin,
       email_admin: data.email_admin,
@@ -124,7 +122,7 @@ const api = (() => {
     const data_edit = {
       username: data.username,
       nama_admin: data.nama_admin,
-      password_admin: data.password,
+      password_admin: data.password_admin,
       no_hp_admin: data.no_hp_admin,
       jenis_kelamin: data.jenis_kelamin,
       email_admin: data.email_admin,
@@ -154,7 +152,7 @@ const api = (() => {
     const data_create = {
       username: data.username,
       nama_manager: data.nama_manager,
-      password_manager: data.password,
+      password_manager: data.password_manager,
       no_hp_manager: data.no_hp_manager,
       jenis_kelamin: data.jenis_kelamin,
       email_manager: data.email_manager,
@@ -171,7 +169,7 @@ const api = (() => {
     const data_edit = {
       username: data.username,
       nama_manager: data.nama_manager,
-      password_manager: data.password,
+      password_manager: data.password_manager,
       no_hp_manager: data.no_hp_manager,
       jenis_kelamin: data.jenis_kelamin,
       email_manager: data.email_manager,
@@ -201,7 +199,7 @@ const api = (() => {
     const data_create = {
       username: data.username,
       nama_account_officer: data.nama_account_officer,
-      password_account_officer: data.password,
+      password_account_officer: data.password_account_officer,
       no_hp_account_officer: data.no_hp_account_officer,
       jenis_kelamin: data.jenis_kelamin,
       email_account_officer: data.email_account_officer,
@@ -218,7 +216,7 @@ const api = (() => {
     const data_edit = {
       username: data.username,
       nama_account_officer: data.nama_account_officer,
-      password_account_officer: data.password,
+      password_account_officer: data.password_account_officer,
       no_hp_account_officer: data.no_hp_account_officer,
       jenis_kelamin: data.jenis_kelamin,
       email_account_officer: data.email_account_officer,
@@ -248,7 +246,7 @@ const api = (() => {
     const data_create = {
       username: data.username,
       nama_admin_master: data.nama_admin_master,
-      password_admin_master: data.password,
+      password_admin_master: data.password_admin_master,
       no_hp_admin_master: data.no_hp_admin_master,
       jenis_kelamin: data.jenis_kelamin,
       email_admin_master: data.email_admin_master,
@@ -265,7 +263,7 @@ const api = (() => {
     const data_edit = {
       username: data.username,
       nama_admin_master: data.nama_admin_master,
-      password_admin_master: data.password,
+      password_admin_master: data.password_admin_master,
       no_hp_admin_master: data.no_hp_admin_master,
       jenis_kelamin: data.jenis_kelamin,
       email_admin_master: data.email_admin_master,

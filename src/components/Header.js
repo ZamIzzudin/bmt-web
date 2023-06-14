@@ -1,10 +1,13 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useDispatch, useSelector } from 'react-redux'
 import { asyncLogout } from '../state/auth/middleware'
+import { useEffect } from 'react'
 
 import Loading from './Loading'
 import { ReactComponent as Logout } from '../assets/icons/logout.svg'
 import '../styles/components/Header.css'
+
+import { asyncCheckLogin } from '../state/auth/middleware'
 
 
 export default function Header() {
@@ -15,6 +18,9 @@ export default function Header() {
         dispatch(asyncLogout())
     }
 
+    useEffect(() => {
+        dispatch(asyncCheckLogin())
+    }, [dispatch])
     return (
         <header>
             <Loading />

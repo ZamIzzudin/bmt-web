@@ -8,7 +8,7 @@ import EditProfileNasabah from '../components/Form/EditAnggota'
 import { HideError } from '../state/error/middleware'
 import { HideSuccess } from '../state/success/middleware'
 
-import { AsyncGetAnggota, AsyncDeleteAnggota } from '../state/keanggotaan/middleware'
+import { AsyncGetUsers, AsyncDeleteUser } from '../state/users/middleware'
 
 import InfoModal from '../components/InfoModal'
 
@@ -16,7 +16,7 @@ import { ReactComponent as Search } from '../assets/icons/search.svg'
 import { ReactComponent as Delete } from '../assets/icons/Delete.svg'
 
 export default function Keanggotaan() {
-    const { auth = {}, anggota = [], success, error } = useSelector(states => states);
+    const { auth = {}, users = {}, success, error } = useSelector(states => states);
     const dispatch = useDispatch();
 
     const location = useLocation().pathname
@@ -33,7 +33,7 @@ export default function Keanggotaan() {
     }
 
     useEffect(() => {
-        dispatch(AsyncGetAnggota());
+        dispatch(AsyncGetUsers("nasabah"))
     }, [dispatch])
 
     if (showAddForm) {
@@ -55,10 +55,10 @@ export default function Keanggotaan() {
 
     if(showEditForm) {
         return (
-            <EditProfileNasabah backButton={() => setShowEditForm(false)} currentData={selectedData}/>
+            <EditProfileNasabah backButton={() => setShowEditForm(false)} currentData={selectedData} />
         )
     }
-  if(auth.role === 'ADMIN_MASTER' || auth.role === 'ADMIN' || auth.role === 'MANAGER' || auth.role === 'ACCOUNT_OFFICER'){
+  if(auth.role === 'ADMIN_MASTER' || auth.role === 'ADMIN' || auth.role === 'MANAGER' || auth.role === 'OFFICER'){
       return (
           <main>
               <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}>
@@ -88,22 +88,22 @@ export default function Keanggotaan() {
                               <th>Email</th>
                               <th className="text-center">Action</th>
                           </tr>
-                          {anggota?.map((each, index) => (
+                          {users?.nasabah?.map((each, index) => (
                               <tr>
                                   <td>{index + 1}</td>
-                                  <td>{`NSB-${each.id_anggota.substring(0,3)}`}</td>
-                                  <td>{each.nama_anggota}</td>
+                                  <td>{`NSB-${each.id_user.substring(0,3)}`}</td>
+                                  <td>{each.nama}</td>
                                   <td>{each.jenis_kelamin}</td>
-                                  <td>{each.email_anggota}</td>
+                                  <td>{each.email}</td>
                                   <td className="table-cta">
-                                    {(auth.role === "MANAGER" || auth.role === "ACCOUNT_OFFICER") ? (
+                                    {(auth.role === "MANAGER" || auth.role === "OFFICER") ? (
                                       <div className="table-cta-container">
                                         <button className="section-edit-btn" onClick={() => { setShowEditForm(true); setSelectedData(each) }} >Detail</button>
                                       </div>
                                     ): (
                                       <div className="table-cta-container">
                                         <button className="section-edit-btn" onClick={() => { setShowEditForm(true); setSelectedData(each) }} >Edit</button>
-                                        <Delete onClick={() => dispatch(AsyncDeleteAnggota(each.id_anggota))} cursor={'pointer'} />
+                                        <Delete onClick={() => dispatch(AsyncDeleteUser(each.id_user, "nasabah"))} cursor={'pointer'} />
                                       </div>
 
                                     )}

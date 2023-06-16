@@ -1,20 +1,17 @@
-import { useSelector } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
 import { useLocation } from 'react-router-dom'
+import { AsyncApprovePengajuanSimpanan } from '../../state/pengajuan/middleware';
 
-export default function DetailPengajuanSimpanan({ backButton }) {
+export default function DetailPengajuanSimpanan({ backButton, currentData }) {
+    const dispatch = useDispatch();
     const { auth = { status: false, role: null } } = useSelector(states => states)
-
     const location = useLocation().pathname
     const type = location.split('/')[2]
+    const date_created = new Date(currentData.created_at)
 
-    const detail = {
-        id: "SMPSKR-001",
-        anggota: "Agus Mulyadi (NSB-001)",
-        jenis_simpanan: "Simpanan Sukarela",
-        setoran_awal: "Rp. 800.000",
-        tanggal_pengajuan: "09/06/2020",
-        status_pengajuan: "Diajukan",
-    }
+    function formatMoney(amount) {
+        return new Intl.NumberFormat('id-ID', { maximumSignificantDigits: 3 }).format(amount);
+      }
 
     return (
         <main>
@@ -26,16 +23,34 @@ export default function DetailPengajuanSimpanan({ backButton }) {
                 </div>
                 <div className="section-body">
                     <table className="detail-table">
-                        {Object.keys(detail).map(each => (
                             <tr>
-                                <td>{each.replace('_', ' ')}</td>
-                                <td>{detail[each]}</td>
+                                <td>ID Pengajuan</td>
+                                <td>{`SMPSKR-${currentData.id_pengajuan.substring(0,3)}`}</td>
                             </tr>
-                        ))}
+                            <tr>
+                                <td>Anggota</td>
+                                <td>{`NSB-${currentData.id_nasabah.substring(0,3)}`}</td>
+                            </tr>
+                            <tr>
+                                <td>Jenis Simpanan</td>
+                                <td>{currentData.produk_pengajuan}</td>
+                            </tr>
+                            <tr>
+                                <td>Penyetoran Awal</td>
+                                <td>Rp. {formatMoney(currentData.nominal_awal)}</td>
+                            </tr>
+                            <tr>
+                                <td>Tanggal Pengajuan</td>
+                                <td>{date_created.toDateString()}</td>
+                            </tr>
+                            <tr>
+                                <td>Status Pengajuan</td>
+                                <td>{currentData.status_pengajuan}</td>
+                            </tr>
                     </table>
-                    {auth.role === 'officer' && detail.status_pengajuan === 'Diajukan' ? (
+                    {auth.role === 'OFFICER' && currentData.status_pengajuan === 'BELUM DISETUJUI' ? (
                         <div className="form-cta gap-3">
-                            <button className="form-submit-button" type="button">Setujui</button>
+                            <button className="form-submit-button" onClick={() => {dispatch(AsyncApprovePengajuanSimpanan(currentData.id_pengajuan)); backButton(false)}} type="button">Setujui</button>
                             <button className="form-cancel-button" type="button">Tolak</button>
                         </div>
                     ) : (

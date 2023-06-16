@@ -1,81 +1,128 @@
 import { Form, Row, Col } from 'react-bootstrap'
+import { useState } from 'react'
+
+import { useDispatch } from 'react-redux'
+import { asyncRegister } from '../../state/auth/middleware'
 
 import '../../styles/components/FormLayout.css'
 
-export default function TambahKeanggotaan({ showForm, data }) {
+export default function TambahKeanggotaan({ showForm }) {
+    const dispatch = useDispatch()
+
+    const [username, setUsername] = useState('')
+    const [password, setPassword] = useState('')
+    const [email, setEmail] = useState('')
+    const [nama, setNama] = useState('')
+    const [nik, setNIK] = useState('')
+    const [jenisKelamin, setJenisKelamin] = useState('')
+    const [noTelp, setNoTelp] = useState('')
+    const [alamat, setAlamat] = useState('')
+    const [pekerjaan, setPekerjaan] = useState('')
+    const [noRekening, setNoRekening] = useState('')
+    const [statusPerkawinan, setStatusPerkawinan] = useState('')
+    const [role, setRole] = useState('')
+
+   const handleRegister = (e) => {
+       e.preventDefault();
+        try{
+            dispatch(asyncRegister({
+                username,
+                password,
+                email,
+                nama,
+                nik,
+                jenisKelamin,
+                noTelp,
+                alamat,
+                pekerjaan,
+                noRekening,
+                statusPerkawinan,   
+                role,
+            }, "nasabah"))
+        }
+        catch (err){
+            console.error(err)
+        }
+        showForm(false)
+   }
     return (
-        <Form >
+        <Form onSubmit={handleRegister}>
             <Form.Group>
                 <Form.Label>Nama Lengkap <span className="required">*</span></Form.Label>
-                 <Form.Control required />
+                 <Form.Control required value={nama} onChange={(e) => setNama(e.target.value)} />
              </Form.Group>
             <Form.Group>
                 <Form.Label>NIK <span className="required">*</span></Form.Label>
-                <Form.Control required />
+                <Form.Control required value={nik} onChange={(e) => setNIK(e.target.value)} />
             </Form.Group>
             <Row>
                 <Col>
                     <Form.Group>
                         <Form.Label>Jenis Kelamin<span className="required">*</span></Form.Label>
-                        <Form.Select>
+                        <Form.Select required value={jenisKelamin} onChange={(e) => setJenisKelamin(e.target.value)}>
                             <option></option>
-                            <option value={'Laki-laki'}>Laki-laki</option>
-                            <option value={'Perempuan'}>Perempuan</option>
+                            <option value={'Pria'}>Laki-laki</option>
+                            <option value={'Wanita'}>Perempuan</option>
                         </Form.Select>
                     </Form.Group>
                 </Col>
                 <Col>
                     <Form.Group>
                         <Form.Label>No Telp <span className="required">*</span></Form.Label>
-                        <Form.Control required />
+                        <Form.Control required value={noTelp} onChange={(e) => setNoTelp(e.target.value)} />
                     </Form.Group>
                 </Col>
             </Row>
             <Form.Group>
                 <Form.Label>Username <span className="required">*</span></Form.Label>
-                <Form.Control required />
+                <Form.Control required value={username} onChange={(e) => setUsername(e.target.value)} />
             </Form.Group>
             <Row>
                 <Col>
                     <Form.Group>
                         <Form.Label>Email <span className="required">*</span></Form.Label>
-                        <Form.Control required />
+                        <Form.Control required value={email} onChange={(e) => setEmail(e.target.value)} />
                     </Form.Group>
                 </Col>
                 <Col>
                     <Form.Group>
                         <Form.Label>Password <span className="required">*</span></Form.Label>
-                        <Form.Control required />
+                        <Form.Control required value={password} onChange={(e) => setPassword(e.target.value)} />
                     </Form.Group>
                 </Col>
             </Row>
             <Form.Group>
                 <Form.Label>Alamat <span className="required">*</span></Form.Label>
-                <Form.Control required />
+                <Form.Control required value={alamat} onChange={(e) => setAlamat(e.target.value)} />
             </Form.Group>
             <Form.Group>
                 <Form.Label>Pekerjaan <span className="required">*</span></Form.Label>
-                <Form.Control required />
+                <Form.Control required value={pekerjaan} onChange={(e) => setPekerjaan(e.target.value)} />
             </Form.Group>
             <Row>
                 <Col md={6}>
                     <Form.Group>
                         <Form.Label>Status Perkawinan <span className="required">*</span></Form.Label>
-                        <Form.Select>
-                            <option></option>
-                            <option value={'Belum Menikah'}>Belum Menikah</option>
+                        <Form.Select required value={statusPerkawinan} onChange={(e) => setStatusPerkawinan(e.target.value)}>
+                            <option value={'Belum Menikah'} selected>Belum Menikah</option>
                             <option value={'Menikah'}>Menikah</option>
                             <option value={'Janda'}>Janda</option>
                             <option value={'Duda'}>Duda</option>
                         </Form.Select>
                     </Form.Group>
                 </Col>
+                <Col md={6}>
+                    <Form.Group>
+                        <Form.Label>No Rekening <span className="required">*</span></Form.Label>
+                        <Form.Control required value={noRekening} onChange={(e) => setNoRekening(e.target.value)} />
+                    </Form.Group>
+                </Col>
             </Row>
-            <Row>
+            {/* <Row>
                 <Col>
                 <Form.Group>
                     <Form.Label>Produk Simpanan <span className="required">*</span></Form.Label>
-                    <Form.Select>
+                    <Form.Select required value={} >
                         <option value={'Simpanan Pokok'}>Simpanan Pokok</option>
                     </Form.Select>
                 </Form.Group>
@@ -89,10 +136,21 @@ export default function TambahKeanggotaan({ showForm, data }) {
                             </div>
                     </Form.Group>
                 </Col>
+            </Row> */}
+            <Row>
+                <Col md={6}>
+                    <Form.Group>
+                        <Form.Label>Role <span className="required">*</span></Form.Label>
+                        <Form.Select value={role} onChange={(e) => setRole(e.target.value)}>
+                            <option></option>
+                            <option value={'Nasabah'}>Anggota</option>
+                        </Form.Select>
+                    </Form.Group>
+                </Col>
             </Row>
             <div className="form-cta gap-3">
                 <button onClick={() => showForm(false)} className="form-back-button" type="button">Kembali</button>
-                <button onClick={() => showForm(false)} className="form-submit-button" type="button">Tambah</button>
+                <button className="form-submit-button" type="submit">Tambah</button>
             </div>
         </Form>
     )

@@ -16,7 +16,7 @@ export default function Dashboard() {
   const nasabah = 3
   const saldo_sementara = kas_masuk - kas_keluar
 
-  function formatMoney(amount: number) {
+  function formatMoney(amount) {
     return new Intl.NumberFormat('id-ID', { maximumSignificantDigits: 3 }).format(amount);
   }
 

@@ -1,28 +1,28 @@
 import axios from "axios";
 
 const api = (() => {
-  const baseUrl = "https://be-bmt.vercel.app";
+  const baseUrl = "https://bmt-gateway.vercel.app";
 
   // Auth
   async function Login(email, password) {
-    const url = baseUrl + "/login";
+    const url = baseUrl + "/auth/login";
 
     const data = {
       email,
       password,
     };
-
+    
     const response = await axios.post(url, data);
-
     return response;
   }
 
   async function Refresh() {
-    const url = baseUrl + "/refresh";
+    const url = baseUrl + "/auth/refresh";
 
     try {
       const response = await axios.get(url, {
-        credentials: "include",
+        credentials: 'include',
+        withCredentials: true,
       });
 
       return response;
@@ -32,278 +32,185 @@ const api = (() => {
   }
 
   async function Logout() {
-    const url = baseUrl + "/logout";
+    const url = baseUrl + "/auth/logout";
 
     const response = await axios.get(url);
 
     return response;
   }
 
-  //Keanggotaan
-
-  async function getAnggota(id) {
-    const url = baseUrl + `/anggota/${id ? id : ""}`;
+  //User
+  async function GetUsers(type) {
+    const url = baseUrl + `/user?type=${type}`;
 
     const response = await axios.get(url);
+
+    if (response.data.data.length === 0) {
+      return {};
+    }
     return response.data.data;
   }
-  async function createAnggota(data) {
-    const url = baseUrl + "/anggota";
-    const data_create = {
+
+  
+  async function CreateUser(data) {
+    const url = baseUrl + "/auth/register";
+    const data_register = {
       username: data.username,
-      password_anggota: data.password_anggota,
-      nama_anggota: data.nama_anggota,
-      nik: data.nik,
-      jenis_kelamin: data.jenis_kelamin,
-      no_hp_anggota: data.no_hp_anggota,
-      alamat_anggota: data.alamat_anggota,
-      pekerjaan_anggota: data.pekerjaan_anggota,
-      no_rekening: data.no_rekening,
-      status_perkawinan: data.status_perkawinan,
-      email_anggota: data.email_anggota,
-    };
-    const response = await axios.post(url, data_create);
-
+      password: data.password,
+      nama: data.nama,
+      nik: data.nik || "",
+      jenis_kelamin: data.jenisKelamin,
+      no_hp: data.noTelp,
+      alamat: data.alamat,
+      pekerjaan: data.pekerjaan || "",
+      no_rekening: data.noRekening || "",
+      status_perkawinan: data.statusPerkawinan || "",
+      email: data.email,
+      role: data.role
+    }
+    const response = await axios.post(url, data_register);
     return response;
   }
 
-  async function editAnggota(data) {
-    const url = baseUrl + `/anggota/${data.id_anggota}`;
-    const data_create = {
-      username: data.username,
-      password_anggota: data.password_anggota,
-      nama_anggota: data.nama_anggota,
-      nik: data.nik,
-      jenis_kelamin: data.jenis_kelamin,
-      no_hp_anggota: data.no_hp_anggota,
-      alamat_anggota: data.alamat_anggota,
-      pekerjaan_anggota: data.pekerjaan_anggota,
-      no_rekening: data.no_rekening,
-      status_perkawinan: data.status_perkawinan,
-      email_anggota: data.email_anggota,
-    };
-    const response = await axios.put(url, data_create);
-
-    return response;
-  }
-
-  async function deleteAnggota(id) {
-    const url = baseUrl + `/anggota/${id}`;
-    const response = await axios.delete(url);
-    return response;
-  }
-
-  //Admin
-  async function getAdmin(id) {
-    const url = baseUrl + `/admin/${id ? id : ""}`;
-
-    const response = await axios.get(url);
-    return response.data.data;
-  }
-  async function createAdmin(data) {
-    const url = baseUrl + "/admin";
-    const data_create = {
-      username: data.username,
-      nama_admin: data.nama_admin,
-      password_admin: data.password_admin,
-      no_hp_admin: data.no_hp_admin,
-      jenis_kelamin: data.jenis_kelamin,
-      email_admin: data.email_admin,
-      alamat_admin: data.alamat_admin,
-      level_admin: data.level_admin,
-    };
-    const response = await axios.post(url, data_create);
-
-    return response;
-  }
-
-  async function editAdmin(data) {
-    const url = baseUrl + `/admin/${data.id_admin}`;
+  async function EditUser(data, type) {
+    const url = baseUrl + `/user/${data.id}?type=${type}`;
     const data_edit = {
       username: data.username,
-      nama_admin: data.nama_admin,
-      password_admin: data.password_admin,
-      no_hp_admin: data.no_hp_admin,
-      jenis_kelamin: data.jenis_kelamin,
-      email_admin: data.email_admin,
-      alamat_admin: data.alamat_admin,
-      level_admin: data.level_admin,
-    };
+      password: data.password || "",
+      nama: data.nama,
+      nik: data.nik || "",
+      jenis_kelamin: data.jenisKelamin,
+      no_hp: data.noTelp,
+      alamat: data.alamat,
+      pekerjaan: data.pekerjaan || "",
+      no_rekening: data.noRekening || "",
+      status_perkawinan: data.statusPerkawinan || "",
+      email: data.email,
+      role: data.role
+    }
     const response = await axios.put(url, data_edit);
-
     return response;
   }
 
-  async function deleteAdmin(id) {
-    const url = baseUrl + `/admin/${id}`;
+  async function DeleteUser(id, type) {
+    const url = baseUrl + `/user/${id}?type=${type}`;
     const response = await axios.delete(url);
     return response;
   }
 
-  //Manager
-  async function getManager(id) {
-    const url = baseUrl + `/manager/${id ? id : ""}`;
+  async function GetDetailUser(id) {
+    const url = baseUrl + `/user/${id}`;
 
     const response = await axios.get(url);
+
+    if (response.data.data.length === 0) {
+      return {};
+    }
     return response.data.data;
   }
-  async function createManager(data) {
-    const url = baseUrl + "/manager";
-    const data_create = {
-      username: data.username,
-      nama_manager: data.nama_manager,
-      password_manager: data.password_manager,
-      no_hp_manager: data.no_hp_manager,
-      jenis_kelamin: data.jenis_kelamin,
-      email_manager: data.email_manager,
-      alamat_manager: data.alamat_manager,
-      level_manager: data.level_manager,
-    };
-    const response = await axios.post(url, data_create);
 
-    return response;
-  }
+  //MODUL PENGAJUAN
+  async function GetPengajuanKerjasama(type){
+    const url = baseUrl + `/pengajuan/kerjasama?type=${type}`;
 
-  async function editManager(data) {
-    const url = baseUrl + `/manager/${data.id_manager}`;
-    const data_edit = {
-      username: data.username,
-      nama_manager: data.nama_manager,
-      password_manager: data.password_manager,
-      no_hp_manager: data.no_hp_manager,
-      jenis_kelamin: data.jenis_kelamin,
-      email_manager: data.email_manager,
-      alamat_manager: data.alamat_manager,
-      level_manager: data.level_manager,
-    };
-    const response = await axios.put(url, data_edit);
-
-    return response;
-  }
-
-  async function deleteManager(id) {
-    const url = baseUrl + `/manager/${id}`;
-    const response = await axios.delete(url);
-    return response;
-  }
-
-  //Officer
-  async function getOfficer(id) {
-    const url = baseUrl + `/account-officer/${id ? id : ""}`;
-
-    const response = await axios.get(url);
+    const response = await axios.get(url);;
+    
+    if(response.data.data.length === 0){
+      return [];
+    }
     return response.data.data;
   }
-  async function createOfficer(data) {
-    const url = baseUrl + "/account-officer";
-    const data_create = {
-      username: data.username,
-      nama_account_officer: data.nama_account_officer,
-      password_account_officer: data.password_account_officer,
-      no_hp_account_officer: data.no_hp_account_officer,
-      jenis_kelamin: data.jenis_kelamin,
-      email_account_officer: data.email_account_officer,
-      alamat_account_officer: data.alamat_account_officer,
-      level_account_officer: data.level_account_officer,
-    };
-    const response = await axios.post(url, data_create);
 
-    return response;
-  }
+  async function GetPengajuanJualBeli(type){
+    const url = baseUrl + `/pengajuan/jualbeli?type=${type}`;
 
-  async function editOfficer(data) {
-    const url = baseUrl + `/account-officer/${data.id_account_officer}`;
-    const data_edit = {
-      username: data.username,
-      nama_account_officer: data.nama_account_officer,
-      password_account_officer: data.password_account_officer,
-      no_hp_account_officer: data.no_hp_account_officer,
-      jenis_kelamin: data.jenis_kelamin,
-      email_account_officer: data.email_account_officer,
-      alamat_account_officer: data.alamat_account_officer,
-      level_account_officer: data.level_account_officer,
-    };
-    const response = await axios.put(url, data_edit);
-
-    return response;
-  }
-
-  async function deleteOfficer(id) {
-    const url = baseUrl + `/account-officer/${id}`;
-    const response = await axios.delete(url);
-    return response;
-  }
-
-  //Master Admin
-  async function getAdminMaster(id) {
-    const url = baseUrl + `/admin-master/${id ? id : ""}`;
-
-    const response = await axios.get(url);
+    const response = await axios.get(url);;
+    
+    if(response.data.data.length === 0){
+      return [];
+    }
     return response.data.data;
   }
-  async function createAdminMaster(data) {
-    const url = baseUrl + "/admin-master";
-    const data_create = {
-      username: data.username,
-      nama_admin_master: data.nama_admin_master,
-      password_admin_master: data.password_admin_master,
-      no_hp_admin_master: data.no_hp_admin_master,
-      jenis_kelamin: data.jenis_kelamin,
-      email_admin_master: data.email_admin_master,
-      alamat_admin_master: data.alamat_admin_master,
-      level_admin_master: data.level_admin_master,
-    };
-    const response = await axios.post(url, data_create);
 
+  async function GetPengajuanSimpanan(type){
+    const url = baseUrl + `/pengajuan/sukarela?type=${type}`;
+
+    const response = await axios.get(url);;
+    
+    if(response.data.data.length === 0){
+      return [];
+    }
+    return response.data.data;
+  }
+
+  async function CreatePengajuanKerjasama(){
+    const url = baseUrl + `/pengajuan/kerjasama`;
+
+    const data_pengajuan = {
+
+    }
+    const response = await axios.post(url, data_pengajuan);
     return response;
   }
 
-  async function editAdminMaster(data) {
-    const url = baseUrl + `/admin-master/${data.id_admin_master}`;
-    const data_edit = {
-      username: data.username,
-      nama_admin_master: data.nama_admin_master,
-      password_admin_master: data.password_admin_master,
-      no_hp_admin_master: data.no_hp_admin_master,
-      jenis_kelamin: data.jenis_kelamin,
-      email_admin_master: data.email_admin_master,
-      alamat_admin_master: data.alamat_admin_master,
-      level_admin_master: data.level_admin_master,
-    };
-    const response = await axios.put(url, data_edit);
+  async function CreatePengajuanJualBeli(data){
+    const url = baseUrl + `/pengajuan/jualbeli`;
 
+    const data_pengajuan = {
+
+    }
+    const response = await axios.post(url, data_pengajuan);
     return response;
   }
 
-  async function deleteAdminMaster(id) {
-    const url = baseUrl + `/admin-master/${id}`;
-    const response = await axios.delete(url);
+  async function CreatePengajuanSimpanan(data){
+    const url = baseUrl + `/pengajuan/sukarela`;
+
+    const data_pengajuan = {
+      id_nasabah: data.id_nasabah,
+      produk_simpanan: data.produk_simpanan,
+      setoran_awal: data.setoran_awal,
+    }
+    const response = await axios.post(url, data_pengajuan);
+    return response;
+  }
+
+  async function ApprovePengajuanKerjasama(id){
+    const url = baseUrl + `/pengajuan/kerjasama/${id}`;
+
+    const response = await axios.put(url);
+    return response;
+  }
+  async function ApprovePengajuanJualBeli(id){
+    const url = baseUrl + `/pengajuan/jualbeli/${id}`;
+
+    const response = await axios.put(url);
+    return response;
+  }
+  async function ApprovePengajuanSimpanan(id){
+    const url = baseUrl + `/pengajuan/sukarela/${id}`;
+
+    const response = await axios.put(url, {});
     return response;
   }
   return {
     Login,
     Refresh,
     Logout,
-    getAnggota,
-    createAnggota,
-    editAnggota,
-    deleteAnggota,
-    getAdmin,
-    createAdmin,
-    editAdmin,
-    deleteAdmin,
-    getManager,
-    createManager,
-    editManager,
-    deleteManager,
-    getOfficer,
-    createOfficer,
-    editOfficer,
-    deleteOfficer,
-    getAdminMaster,
-    createAdminMaster,
-    editAdminMaster,
-    deleteAdminMaster,
+    GetUsers,
+    CreateUser,
+    EditUser,
+    DeleteUser,
+    GetDetailUser,
+    GetPengajuanKerjasama,
+    GetPengajuanJualBeli,
+    GetPengajuanSimpanan,
+    CreatePengajuanKerjasama,
+    CreatePengajuanJualBeli,
+    CreatePengajuanSimpanan,
+    ApprovePengajuanKerjasama,
+    ApprovePengajuanJualBeli,
+    ApprovePengajuanSimpanan,
   };
 })();
 

@@ -2,15 +2,7 @@ import { useLocation } from 'react-router-dom'
 import { useState, useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 
-import { AsyncGetAdmin } from '../state/admin/middleware'
-import { AsyncGetAdminMaster } from '../state/admin_master/middleware'
-import { AsyncGetManager } from '../state/manager/middleware'
-import { AsyncGetOfficer } from '../state/account_officer/middleware'
-
-import { AsyncDeleteAdmin } from '../state/admin/middleware'
-import { AsyncDeleteAdminMaster } from '../state/admin_master/middleware'
-import { AsyncDeleteManager } from '../state/manager/middleware'
-import { AsyncDeleteOfficer } from '../state/account_officer/middleware'
+import { AsyncGetUsers, AsyncDeleteUser } from '../state/users/middleware'
 
 import { HideError } from '../state/error/middleware'
 import { HideSuccess } from '../state/success/middleware'
@@ -24,7 +16,8 @@ import { ReactComponent as Delete } from '../assets/icons/Delete.svg'
 
 
 export default function KeanggotaanAdmin() {
-    const { auth = {}, admin = [], manager = [], officer = [], admin_master = [], success, error } = useSelector(states => states);
+    const { auth = {}, users = {}, success, error } = useSelector(states => states);
+    console.info(users)
     const dispatch = useDispatch();
 
     const location = useLocation().pathname
@@ -40,10 +33,7 @@ export default function KeanggotaanAdmin() {
     }
 
     useEffect(() => {
-        dispatch(AsyncGetAdmin());
-        dispatch(AsyncGetManager());
-        dispatch(AsyncGetOfficer());
-        dispatch(AsyncGetAdminMaster());
+        dispatch(AsyncGetUsers("pengelola"))
     }, [dispatch])
 
 
@@ -88,17 +78,17 @@ export default function KeanggotaanAdmin() {
                               <th>Email</th>
                               <th className="text-center">Action</th>
                           </tr>
-                          {admin_master?.map((each, index) => (
+                          {users?.admin_master?.map((each, index) => (
                               <tr>
                                   <td>{index + 1}</td>
-                                  <td>{`MSTR-${each.id_admin_master.substring(0,3)}`}</td>
-                                  <td>{each.nama_admin_master}</td>
+                                  <td>{`MSTR-${each.id_user.substring(0,3)}`}</td>
+                                  <td>{each.nama}</td>
                                   <td>{each.jenis_kelamin.charAt(0).toUpperCase() + each.jenis_kelamin.slice(1)}</td>
-                                  <td>{each.email_admin_master}</td>
+                                  <td>{each.email}</td>
                                   <td className="table-cta">
                                       <div className="table-cta-container">
                                         <button className="section-edit-btn" onClick={() => {setShowEditForm(true); setSelectedData(each)}} >Edit</button>
-                                       <Delete onClick={() => dispatch(AsyncDeleteAdminMaster(each.id_admin_master))} cursor={'pointer'} />
+                                       <Delete onClick={() => dispatch(AsyncDeleteUser(each.id_user, "pengelola"))} cursor={'pointer'} />
                                       </div>
                                   </td>
                               </tr>
@@ -127,17 +117,17 @@ export default function KeanggotaanAdmin() {
                               <th>Email</th>
                               <th className="text-center">Action</th>
                           </tr>
-                          {admin.map((each, index) => (
+                          {users?.admin?.map((each, index) => (
                               <tr>
                                   <td>{index + 1}</td>
-                                  <td>{`ADM-${each.id_admin.substring(0,3)}`}</td>
-                                  <td>{each.nama_admin}</td>
+                                  <td>{`ADM-${each.id_user.substring(0,3)}`}</td>
+                                  <td>{each.nama}</td>
                                   <td>{each.jenis_kelamin.charAt(0).toUpperCase() + each.jenis_kelamin.slice(1)}</td>
-                                  <td>{each.email_admin}</td>
+                                  <td>{each.email}</td>
                                   <td className="table-cta">
                                       <div className="table-cta-container">
                                         <button className="section-edit-btn" onClick={() => {setShowEditForm(true); setSelectedData(each)}} >Edit</button>
-                                        <Delete onClick={() => dispatch(AsyncDeleteAdmin(each.id_admin))} cursor={'pointer'} />
+                                        <Delete onClick={() => dispatch(AsyncDeleteUser(each.id_user, "pengelola"))} cursor={'pointer'} />
                                       </div>
                                   </td>
                               </tr>
@@ -169,17 +159,17 @@ export default function KeanggotaanAdmin() {
                               <th>Email</th>
                               <th className="text-center">Action</th>
                           </tr>
-                          {manager?.map((each, index) => (
+                          {users?.manager?.map((each, index) => (
                               <tr>
                                   <td>{index + 1}</td>
-                                  <td>{`MNG-${each.id_manager.substring(0,3)}`}</td>
-                                  <td>{each.nama_manager}</td>
+                                  <td>{`MNG-${each.id_user.substring(0,3)}`}</td>
+                                  <td>{each.nama}</td>
                                   <td>{each.jenis_kelamin}</td>
                                   <td>{each.email}</td>
                                   <td className="table-cta">
                                       <div className="table-cta-container">
                                       <button className="section-edit-btn" onClick={() => {setShowEditForm(true); setSelectedData(each)}} >Edit</button>
-                                      <Delete onClick={() => dispatch(AsyncDeleteManager(each.id_manager))} cursor={'pointer'} />
+                                      <Delete onClick={() => dispatch(AsyncDeleteUser(each.id_user, "pengelola"))} cursor={'pointer'} />
                                       </div>
                                   </td>
                               </tr>
@@ -211,17 +201,17 @@ export default function KeanggotaanAdmin() {
                               <th>Email</th>
                               <th className="text-center">Action</th>
                           </tr>
-                          {officer.map((each, index) => (
+                          {users?.officer?.map((each, index) => (
                               <tr>
                                   <td>{index + 1}</td>
-                                  <td>{`OFC-${each.id_account_officer.substring(0,3)}`}</td>
-                                  <td>{each.nama_account_officer}</td>
+                                  <td>{`OFC-${each.id_user.substring(0,3)}`}</td>
+                                  <td>{each.nama}</td>
                                   <td>{each.jenis_kelamin}</td>
-                                  <td>{each.email_account_officer}</td>
+                                  <td>{each.email}</td>
                                   <td className="table-cta">
                                       <div className="table-cta-container">
                                          <button className="section-edit-btn" onClick={() => {setShowEditForm(true); setSelectedData(each)}} >Edit</button>
-                                         <Delete onClick={() => dispatch(AsyncDeleteOfficer(each.id_account_officer))} cursor={'pointer'} />
+                                         <Delete onClick={() => dispatch(AsyncDeleteUser(each.id_user, "pengelola"))} cursor={'pointer'} />
                                       </div>
                                   </td>
                               </tr>

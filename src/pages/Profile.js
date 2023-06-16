@@ -4,9 +4,9 @@ import { useSelector } from 'react-redux';
 import '../styles/components/FormLayout.css'
 
 export default function Profile() {
-  const { auth = { status: false, role: null } } = useSelector(states => states)
-  
-  if(auth.role === 'ANGGOTA') {
+  const { auth = {} } = useSelector(states => states)
+
+  if(auth.role === 'NASABAH') {
     return(
       <main>
       <h1 className="page-header">Profile</h1>
@@ -126,14 +126,7 @@ export default function Profile() {
             <Row>
               <Col md={6}>
                 <Form.Group>
-                  {auth.role === 'ADMIN' ? (
-
-                    <Form.Label>Id Admin <span className="required">*</span></Form.Label>
-                    ) : auth.role === 'MANAGER' ? (
-                    <Form.Label>Id Manager <span className="required">*</span></Form.Label>
-                  ) : (
-                    null
-                  )}
+                    <Form.Label>Id Pengelola <span className="required">*</span></Form.Label>
                   <Form.Control required disabled />
                 </Form.Group>
               </Col>
@@ -148,8 +141,8 @@ export default function Profile() {
                         <Form.Label>Jenis Kelamin<span className="required">*</span></Form.Label>
                         <Form.Select>
                             <option></option>
-                            <option value={'Laki-laki'}>Laki-laki</option>
-                            <option value={'Perempuan'}>Perempuan</option>
+                            <option value={'Pria'}>Pria</option>
+                            <option value={'Wanitas'}>Wanitas</option>
                         </Form.Select>
                     </Form.Group>
                 </Col>

@@ -96,7 +96,7 @@ export default function PengajuanKerjasama() {
                 >+</button>
                 <button
                     onClick={() => setShowAddForm(true)}
-                    className={`section-add-btn ${auth.role !== "user" ? "hidden" : null}`}
+                    className={`section-add-btn ${auth.role !== "NASABAH" ? "hidden" : null}`}
                 >+</button>
             </div>
             <section className="content-section">

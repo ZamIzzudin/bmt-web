@@ -1,62 +1,43 @@
 import { Form, Row, Col } from 'react-bootstrap'
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useDispatch } from 'react-redux';
 
-import { AsyncEditAdmin } from '../../state/admin/middleware';
-import { AsyncEditManager } from '../../state/manager/middleware';
-import { AsyncEditOfficer } from '../../state/account_officer/middleware';
-import { AsyncEditAdminMaster } from '../../state/admin_master/middleware';
+import { AsyncEditUser } from '../../state/users/middleware';
 
 import '../../styles/components/FormLayout.css'
 import { ReactComponent as BackButton } from '../../assets/icons/arrow_back.svg';
 
 export default function EditPengelola({ backButton, currentData }) {
   const dispatch = useDispatch();
-  const [role, setRole] = useState();
+  const [role, setRole] = useState(currentData.role);
   const [username, setUsername] = useState(currentData.username);
-  const id = currentData.id_admin || currentData.id_manager || currentData.id_account_officer || currentData.id_admin_master;
-  const [nama, setNama] = useState(currentData.nama_admin || currentData.nama_manager || currentData.nama_account_officer || currentData.nama_admin_master);
+  const [nama, setNama] = useState(currentData.nama);
   const [jenisKelamin, setJenisKelamin] = useState(currentData.jenis_kelamin);
-  const [password, setPassword] = useState(currentData.password_admin || currentData.password_manager || currentData.password_account_officer || currentData.password_admin_master);
-  const [email, setEmail] = useState(currentData.email_admin || currentData.email_manager || currentData.email_account_officer || currentData.email_admin_master);
-  const [noTelp, setNoTelp] = useState(currentData.no_hp_admin || currentData.no_hp_manager || currentData.no_hp_account_officer || currentData.no_hp_admin_master);
-  const [alamat, setAlamat] = useState(currentData.alamat_admin || currentData.alamat_manager || currentData.alamat_account_officer || currentData.alamat_admin_master);
+  const [password, setPassword] = useState(currentData.password);
+  const [email, setEmail] = useState(currentData.email);
+  const [noTelp, setNoTelp] = useState(currentData.no_hp);
+  const [alamat, setAlamat] = useState(currentData.alamat);
 
   const handleEditPengelola = (e) => {
     e.preventDefault();
-    if(role === '') return alert('Isi data secara menyeluruh!');
-    switch (role) {
-      case 'Admin':
-        dispatch(AsyncEditAdmin({id, nama, password, email, username, jenisKelamin, noTelp, alamat}));
-        break;
-      case 'Manager':
-        dispatch(AsyncEditManager({id, nama, password, email, username, jenisKelamin, noTelp, alamat}));
-        break;
-      case 'Officer':
-        dispatch(AsyncEditOfficer({id, nama, password, email, username, jenisKelamin, noTelp, alamat}));
-        break;
-      case 'Admin Master':
-        dispatch(AsyncEditAdminMaster({id, nama, password, email, username, jenisKelamin, noTelp, alamat}));
-        break;
-      default:
-        alert('Role tidak ditemukan');       
+    try {
+      dispatch(AsyncEditUser({
+        id: currentData.id_user,
+        role,
+        nama,
+        password,
+        email,
+        username,
+        jenisKelamin,
+        noTelp,
+        alamat,
+      }, "pengelola"));
     }
+    catch(err) {
+      console.error(err);
+    }
+    backButton(false);
   }
-
-  useEffect(() => {
-    if('nama_admin' in currentData){
-      setRole('Admin');
-    }
-    if('nama_manager' in currentData){
-      setRole('Manager');
-    }
-    if('nama_account_officer' in currentData){
-      setRole('Officer');
-    }
-    if('nama_admin_master' in currentData){
-      setRole('Admin Master');
-    }
-  }, [currentData])
     return(
       <main>
       <div
@@ -88,7 +69,7 @@ export default function EditPengelola({ backButton, currentData }) {
                         <Form.Select value={jenisKelamin} onChange={(e) => setJenisKelamin(e.target.value)}>
                             <option></option>
                             <option value={'Pria'}>Pria</option>
-                            <option value={'Perempuan'}>Perempuan</option>
+                            <option value={'Wanita'}>Wanita</option>
                         </Form.Select>
                     </Form.Group>
               </Col>
@@ -126,11 +107,10 @@ export default function EditPengelola({ backButton, currentData }) {
                 <Form.Group>
                     <Form.Label>Role<span className="required">*</span></Form.Label>
                         <Form.Select value={role} onChange={e => setRole(e.target.value)} disabled>
-                            <option></option>
-                            <option value="Admin">Admin</option>
-                            <option value="Manager">Manager</option>
-                            <option value="Officer">Account Officer</option>
-                            <option value="Admin Master">Admin Master</option>
+                          <option>Admin Master</option>
+                          <option>Admin</option>
+                          <option>Manager</option>
+                          <option>Officer</option>
                         </Form.Select>
                 </Form.Group>
               </Col>

@@ -2,10 +2,7 @@ import { Form, Row, Col } from 'react-bootstrap'
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
 
-import { AsyncCreateAdmin } from '../../state/admin/middleware';
-import { AsyncCreateManager } from '../../state/manager/middleware';
-import { AsyncCreateOfficer } from '../../state/account_officer/middleware';
-import { AsyncCreateAdminMaster } from '../../state/admin_master/middleware';
+import { asyncRegister } from '../../state/auth/middleware';
 
 import '../../styles/components/FormLayout.css'
 import { ReactComponent as BackButton } from '../../assets/icons/arrow_back.svg';
@@ -24,23 +21,20 @@ export default function TambahPengelola({ backButton }) {
 
   const handleAddPengelola = (e) => {
     e.preventDefault();
-    if(role === '') return alert('Isi data secara menyeluruh!');
-
-    switch (role) {
-      case 'Admin':
-        dispatch(AsyncCreateAdmin({nama, password, email, username, jenisKelamin, noTelp, alamat}));
-        break;
-      case 'Manager':
-        dispatch(AsyncCreateManager({nama, password, email, username, jenisKelamin, noTelp, alamat}));
-        break;
-      case 'Officer':
-        dispatch(AsyncCreateOfficer({nama, password, email, username, jenisKelamin, noTelp, alamat}));
-        break;
-      case 'Admin Master':
-        dispatch(AsyncCreateAdminMaster({nama, password, email, username, jenisKelamin, noTelp, alamat}));
-        break;
-      default:
-        alert('Role tidak ditemukan');       
+    try {
+      dispatch(asyncRegister({
+        role,
+        nama,
+        password,
+        email,
+        username,
+        jenisKelamin,
+        noTelp,
+        alamat,
+      }, "pengelola"));
+    }
+    catch(err) {
+      console.error(err);
     }
   }
     return(
@@ -111,9 +105,8 @@ export default function TambahPengelola({ backButton }) {
               <Col md={6}>
                 <Form.Group>
                     <Form.Label>Role<span className="required">*</span></Form.Label>
-                        <Form.Select value={role} onChange={e => setRole(e.target.value)}>
-                            <option></option>
-                            <option value="Admin">Admin</option>
+                        <Form.Select onChange={e => setRole(e.target.value)}>                
+                            <option value="Admin" selected>Admin</option>
                             <option value="Manager">Manager</option>
                             <option value="Officer">Account Officer</option>
                             <option value="Admin Master">Admin Master</option>

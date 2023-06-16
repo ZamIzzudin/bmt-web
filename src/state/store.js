@@ -4,11 +4,8 @@ import ErrorReducer from './error/reducer'
 import SuccessReducer from './success/reducer'
 import AuhtReducer from "./auth/reducer"
 
-import AnggotaReducer from "./keanggotaan/reducer"
-import AdminReducer from "./admin/reducer"
-import ManagerReducer from "./manager/reducer"
-import OfficerReducer from "./account_officer/reducer"
-import AdminMasterReducer from "./admin_master/reducer"
+import UsersReducer from "./users/reducer"
+import PengajuanReducer from "./pengajuan/reducer"
 
 const store = configureStore({
     reducer: {
@@ -16,11 +13,8 @@ const store = configureStore({
         loadingBar: loadingBarReducer,
         error: ErrorReducer,
         success: SuccessReducer,
-        anggota: AnggotaReducer,
-        admin: AdminReducer,
-        manager: ManagerReducer,
-        officer: OfficerReducer,
-        admin_master: AdminMasterReducer
+        users: UsersReducer,
+        pengajuan: PengajuanReducer,
     },
 });
 

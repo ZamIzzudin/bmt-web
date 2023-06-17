@@ -98,7 +98,7 @@ export default function PembiayaanKerjasama() {
                 }}
             >
                 <h1 className="page-header">Daftar Pembiayaan</h1>
-                {auth.role === "admin" ? (
+                {(auth.role === 'ADMIN' || auth.role === 'ADMIN_MASTER') ? (
                     <div style={{ paddingRight: "50px", display: 'flex', alignItems:'center', justifyContent: 'space-between', paddingTop: '35px' }}>
                     <button
                         className="button-not-lunas"

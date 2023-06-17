@@ -55,7 +55,7 @@ export default function DetailSimpananWajib({ backButton, id }) {
                 <td>{each.nama}</td>
                 <td>{each.bulan}</td>
                 <td>{each.tahun}</td>
-                <td>{each.teller}</td>
+                <td>{each.id_teller}</td>
                 <td>Rp. {formatMoney(each.nominal)}</td>
                 <td>{each.status}</td>
                 {each.status === "BELUM LUNAS" && (

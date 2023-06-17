@@ -1,63 +1,43 @@
-import { useSelector } from "react-redux";
-import { useState } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { useState, useEffect } from "react";
+import moment from "moment";
 
 import SetorModal from "../Modal/SetorModal";
 import TarikModal from "../Modal/TarikModal";
-import DetailTabunganSimpananSukarela from "./DetailTabunganSimpananSukarela";
+// import DetailTabunganSimpananSukarela from "./DetailTabunganSimpananSukarela";
+
+import { HideError } from '../../state/error/middleware'
+import { HideSuccess } from '../../state/success/middleware'
+import InfoModal from '../../components/InfoModal'
+
+import { AsyncGetAngsuranSukarela } from "../../state/angsuran/middleware";
 
 import { ReactComponent as BackButton } from "../../assets/icons/arrow_back.svg";
 
-export default function DetailSimpananSukarela({ backButton }) {
-  const { auth = { status: false, role: null } } = useSelector(
-    (states) => states
-  );
-
+export default function DetailSimpananSukarela({ backButton, currentData }) {
+  const { auth = {}, angsuran = [], error, success } = useSelector((states) => states);
+  const dispatch = useDispatch();
   const [showModal, setShowModal] = useState(false);
   const [showModal2, setShowModal2] = useState(false);
-  const [showDetailTabungan, setShowDetailTabungan] = useState(false);
+  // const [showDetailTabungan, setShowDetailTabungan] = useState(false);
 
-  const detail = {
-    id: "SMPSKR-001",
-    anggota: "Agus Mulyadi (NSB-001)",
-    jenis_simpanan: "Simpanan Haji",
-    jumlah_simpanan: "Rp. 4.000.000",
-    tanggal_pembuatan: "09/05/2020",
-  };
+  function formatMoney(amount) {
+    return new Intl.NumberFormat('id-ID', { maximumSignificantDigits: 3 }).format(amount);
+}
 
-  const transaksi = [
-    {
-      no: 1,
-      tanggal: "12/09/2023",
-      nama: "Mawar",
-      nominal: "Rp.200.000",
-      jenis: "Setor",
-    },
-    {
-      no: 2,
-      tanggal: "07/08/2023",
-      nama: "Mawar",
-      nominal: "Rp.200.000",
-      jenis: "Setor",
-    },
-    {
-      no: 3,
-      tanggal: "19/07/2023",
-      nama: "Mawar",
-      nominal: "Rp.200.000",
-      jenis: "Tarik",
-    },
-    {
-      no: 4,
-      tanggal: "09/07/2023",
-      nama: "Mawar",
-      nominal: "Rp.200.000",
-      jenis: "Setor",
-    },
-  ];
+function handleModal() {
+  dispatch(HideError())
+  dispatch(HideSuccess())
+}
 
-  if(showDetailTabungan){
-    return <DetailTabunganSimpananSukarela backButton={backButton} />
-  }
+useEffect(() => {
+  dispatch(AsyncGetAngsuranSukarela(currentData.id_simpanan));
+}, [dispatch, currentData.id_simpanan]);
+
+
+  // if(showDetailTabungan){
+  //   return <DetailTabunganSimpananSukarela backButton={backButton} />
+  // }
 
   return (
     <main>
@@ -79,22 +59,36 @@ export default function DetailSimpananSukarela({ backButton }) {
         </div>
         <div className="section-body">
           <table className="detail-table">
-            {Object.keys(detail).map((each) => (
               <tr>
-                <td>{each.replace("_", " ")}</td>
-                <td>{detail[each]}</td>
+                <td>ID Simpanan</td>
+                <td>{`SMPSKR-${currentData.id_simpanan.substr(0,3)}`}</td>
               </tr>
-            ))}
+              <tr>
+                <td>Nasabah</td>
+                <td>{`NSB-${currentData.id_nasabah.substr(0,3)}`}</td>
+              </tr>
+              <tr>
+                <td>Jenis Simpanan</td>
+                <td>{currentData.produk_simpanan}</td>
+              </tr>
+              <tr>
+                <td>Jumlah Simpanan</td>
+                <td>{formatMoney(currentData.nominal)}</td>
+              </tr>
+              <tr>
+                <td>Tanggal Pembuatan</td>
+                <td>{moment.utc(currentData.created_at).format("DD MMMM YYYY")}</td>
+              </tr>
           </table>
-          {auth.role === "admin" ? (
+          {(auth.role === "ADMIN" || auth.role === 'ADMIN_MASTER') ? (
             <div className="form-cta gap-3">
-              <button
+              {/* <button
                 onClick={() => setShowDetailTabungan(true)}
                 className="form-submit-button"
                 type="button"
               >
                 Cetak Laporan
-              </button>
+              </button> */}
               <button
                 onClick={() => setShowModal2(true)}
                 className="form-submit-button"
@@ -129,26 +123,31 @@ export default function DetailSimpananSukarela({ backButton }) {
               <th>Nominal</th>
               <th>Transaski</th>
             </tr>
-            {transaksi.map((each) => (
+            {angsuran.map((each, index) => (
               <tr>
-                <td>{each.no}</td>
-                <td>{each.tanggal}</td>
-                <td>{each.nama}</td>
-                <td>{each.nominal}</td>
-                <td>{each.jenis}</td>
+                <td>{index + 1}</td>
+                <td>{moment.utc(each.created_at).format("DD MMMM YYYY")}</td>
+                <td>{each.teller}</td>
+                <td>{formatMoney(each.nominal)}</td>
+                <td>{each.tipe_angsuran}</td>
               </tr>
             ))}
           </table>
           <table>
             <tr style={{ width: "100%" }}>
               <th>Total</th>
-              <th style={{ transform: 'translateX(65 %)' }}>Rp. 200.000</th>
+              <th style={{ transform: 'translateX(65%)' }}>Rp. {formatMoney(currentData.nominal)}</th>
             </tr>
           </table>
         </div>
       </section>
-      <SetorModal show={showModal} setShow={setShowModal} />
-      <TarikModal show={showModal2} setShow={setShowModal2} />
+      <SetorModal show={showModal} setShow={setShowModal} data={currentData}/>
+      <TarikModal show={showModal2} setShow={setShowModal2} data={currentData} />
+
+      {/* Error Modal */}
+      <InfoModal show={error.status} setShow={handleModal} value={error.message} type="error" />
+      {/* Success Draft*/}
+      <InfoModal show={success.status} setShow={handleModal} value={success.message} type="success" />
     </main>
   );
 }

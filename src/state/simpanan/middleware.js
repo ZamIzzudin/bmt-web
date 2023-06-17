@@ -89,4 +89,5 @@ function AsyncGetSimpananSukarela(type){
         }
 }
 
+
 export { AsyncGetSimpananPokok, AsyncGetSimpananWajib, AsyncGetSimpananSukarela, AsyncGetDetailSimpananWajib, AsyncGetNotLunas, AsyncSetorSimpananWajib }

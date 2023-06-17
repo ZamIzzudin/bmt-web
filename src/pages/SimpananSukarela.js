@@ -1,85 +1,44 @@
 import { useLocation } from "react-router-dom";
 import { useState } from "react";
-// import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 
-import TambahSimpananSukarela from "../components/Form/TambahSimpananSukarela";
+import { AsyncGetSimpananSukarela } from "../state/simpanan/middleware";
+
 import DetailSimpananSukarela from "../components/Detail/DetailSimpananSukarela";
 
 import { ReactComponent as Search } from "../assets/icons/search.svg";
+import { useEffect } from "react";
 
 export default function Simpanan() {
-//   const { auth = { status: false, role: null } } = useSelector(
-//     (states) => states
-//   );
-
+  const { auth = {}, simpanan = [] } = useSelector(states => states);
+  const dispatch = useDispatch();
   const location = useLocation().pathname;
   const type = location.split("/")[2];
 
-  const [showAddForm, setShowAddForm] = useState(false);
   const [showDetail, setShowDetail] = useState(false);
+  const [selectedData, setSelectedData] = useState(null);
 
   function backButton() {
     setShowDetail(false);
   }
 
-  const data = [
-    {
-      no: 1,
-      id: "NSB-051",
-      nama: "Lastri",
-      nominal: "Rp.200.000",
-      jenis: "Simpanan Kurban",
-    },
-    {
-      no: 2,
-      id: "NSB-001",
-      nama: "Agus",
-      nominal: "Rp.200.000",
-      jenis: "Simpanan Pendidikan",
-    },
-    {
-      no: 3,
-      id: "NSB-002",
-      nama: "Joko",
-      nominal: "Rp.200.000",
-      jenis: "Simpanan Hari Tua",
-    },
-    {
-      no: 4,
-      id: "NSB-001",
-      nama: "Agus",
-      nominal: "Rp.200.000",
-      jenis: "Simpanan Haji",
-    },
-  ];
+  function formatMoney(amount) {
+    return new Intl.NumberFormat('id-ID', { maximumSignificantDigits: 3 }).format(amount);
+}
+
+  useEffect(() => {
+    if(auth.role === "NASABAH"){
+      dispatch(AsyncGetSimpananSukarela('nasabah'));
+      return;
+    }
+    dispatch(AsyncGetSimpananSukarela('pengelola'));
+  }, [dispatch, auth.role])
 
   // Form that shown when parameter (true)
   if (showDetail) {
-    return <DetailSimpananSukarela backButton={backButton} />;
+   return <DetailSimpananSukarela backButton={backButton} currentData={selectedData} />;
   }
-  if (showAddForm) {
-    return (
-      <main>
-        <h1 className="page-header">Daftar Simpanan</h1>
-        <section className="content-section">
-          <div className="section-header-container">
-            <h4 className="section-header">Simpanan {type}</h4>
-            <button
-              onClick={() => {
-                setShowAddForm(false);
-              }}
-              className="section-add-btn"
-            >
-              -
-            </button>
-          </div>
-          <div className="section-body">
-            <TambahSimpananSukarela showForm={setShowAddForm} />
-          </div>
-        </section>
-      </main>
-    );
-  }
+
   return (
     <main>
       <h1 className="page-header">Simpanan Sukarela</h1>
@@ -125,18 +84,18 @@ export default function Simpanan() {
               <th>Nominal/Bln</th>
               <th className="text-center">Action</th>
             </tr>
-            {data.map((each) => (
+            {simpanan.map((each, index) => (
               <tr>
-                <td>{each.no}</td>
-                <td>{each.id}</td>
+                <td>{index + 1}</td>
+                <td>{`NSB-${each.id_nasabah.substr(0,3)}`}</td>
                 <td>{each.nama}</td>
-                <td>{each.jenis}</td>
-                <td>{each.nominal}</td>
+                <td>{each.produk_simpanan}</td>
+                <td>{formatMoney(each.nominal)}</td>
                 <td className="table-cta">
                   <div className="table-cta-container">
                     <button
                       className="section-edit-btn"
-                      onClick={() => setShowDetail(true)}
+                      onClick={() => { setShowDetail(true); setSelectedData(each) }}
                     >
                       Detail
                     </button>

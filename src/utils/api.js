@@ -306,12 +306,42 @@ const api = (() => {
     if(type){
       url += `?type=${type}`;
     }
-    
+
     const response = await axios.get(url);
     if(response.data.data.length === 0){
       return [];
     }
     return response.data.data;
+  }
+
+  async function GetDetailTransaksiSukarela(id){
+    const url = baseUrl + `/angsuran/sukarela/${id}`;
+
+    const response = await axios.get(url);
+    if(response.data.data.length === 0){
+      return [];
+    }
+    return response.data.data;
+  }
+  
+    async function TarikSimpananSukarela(data){
+    const url = baseUrl + `/angsuran/sukarela/tarik/${data.id}`;
+
+    const data_post = {
+      nominal: data.nominal,
+    }
+    const response = await axios.post(url, data_post);
+    return response;
+  }
+  
+    async function SetorSimpananSukarela(data){
+    const url = baseUrl + `/angsuran/sukarela/setor/${data.id}`;
+
+    const data_post = {
+      nominal: Number(data.nominal),
+    }
+    const response = await axios.post(url, data_post);
+    return response;
   }
 
   
@@ -343,6 +373,9 @@ const api = (() => {
     GetDetailSimpananWajib,
     GetNotLunasSimpananWajib,
     SetorSimpananWajib,
+    SetorSimpananSukarela,
+    TarikSimpananSukarela,
+    GetDetailTransaksiSukarela,
     GetKas,
     CreateKas,
   };

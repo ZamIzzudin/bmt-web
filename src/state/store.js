@@ -7,6 +7,7 @@ import AuhtReducer from "./auth/reducer"
 import UsersReducer from "./users/reducer"
 import PengajuanReducer from "./pengajuan/reducer"
 import KasReducer from './kas/reducer';
+import SimpananReducer from './simpanan/reducer';
 
 const store = configureStore({
     reducer: {
@@ -17,6 +18,7 @@ const store = configureStore({
         users: UsersReducer,
         pengajuan: PengajuanReducer,
         kas: KasReducer,
+        simpanan: SimpananReducer,
     },
 });
 

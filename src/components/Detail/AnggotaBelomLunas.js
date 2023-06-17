@@ -1,48 +1,20 @@
 import { useState } from "react";
+import { useSelector, useDispatch } from "react-redux";
 
 import SetorModal from "../Modal/SetorModal";
 import { Form, Row } from "react-bootstrap";
 import "../../styles/components/FormLayout.css";
 
 import { ReactComponent as BackButton } from "../../assets/icons/arrow_back.svg";
+import { AsyncGetNotLunas } from "../../state/simpanan/middleware";
 
 export default function AnggotaBelomLunas({ backButton }) {
-  const [showModal, setShowModal] = useState(false);
+  const { simpanan = [] } = useSelector((states) => states);
+  const dispatch = useDispatch();
 
-  const transaksi = [
-    {
-      no: 1,
-      bulan: "Maret",
-      tahun: "2023",
-      nama: "Mawar",
-      nominal: "Rp.200.000",
-      status: "Lunas",
-    },
-    {
-      no: 2,
-      bulan: "April",
-      tahun: "2023",
-      nama: "Mawar",
-      nominal: "Rp.200.000",
-      status: "Lunas",
-    },
-    {
-      no: 3,
-      bulan: "Mei",
-      tahun: "2023",
-      nama: "Mawar",
-      nominal: "Rp.200.000",
-      status: "Lunas",
-    },
-    {
-      no: 4,
-      bulan: "Juni",
-      tahun: "2023",
-      nama: "Mawar",
-      nominal: "Rp.200.000",
-      status: "Belum Lunas",
-    },
-  ];
+  const [bulan, setBulan] = useState("Januari");
+  const [tahun, setTahun] = useState("2023");
+  const [showModal, setShowModal] = useState(false);
 
   return (
     <main>
@@ -69,20 +41,19 @@ export default function AnggotaBelomLunas({ backButton }) {
                 <Form.Label>
                   Periode Bulan<span className="required">*</span>
                 </Form.Label>
-                <Form.Select>
-                  <option></option>
-                  <option value={"Laki-laki"}>Januari</option>
-                  <option value={"Laki-laki"}>Februari</option>
-                  <option value={"Laki-laki"}>Maret</option>
-                  <option value={"Laki-laki"}>April</option>
-                  <option value={"Laki-laki"}>Mei</option>
-                  <option value={"Laki-laki"}>Juni</option>
-                  <option value={"Laki-laki"}>Juli</option>
-                  <option value={"Laki-laki"}>Agustus</option>
-                  <option value={"Laki-laki"}>September</option>
-                  <option value={"Laki-laki"}>October</option>
-                  <option value={"Laki-laki"}>November</option>
-                  <option value={"Laki-laki"}>Desember</option>
+                 <Form.Select required value={bulan} onChange={(e) => setBulan(e.target.value)}>
+                  <option selected value={"Januari"}>Januari</option>
+                  <option value={"Februari"}>Februari</option>
+                  <option value={"Maret"}>Maret</option>
+                  <option value={"April"}>April</option>
+                  <option value={"Mei"}>Mei</option>
+                  <option value={"Juni"}>Juni</option>
+                  <option value={"Juli"}>Juli</option>
+                  <option value={"Agustus"}>Agustus</option>
+                  <option value={"September"}>September</option>
+                  <option value={"Oktober"}>Oktober</option>
+                  <option value={"November"}>November</option>
+                  <option value={"Desember"}>Desember</option>
                 </Form.Select>
               </Form.Group>
             </Row>
@@ -91,14 +62,15 @@ export default function AnggotaBelomLunas({ backButton }) {
                 <Form.Label>
                   Periode Tahun<span className="required">*</span>
                 </Form.Label>
-                <Form.Select>
-                  <option></option>
-                  <option value={"Laki-laki"}>2023</option>
+              <Form.Select required value={tahun} onChange={(e) => setTahun(e.target.value)}>
+                  <option value={"2023"}>2023</option>
+                  <option value={"2024"}>2024</option>
+                  <option value={"2025"}>2025</option>
                 </Form.Select>
               </Form.Group>
             </Row>
           </Form>
-          <div className="form-cta gap-3">
+             <div className="form-cta gap-3" onClick={() => dispatch(AsyncGetNotLunas(bulan, tahun))}>
             <button
               className="form-submit-button"
               type="button"
@@ -124,13 +96,13 @@ export default function AnggotaBelomLunas({ backButton }) {
               <th>Status</th>
               <th>Action</th>
             </tr>
-            {transaksi.map((each) => (
+            {simpanan.filter((each) => each.status === "BELUM LUNAS").map((each, index) => (
               <tr>
-                <td>{each.no}</td>
+                <td>{index + 1}</td>
                 <td>{each.nama}</td>
                 <td>{each.bulan}</td>
                 <td>{each.tahun}</td>
-                <td>{each.nama}</td>
+                <td>{each.teller}</td>
                 <td>{each.nominal}</td>
                 <td>{each.status}</td>
                 <td>
@@ -152,16 +124,6 @@ export default function AnggotaBelomLunas({ backButton }) {
               </tr>
             ))}
           </table>
-          {/* {auth.role === 'admin' || auth.role === 'officer' ? (
-                        <div className="form-cta gap-3">
-                            <button onClick={() => backButton()} className="form-submit-button" type="button">Kembali</button>
-                            <button onClick={() => setShowModal(true)} className="form-submit-button" type="button">Setor</button>
-                        </div>
-                    ) : (
-                        <div className="form-cta gap-3">
-                            <button onClick={() => backButton()} className="form-submit-button" type="button">Kembali</button>
-                        </div>
-        )} */}
         </div>
       </section>
       <SetorModal show={showModal} setShow={setShowModal} />

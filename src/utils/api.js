@@ -262,18 +262,42 @@ const api = (() => {
     return response.data.data;
   }
 
-  async function GetSimpananWajib(type){
+  async function GetSimpananWajib(){
     let url = baseUrl + `/simpanan/wajib`;
-
-    if(type){
-      url += `?type=${type}`;
-    }
 
     const response = await axios.get(url);
     if(response.data.data.length === 0){
       return [];
     }
     return response.data.data;
+  }
+
+  async function GetDetailSimpananWajib(id){
+    const url = baseUrl + `/simpanan/wajib/${id}`;
+
+    const response = await axios.get(url);
+    console.info(response);
+    if(response.data.data.length === 0){
+      return [];
+    }
+    return response.data.data;
+  }
+
+  async function GetNotLunasSimpananWajib(bulan, tahun){
+    const url = baseUrl + `/simpanan/wajib/check/belum-setor?bulan=${bulan}&tahun=${tahun}`;
+
+    const response = await axios.get(url);
+    if(response.data.data.length === 0){
+      return [];
+    }
+    return response.data.data;
+  }
+
+  async function SetorSimpananWajib(id){
+    const url = baseUrl + `/simpanan/wajib/setor/${id}`;
+
+    const response = await axios.put(url);
+    return response;
   }
 
   async function GetSimpananSukarela(type){
@@ -316,6 +340,9 @@ const api = (() => {
     GetSimpananPokok,
     GetSimpananWajib,
     GetSimpananSukarela,
+    GetDetailSimpananWajib,
+    GetNotLunasSimpananWajib,
+    SetorSimpananWajib,
     GetKas,
     CreateKas,
   };

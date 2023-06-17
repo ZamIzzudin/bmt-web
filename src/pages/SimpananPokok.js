@@ -1,48 +1,25 @@
 import { useLocation } from "react-router-dom";
-// import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+
+import moment from "moment";
 
 import { ReactComponent as Search } from "../assets/icons/search.svg";
+import { useEffect } from "react";
+import { AsyncGetSimpananPokok } from "../state/simpanan/middleware";
 
 export default function Simpanan() {
-//   const { auth = { status: false, role: null } } = useSelector(
-//     (states) => states
-//   );
-
+  const dispatch = useDispatch();
+  const { simpanan = [] } = useSelector((states) => states);
   const location = useLocation().pathname;
   const type = location.split("/")[2];
 
-  const data = [
-    {
-      no: 1,
-      id: "NSB-001",
-      nama: "Agus",
-      nominal: "Rp.50.000",
-      tanggal: "09/05/2022",
-    },
-    {
-      no: 2,
-      id: "NSB-002",
-      nama: "Joko",
-      nominal: "Rp.50.000",
-      tanggal: "09/05/2022",
-    },
-    {
-      no: 3,
-      id: "NSB-003",
-      nama: "Supriadi",
-      nominal: "Rp.50.000",
-      tanggal: "09/05/2022",
-    },
-  ];
+  useEffect(() => {
+    dispatch(AsyncGetSimpananPokok());
+  }, [dispatch])
 
   return (
     <main>
       <h1 className="page-header">Simpanan Pokok</h1>
-      {/* <div>
-        {auth.role !== "user" ? (
-          <button className="section-edit-btn">Cetak</button>
-        ) : null}
-      </div> */}
       <section className="content-section">
         <div className="section-header-container">
           <h4 className="section-header">Daftar Simpanan {type}</h4>
@@ -79,13 +56,13 @@ export default function Simpanan() {
               <th>Nominal</th>
               <th>Tanggal</th>
             </tr>
-            {data.map((each) => (
+            {simpanan.map((each, index) => (
               <tr>
-                <td>{each.no}</td>
-                <td>{each.id}</td>
+                <td>{index + 1}</td>
+                <td>{`NSB-${each.id_nasabah.substring(0,3)}`}</td>
                 <td>{each.nama}</td>
                 <td>{each.nominal}</td>
-                <td>{each.tanggal}</td>
+                <td>{moment.utc(each.created_at).format("DD MMMM YYYY")}</td>
               </tr>
             ))}
           </table>

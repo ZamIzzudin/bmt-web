@@ -14,12 +14,12 @@ export default function TambahKeanggotaan({ showForm }) {
     const [email, setEmail] = useState('')
     const [nama, setNama] = useState('')
     const [nik, setNIK] = useState('')
-    const [jenisKelamin, setJenisKelamin] = useState('')
+    const [jenisKelamin, setJenisKelamin] = useState('Pria')
     const [noTelp, setNoTelp] = useState('')
     const [alamat, setAlamat] = useState('')
     const [pekerjaan, setPekerjaan] = useState('')
     const [noRekening, setNoRekening] = useState('')
-    const [statusPerkawinan, setStatusPerkawinan] = useState('')
+    const [statusPerkawinan, setStatusPerkawinan] = useState('Belum Kawin')
     const [role, setRole] = useState('')
 
    const handleRegister = (e) => {
@@ -60,9 +60,8 @@ export default function TambahKeanggotaan({ showForm }) {
                     <Form.Group>
                         <Form.Label>Jenis Kelamin<span className="required">*</span></Form.Label>
                         <Form.Select required value={jenisKelamin} onChange={(e) => setJenisKelamin(e.target.value)}>
-                            <option></option>
-                            <option value={'Pria'}>Laki-laki</option>
-                            <option value={'Wanita'}>Perempuan</option>
+                            <option value selected={'Pria'}>Pria</option>
+                            <option value={'Wanita'}>Wanita</option>
                         </Form.Select>
                     </Form.Group>
                 </Col>
@@ -104,7 +103,7 @@ export default function TambahKeanggotaan({ showForm }) {
                     <Form.Group>
                         <Form.Label>Status Perkawinan <span className="required">*</span></Form.Label>
                         <Form.Select required value={statusPerkawinan} onChange={(e) => setStatusPerkawinan(e.target.value)}>
-                            <option value={'Belum Menikah'} selected>Belum Menikah</option>
+                            <option value selected={'Belum Menikah'}>Belum Menikah</option>
                             <option value={'Menikah'}>Menikah</option>
                             <option value={'Janda'}>Janda</option>
                             <option value={'Duda'}>Duda</option>

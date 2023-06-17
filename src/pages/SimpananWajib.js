@@ -1,6 +1,12 @@
 import { useLocation } from "react-router-dom";
-import { useState } from "react";
-// import { useSelector } from 'react-redux'
+import { useState, useEffect } from "react";
+import { useSelector, useDispatch } from 'react-redux'
+
+import { AsyncGetSimpananWajib, AsyncGetDetailSimpananWajib } from "../state/simpanan/middleware";
+
+import { HideError } from '../state/error/middleware'
+import { HideSuccess } from '../state/success/middleware'
+import InfoModal from '../components/InfoModal'
 
 import TambahSimpananWajib from "../components/Form/TambahSimpananWajib";
 import DetailSimpananWajib from "../components/Detail/DetailSimpananWajib";
@@ -9,7 +15,8 @@ import AnggotaBelomLunas from "../components/Detail/AnggotaBelomLunas";
 import { ReactComponent as Search } from "../assets/icons/search.svg";
 
 export default function SimpananWajib() {
-  // const { auth = { status: false, role: null } } = useSelector(states => states)
+  const { auth = {}, simpanan = [], success, error } = useSelector(states => states)
+  const dispatch = useDispatch();
 
   const location = useLocation().pathname;
   const type = location.split("/")[2];
@@ -18,57 +25,40 @@ export default function SimpananWajib() {
   const [showDetail, setShowDetail] = useState(false);
   const [showNotLunas, setShowNotLunas] = useState(false);
 
+  const [currentData, setCurrentData] = useState(null);
+
   function backButton() {
     setShowDetail(false);
     setShowNotLunas(false);
+    dispatch(AsyncGetSimpananWajib());
   }
-  const data = [
-    {
-      no: 1,
-      id: "NSB-001",
-      nama: "Agus",
-      bulan: "Juni",
-      tahun: "2023",
-      status: "Lunas",
-      nominal: "Rp.200.000",
-    },
-    {
-      no: 2,
-      id: "NSB-002",
-      nama: "Joko",
-      bulan: "Juni",
-      tahun: "2023",
-      status: "Belum Lunas",
-      nominal: "Rp.200.000",
-    },
-    {
-      no: 3,
-      id: "NSB-003",
-      nama: "Lastri",
-      bulan: "Juni",
-      tahun: "2023",
-      status: "Lunas",
-      nominal: "Rp.200.000",
-    },
-    {
-      no: 4,
-      id: "NSB-004",
-      nama: "Supriadi",
-      bulan: "Juni",
-      tahun: "2023",
-      status: "Belum Lunas",
-      nominal: "Rp.200.000",
-    },
-  ];
+  console.info(simpanan);
+
+  function formatMoney(amount) {
+    return new Intl.NumberFormat('id-ID', { maximumSignificantDigits: 3 }).format(amount);
+}
+  useEffect(() => {
+    if(auth.role === "NASABAH"){
+      dispatch(AsyncGetDetailSimpananWajib(auth.id));
+      return;
+    }
+      dispatch(AsyncGetSimpananWajib());
+  }, [dispatch, auth.role, auth.id])
 
   // Form that shown when parameter (true)
   if (showDetail) {
-    return <DetailSimpananWajib backButton={backButton} />;
+    return <DetailSimpananWajib backButton={backButton} id={currentData} />;
   }
 
   if (showNotLunas) {
     return <AnggotaBelomLunas backButton={backButton} />;
   }
+
+  function handleModal() {
+    dispatch(HideError())
+    dispatch(HideSuccess())
+}
+
 
   if (showAddForm) {
     return (
@@ -104,23 +94,17 @@ export default function SimpananWajib() {
             paddingTop: "35px",
           }}
         >
-          <button
-            className="button-not-lunas"
-            onClick={() => setShowNotLunas(true)}
-          >
-            Lihat Belum Lunas
-          </button>
-          {/* <button
-                    onClick={() => setShowAddForm(true)}
-                    className={`section-add-btn ${type === "rekap" ? "hidden" : null}`}
-                >+</button> */}
+          {auth.role !== "NASABAH" && (          
+            <button
+              className="button-not-lunas"
+              onClick={() => setShowNotLunas(true)}
+            >
+              Lihat Belum Lunas
+            </button>
+          )}
         </div>
       </div>
-      {/* <div>
-                {auth.role !== 'user' ? (
-                    <button className="section-edit-btn" >Cetak</button>
-                ) : null}
-            </div> */}
+
       <section className="content-section">
         <div className="section-header-container">
           <h4 className="section-header">Simpanan {type}</h4>
@@ -149,37 +133,71 @@ export default function SimpananWajib() {
             </div>
         </div>
         <div className="section-body">
-          <table>
+          {auth.role !== 'NASABAH' ? (
+            <table>
+              <tr>
+                <th>No.</th>
+                <th>ID Anggota</th>
+                <th>Nama</th>
+                <th>Tahun</th>
+                <th>Nominal/Bln</th>
+                <th className="text-center">Action</th>
+              </tr>
+              {simpanan.map((each, index) => (
+                
+                <tr>
+                  <td>{index + 1}</td>
+                  <td>{`NSB-${each.id_nasabah.substr(0,3)}`}</td>
+                  <td>{each.nama}</td>
+                  <td>{each.tahun}</td>
+                  <td>{formatMoney(each.nominal)} / {formatMoney(each.nominal)}</td>
+                  <td className="table-cta">
+                    <div className="table-cta-container">
+                      <button
+                        className="section-edit-btn"
+                        onClick={() => { setShowDetail(true); setCurrentData(each.id_nasabah) }}
+                      >
+                        Detail
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+              ))}
+            </table>
+          ) : (
+
+            <table>
             <tr>
               <th>No.</th>
               <th>ID Anggota</th>
               <th>Nama</th>
+              <th>Bulan</th>
               <th>Tahun</th>
+              <th>Teller</th>
               <th>Nominal/Bln</th>
-              <th className="text-center">Action</th>
+              <th>Status</th>
             </tr>
-            {data.map((each) => (
+            {simpanan.map((each, index) => (
+              
               <tr>
-                <td>{each.no}</td>
-                <td>{each.id}</td>
+                <td>{index + 1}</td>
+                <td>{`NSB-${each.id_nasabah.substr(0,3)}`}</td>
                 <td>{each.nama}</td>
+                <td>{each.bulan}</td>
                 <td>{each.tahun}</td>
-                <td>{each.nominal}</td>
-                <td className="table-cta">
-                  <div className="table-cta-container">
-                    <button
-                      className="section-edit-btn"
-                      onClick={() => setShowDetail(true)}
-                    >
-                      Detail
-                    </button>
-                  </div>
-                </td>
+                <td>{each.teller}</td>
+                <td>{formatMoney(each.nominal)} / {formatMoney(each.nominal)}</td>
+                <td>{each.status}</td>
               </tr>
             ))}
           </table>
+          )} 
         </div>
       </section>
+       {/* Error Modal */}
+       <InfoModal show={error.status} setShow={handleModal} value={error.message} type="error" />
+       {/* Success Draft*/}
+       <InfoModal show={success.status} setShow={handleModal} value={success.message} type="success" />
     </main>
   );
 }

@@ -102,7 +102,7 @@ export default function Sidebar() {
 
     return (
         <nav>
-        {(auth?.role === 'ADMIN' || auth?.role === 'OFFICER' || auth?.role === 'ADMIN_MASTER') && (
+        {(auth?.role === 'ADMIN' || auth?.role === 'ADMIN_MASTER') && (
                 <ul className="navbar-link-container">
                     <li className="navbar-link-item">
                         <Link to='/' className={location === '/' ? 'active' : null}>Home</Link>
@@ -110,7 +110,7 @@ export default function Sidebar() {
                     <li className="navbar-link-item">
                         <Link to='/profile' className={location === '/profile' ? 'active' : null}>Profile</Link>
                     </li>
-                    {(auth.role === 'ADMIN' || auth.role === 'OFFICER') ? (
+                    {(auth.role === 'ADMIN') ? (
                         <li className="navbar-link-item">
                             <Accordion isActive={location.includes('/keanggotaan/') ? true : false} dynamicData={keanggotaan} title={{ title: 'Keanggotaan', payload: 'keanggotaan' }} />
                         </li>
@@ -128,9 +128,11 @@ export default function Sidebar() {
                     <li className="navbar-link-item">
                         <Accordion isActive={location.includes('/pengajuan/') ? true : false} dynamicData={pengajuan} title={{ title: 'Pengajuan', payload: 'pengajuan' }} />
                     </li>
-                    <li className="navbar-link-item">
-                        <Accordion isActive={location.includes('/kas/') ? true : false} dynamicData={admin_kas} title={{ title: 'Laporan', payload: 'kas' }} />
-                    </li>
+                    {(auth.role === 'ADMIN' || auth.role === 'ADMIN_MASTER') ? (
+                        <li className="navbar-link-item">
+                            <Accordion isActive={location.includes('/kas/') ? true : false} dynamicData={admin_kas} title={{ title: 'Laporan', payload: 'kas' }} />
+                        </li>
+                    ) : null}
                 </ul>
             )}
             {auth?.role === 'NASABAH' && (
@@ -152,10 +154,13 @@ export default function Sidebar() {
                     </li>
                 </ul>
             )}
-            {auth?.role === 'MANAGER' && (
+            {(auth?.role === 'MANAGER' || auth?.role ==='OFFICER') && (
                 <ul className="navbar-link-container">
                     <li className="navbar-link-item">
                         <Link to='/' className={location === '/' ? 'active' : null}>Home</Link>
+                    </li>
+                    <li className="navbar-link-item">
+                        <Link to='/profile' className={location === '/profile' ? 'active' : null}>Profile</Link>
                     </li>
                     <li className="navbar-link-item">
                         <Accordion isActive={location.includes('/pembiayaan/') ? true : false} dynamicData={pembiayaan} title={{ title: 'Angsuran Pembiayaan', payload: 'pembiayaan' }} />

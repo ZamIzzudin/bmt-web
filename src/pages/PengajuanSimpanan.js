@@ -6,9 +6,16 @@ import DetailPengajuanSimpanan from '../components/Detail/DetailPengajuanSimpana
 import { useEffect } from 'react'
 
 import { AsyncGetPengajuanSimpanan } from '../state/pengajuan/middleware'
+import { AsyncDeletePengajuanSimpanan } from '../state/pengajuan/middleware'
+
+import { HideError } from '../state/error/middleware'
+import { HideSuccess } from '../state/success/middleware'
+import InfoModal from '../components/InfoModal'
+
+import { ReactComponent as Delete } from '../assets/icons/Delete.svg'
 
 export default function PengajuanSimpanan() {
-    const { auth = {}, pengajuan = [] } = useSelector(states => states)
+    const { auth = {}, pengajuan = [], error, success } = useSelector(states => states)
     const dispatch = useDispatch();
 
     const [selectedData, setSelectedData] = useState(null)
@@ -22,11 +29,20 @@ export default function PengajuanSimpanan() {
 
     function formatMoney(amount) {
         return new Intl.NumberFormat('id-ID', { maximumSignificantDigits: 3 }).format(amount);
-      }
+    }
+    
+      
+    function handleModal() {
+        dispatch(HideError())
+        dispatch(HideSuccess())
+    }
 
     useEffect(() => {
-        dispatch(AsyncGetPengajuanSimpanan("nasabah"))
-    }, [dispatch])
+        if(auth.role === "NASABAH"){
+           dispatch(AsyncGetPengajuanSimpanan("nasabah"))
+        }
+           dispatch(AsyncGetPengajuanSimpanan("pengelola"))
+    }, [dispatch, auth.role])
     // Form that shown when parameter (true)
     if (showDetail) {
         return (
@@ -91,6 +107,9 @@ export default function PengajuanSimpanan() {
                                 <td className="table-cta">
                                     <div className="table-cta-container">
                                         <button onClick={() => { setShowDetail(true); setSelectedData(each)}} className="section-edit-btn">Detail</button>
+                                        {auth.role === "NASABAH" ? (
+                                          <Delete onClick={() => dispatch(AsyncDeletePengajuanSimpanan(each.id_pengajuan))} cursor={'pointer'} />
+                                        ): (null)}
                                     </div>
                                 </td>
                             </tr>
@@ -99,6 +118,10 @@ export default function PengajuanSimpanan() {
                     </table>
                 </div>
             </section>
+             {/* Error Modal */}
+             <InfoModal show={error.status} setShow={handleModal} value={error.message} type="error" />
+            {/* Success Draft*/}
+            <InfoModal show={success.status} setShow={handleModal} value={success.message} type="success" />
         </main>
     )
 }

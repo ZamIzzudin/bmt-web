@@ -2,17 +2,20 @@ import { useSelector, useDispatch } from 'react-redux'
 import { useLocation } from 'react-router-dom'
 import { AsyncApprovePengajuanSimpanan } from '../../state/pengajuan/middleware';
 
+import moment from 'moment/moment';
+
 export default function DetailPengajuanSimpanan({ backButton, currentData }) {
     const dispatch = useDispatch();
-    const { auth = { status: false, role: null } } = useSelector(states => states)
+    const { auth = {} } = useSelector(states => states)
+
     const location = useLocation().pathname
     const type = location.split('/')[2]
-    const date_created = new Date(currentData.created_at)
 
+    const date_created = moment.utc(currentData.created_at).format('YYYY-MM-DD')
     function formatMoney(amount) {
         return new Intl.NumberFormat('id-ID', { maximumSignificantDigits: 3 }).format(amount);
       }
-
+      
     return (
         <main>
             <h1 className="page-header">Detail {type.replace('-', ' ')}</h1>
@@ -41,7 +44,7 @@ export default function DetailPengajuanSimpanan({ backButton, currentData }) {
                             </tr>
                             <tr>
                                 <td>Tanggal Pengajuan</td>
-                                <td>{date_created.toDateString()}</td>
+                                <td>{date_created}</td>
                             </tr>
                             <tr>
                                 <td>Status Pengajuan</td>
@@ -50,7 +53,7 @@ export default function DetailPengajuanSimpanan({ backButton, currentData }) {
                     </table>
                     {auth.role === 'OFFICER' && currentData.status_pengajuan === 'BELUM DISETUJUI' ? (
                         <div className="form-cta gap-3">
-                            <button className="form-submit-button" onClick={() => {dispatch(AsyncApprovePengajuanSimpanan(currentData.id_pengajuan)); backButton(false)}} type="button">Setujui</button>
+                            <button className="form-submit-button" onClick={() => {dispatch(AsyncApprovePengajuanSimpanan(currentData.id_pengajuan)); backButton()}} type="button">Setujui</button>
                             <button className="form-cancel-button" type="button">Tolak</button>
                         </div>
                     ) : (

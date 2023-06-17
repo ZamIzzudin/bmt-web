@@ -1,133 +1,47 @@
 import { useLocation } from 'react-router-dom'
-import { useState } from 'react'
-import { useSelector } from 'react-redux'
+import { useState, useEffect } from 'react'
+import { useSelector, useDispatch } from 'react-redux'
 
 import { ReactComponent as Search } from "../assets/icons/search.svg";
+import moment from 'moment';
+
+import { HideError } from '../state/error/middleware'
+import { HideSuccess } from '../state/success/middleware'
+import InfoModal from '../components/InfoModal'
+
+import { AsyncGetKas } from '../state/kas/middleware';
 
 import TambahKas from '../components/Form/TambahKas'
 
 export default function Kas() {
-    const { auth = { status: false, role: null } } = useSelector(states => states)
-
+    const { auth = {}, kas = [], success, error } = useSelector(states => states)
+    const dispatch = useDispatch()
     const location = useLocation().pathname
     const type = location.split('/')[2]
 
-    const [showAddForm, setShowAddForm] = useState(false)
+    const [showAddForm, setShowAddForm] = useState(false)   
 
-    let data = [
-        {
-            no: 1,
-            id: "KRD-001",
-            nama: "Keluar",
-            masuk: "Rp.50.000",
-            keluar: "Rp.0",
-            tanggal: "09/05/2022",
-            catatan: "Pengadaan Barang",
-        },
-        {
-            no: 2,
-            id: "DBT-001",
-            nama: "Masuk",
-            masuk: "Rp.50.000",
-            keluar: "Rp.0",
-            tanggal: "09/05/2022",
-            catatan: "Simpanan Pokok",
-        },
-        {
-            no: 3,
-            id: "DBT-002",
-            nama: "Masuk",
-            masuk: "Rp.50.000",
-            keluar: "Rp.0",
-            tanggal: "09/05/2022",
-            catatan: "Hibah",
-        },
-        {
-            no: 4,
-            id: "KRD-001",
-            nama: "Keluar",
-            masuk: "Rp.50.000",
-            keluar: "Rp.0",
-            tanggal: "09/05/2022",
-            catatan: "Pengadaan Barang",
-        },
-        {
-            no: 5,
-            id: "DBT-001",
-            nama: "Masuk",
-            masuk: "Rp.50.000",
-            keluar: "Rp.0",
-            tanggal: "09/05/2022",
-            catatan: "Simpanan Pokok",
-        },
-        {
-            no: 6,
-            id: "DBT-002",
-            nama: "Masuk",
-            masuk: "Rp.50.000",
-            keluar: "Rp.0",
-            tanggal: "09/05/2022",
-            catatan: "Hibah",
+    function formatMoney(amount) {
+        return new Intl.NumberFormat('id-ID', { maximumSignificantDigits: 3 }).format(amount);
+    }
+
+    function handleModal() {
+        dispatch(HideError())
+        dispatch(HideSuccess())
+    }
+    useEffect(() => {
+        if(type === 'masuk') {
+            dispatch(AsyncGetKas("masuk"))
+            return;
         }
-    ]
-
-    if (type === 'masuk') {
-        data = [
-            {
-                no: 1,
-                id: "DBT-001",
-                nama: "Masuk",
-                nominal: "Rp.50.000",
-                tanggal: "09/05/2022",
-                catatan: "Simpanan Pokok",
-            },
-            {
-                no: 2,
-                id: "DBT-002",
-                nama: "Masuk",
-                nominal: "Rp.50.000",
-                tanggal: "09/05/2022",
-                catatan: "Hibah",
-            },
-            {
-                no: 3,
-                id: "DBT-001",
-                nama: "Masuk",
-                nominal: "Rp.50.000",
-                tanggal: "09/05/2022",
-                catatan: "Simpanan Pokok",
-            },
-            {
-                no: 4,
-                id: "DBT-002",
-                nama: "Masuk",
-                nominal: "Rp.50.000",
-                tanggal: "09/05/2022",
-                catatan: "Hibah",
-            }
-        ]
-    }
-
-    if (type === 'keluar') {
-        data = [
-            {
-                no: 1,
-                id: "KRD-001",
-                nama: "Keluar",
-                nominal: "Rp.50.000",
-                tanggal: "09/05/2022",
-                catatan: "Pengadaan Barang",
-            },
-            {
-                no: 2,
-                id: "KRD-001",
-                nama: "Keluar",
-                nominal: "Rp.50.000",
-                tanggal: "09/05/2022",
-                catatan: "Pengadaan Barang",
-            }
-        ]
-    }
+        else if (type === 'keluar') {
+            dispatch(AsyncGetKas("keluar"))
+            return;
+        } else if(type === 'rekap') {
+            dispatch(AsyncGetKas())
+            return;
+        }
+    }, [dispatch, type])
 
     if (showAddForm) {
         return (
@@ -194,14 +108,14 @@ export default function Kas() {
                                 <th>Jumlah Masuk</th>
                                 <th>Jumlah Keluar</th>
                             </tr>
-                            {data.map(each => (
+                            {kas.map((each, index) => (
                                 <tr>
-                                    <td>{each.no}</td>
-                                    <td>{each.id}</td>
+                                    <td>{index + 1}</td>
+                                    <td>{`${each.nominal_masuk === null ? 'KRD-' : 'DBT-'}${each.id_transaksi.substr(0,3)}`}</td>
                                     <td>{each.catatan}</td>
-                                    <td>{each.tanggal}</td>
-                                    <td>{each.masuk}</td>
-                                    <td>{each.keluar}</td>
+                                    <td>{moment.utc(each.tanggal).format('DD/MM/YYYY')}</td>
+                                    <td>Rp. {formatMoney(each.nominal_masuk)}</td>
+                                    <td>Rp. {formatMoney(each.nominal_keluar)}</td>
                                 </tr>
                             ))}
                         </table>
@@ -216,13 +130,13 @@ export default function Kas() {
                                 <th>Tanggal</th>
                                 <th>Catatan</th>
                             </tr>
-                            {data.map(each => (
+                            {kas.map((each, index) => (
                                 <tr>
-                                    <td>{each.no}</td>
-                                    <td>{each.id}</td>
-                                    <td>{each.nama}</td>
-                                    <td>{each.nominal}</td>
-                                    <td>{each.tanggal}</td>
+                                    <td>{index + 1}</td>
+                                    <td>{`DPT-${each.id_transaksi.substr(0, 3)}`}</td>
+                                    <td>{each.jenis_transaksi}</td>
+                                    <td>Rp. {formatMoney(each.nominal_masuk)}</td>
+                                    <td>{moment.utc(each.tanggal).format('DD/MM/YYYY')}</td>
                                     <td>{each.catatan}</td>
                                 </tr>
                             ))}
@@ -238,13 +152,13 @@ export default function Kas() {
                                 <th>Tanggal</th>
                                 <th>Catatan</th>
                             </tr>
-                            {data.map(each => (
+                            {kas.map((each, index) => (
                                 <tr>
-                                    <td>{each.no}</td>
-                                    <td>{each.id}</td>
-                                    <td>{each.nama}</td>
-                                    <td>{each.nominal}</td>
-                                    <td>{each.tanggal}</td>
+                                    <td>{index + 1}</td>
+                                    <td>{`KRD-${each.id_transaksi.substr(0, 3)}`}</td>
+                                    <td>{each.jenis_transaksi}</td>
+                                    <td>Rp. {formatMoney(each.nominal_keluar)}</td>
+                                    <td>{moment.utc(each.tanggal).format('DD/MM/YYYY')}</td>
                                     <td>{each.catatan}</td>
                                 </tr>
                             ))}
@@ -269,6 +183,10 @@ export default function Kas() {
                     </div>
                 </section>
             ) : null}
+            {/* Error Modal */}
+            <InfoModal show={error.status} setShow={handleModal} value={error.message} type="error" />
+            {/* Success Draft*/}
+            <InfoModal show={success.status} setShow={handleModal} value={success.message} type="success" />
         </main>
     )
 }

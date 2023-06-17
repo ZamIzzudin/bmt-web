@@ -11,7 +11,7 @@ export default function FormPengajuanSimpanan({ showForm }) {
 
     const { auth = {} } = useSelector(states => states)
     const [produkSimpanan, setProdukSimpanan] = useState('Simpanan Idul Fitri')
-    const [setoranAwal, setSetoranAwal] = useState(0)
+    const [setoranAwal, setSetoranAwal] = useState(50000)
 
     const handleSubmitPengajuanSimpanan = (e) => {
         e.preventDefault()

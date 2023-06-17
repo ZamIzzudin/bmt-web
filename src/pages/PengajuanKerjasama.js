@@ -1,81 +1,63 @@
-import { useLocation } from 'react-router-dom'
-import { useState } from 'react'
-import { useSelector } from 'react-redux'
+import { useState, useEffect } from 'react'
+import { useSelector, useDispatch } from 'react-redux'
+
+import moment from 'moment';
 
 import { ReactComponent as Search } from "../assets/icons/search.svg";
+import { ReactComponent as Delete } from '../assets/icons/Delete.svg'
+
+import { HideError } from '../state/error/middleware'
+import { HideSuccess } from '../state/success/middleware'
+import InfoModal from '../components/InfoModal'
+
+import { AsyncDeletePengajuanKerjasama, AsyncGetPengajuanKerjasama } from '../state/pengajuan/middleware';
 
 import FormPengajuanPembiayaan from '../components/Form/FormPengajuanPembiayaanKerjaSama'
-import DetailPengajuan from '../components/Detail/DetailPengajuanKerjasama'
+import DetailPengajuanKerjasama from '../components/Detail/DetailPengajuanKerjasama';
 
 export default function PengajuanKerjasama() {
-    const { auth = { status: false, role: null } } = useSelector(states => states)
-
-    const location = useLocation().pathname
-    const type = location.split('/')[2].split('-')[1]
+    const { auth = {}, pengajuan = [], error, success } = useSelector(states => states)
+    const dispatch = useDispatch();
 
     const [showAddForm, setShowAddForm] = useState(false)
     const [showDetail, setShowDetail] = useState(false)
+    const [selectedData, setSelectedData] = useState(null)
+
+    function handleModal() {
+        dispatch(HideError())
+        dispatch(HideSuccess())
+    }
 
     function backButton() {
         setShowDetail(false)
     }
 
-    const data = [
-        {
-            no: 1,
-            id: "NSB-001",
-            nama: "Agus",
-            jenis: "Hawalah",
-            nominal: "Rp.200.000",
-            pelunasan: "Rp.205.000",
-            durasi: "3 bln",
-            angsuran: "Rp.68.333",
-            laba: "0%",
-            tanggal: "09/05/2022",
-            status: "Diajukan",
-        },
-        {
-            no: 2,
-            id: "NSB-001",
-            nama: "Agus",
-            jenis: "Mudharabah",
-            nominal: "Rp.200.000",
-            pelunasan: "Rp.205.000",
-            durasi: "5 bln",
-            angsuran: "Rp.68.333",
-            laba: "5%",
-            tanggal: "09/05/2022",
-            status: "Ditolak",
-        },
-        {
-            no: 3,
-            id: "NSB-001",
-            nama: "Agus",
-            jenis: "Qardul Hasan",
-            nominal: "Rp.200.000",
-            pelunasan: "Rp.205.000",
-            durasi: "3 bln",
-            angsuran: "Rp.68.333",
-            laba: "0%",
-            tanggal: "09/05/2022",
-            status: "Disetujui",
+    function formatMoney(amount) {
+        return new Intl.NumberFormat('id-ID', { maximumSignificantDigits: 3 }).format(amount);
+    }
+
+    useEffect(() => {
+        if(auth.role === "NASABAH"){
+           dispatch(AsyncGetPengajuanKerjasama("nasabah"))
+           return;
         }
-    ]
+           dispatch(AsyncGetPengajuanKerjasama("pengelola"))
+    }, [dispatch, auth.role])
 
     // Form that shown when parameter (true)
     if (showDetail) {
         return (
-            <DetailPengajuan backButton={backButton} />
+            <DetailPengajuanKerjasama backButton={backButton} currentData={selectedData} />
         )
     }
 
     if (showAddForm) {
         return (
             <main>
-                <h1 className="page-header">Pengajuan Simpanan</h1>
+                <h1 className="page-header">Tambah Pengajuan</h1>
                 <section className="content-section">
                     <div className="section-header-container">
-                        <h4 className="section-header">Form Pengajuan</h4>
+                        <h4 className="section-header">Form Tambah Pengajuan Pembiayaan Kerjasama</h4>
                         <button onClick={() => { setShowAddForm(false) }} className="section-add-btn">-</button>
                     </div>
                     <div className="section-body">
@@ -101,7 +83,7 @@ export default function PengajuanKerjasama() {
             </div>
             <section className="content-section">
                 <div className="section-header-container">
-                    <h4 className="section-header">Pembiayaan {type}</h4>
+                    <h4 className="section-header">Pembiayaan Kerjasama</h4>
                     <div style={{ position: "relative" }}>
                         <input
                             type="text"
@@ -139,27 +121,33 @@ export default function PengajuanKerjasama() {
                             <th>Status</th>
                             <th className="text-center">Action</th>
                         </tr>
-                        {data.map(each => (
+                        {pengajuan.map((each, index) => (
                             <tr>
-                                <td>{each.no}</td>
-                                <td>{each.id}</td>
+                                <td>{index + 1}</td>
+                                <td>{`NSB-${each.id_nasabah.substring(0,3)}`}</td>
                                 <td>{each.nama}</td>
-                                <td>{each.jenis}</td>
-                                <td>{each.nominal}</td>
-                                <td>{each.durasi}</td>
-                                <td>{each.tanggal}</td>
-                                <td>{each.status}</td>
+                                <td>{each.produk_pengajuan}</td>
+                                <td>{formatMoney(each.nominal_akhir)}</td>
+                                <td>{each.durasi} Bulan</td>
+                                <td>{moment(each.tanggal_pengajuan).format("DD MMMM YYYY")}</td>
+                                <td>{each.status_pengajuan}</td>
                                 <td className="table-cta">
                                     <div className="table-cta-container">
-                                        <button onClick={() => setShowDetail(true)} className="section-edit-btn">Detail</button>
+                                        <button onClick={() => { setShowDetail(true); setSelectedData(each) }} className="section-edit-btn">Detail</button>
+                                        {auth.role === "NASABAH" ? (
+                                        <Delete onClick={() => dispatch(AsyncDeletePengajuanKerjasama(each.id_pengajuan))} cursor={'pointer'} />
+                                        ): (null)}
                                     </div>
                                 </td>
                             </tr>
                         ))}
-
                     </table>
                 </div>
             </section>
+             {/* Error Modal */}
+             <InfoModal show={error.status} setShow={handleModal} value={error.message} type="error" />
+            {/* Success Draft*/}
+            <InfoModal show={success.status} setShow={handleModal} value={success.message} type="success" />
         </main >
     )
 }

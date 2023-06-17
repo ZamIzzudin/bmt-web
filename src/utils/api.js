@@ -143,23 +143,37 @@ const api = (() => {
     return response.data.data;
   }
 
-  async function CreatePengajuanKerjasama(){
+  async function CreatePengajuanKerjasama(data){
     const url = baseUrl + `/pengajuan/kerjasama`;
 
-    const data_pengajuan = {
+    const formData = new FormData();
+    formData.append("id_nasabah", data.id_nasabah);
+    formData.append("produk_pembiayaan", data.produk_pembiayaan);
+    formData.append("durasi_pembiayaan", data.durasi_pembiayaan);
+    formData.append("nominal_pembiayaan", data.nominal_pembiayaan);
+    formData.append("nominal_pelunasan", data.nominal_pelunasan);
+    formData.append("foto_ktp", data.foto_ktp.file);
+    formData.append("foto_kk", data.foto_kk.file);
+    formData.append("dokumen_rab", data.dokumen_rab.file);
 
-    }
-    const response = await axios.post(url, data_pengajuan);
+    const response = await axios.post(url, formData);
     return response;
   }
 
   async function CreatePengajuanJualBeli(data){
     const url = baseUrl + `/pengajuan/jualbeli`;
 
-    const data_pengajuan = {
+    const formData = new FormData();
+    formData.append("id_nasabah", data.id_nasabah);
+    formData.append("produk_pembiayaan", data.produk_pembiayaan);
+    formData.append("durasi_pembiayaan", data.durasi_pembiayaan);
+    formData.append("nominal_pembiayaan", data.nominal_pembiayaan);
+    formData.append("nominal_pelunasan", data.nominal_pelunasan);
+    formData.append("foto_ktp", data.foto_ktp.file);
+    formData.append("foto_kk", data.foto_kk.file);
+    formData.append("dokumen_rab", data.dokumen_rab.file);
 
-    }
-    const response = await axios.post(url, data_pengajuan);
+    const response = await axios.post(url, formData);
     return response;
   }
 
@@ -175,24 +189,109 @@ const api = (() => {
     return response;
   }
 
-  async function ApprovePengajuanKerjasama(id){
+  async function DeletePengajuanKerjasama(id){
     const url = baseUrl + `/pengajuan/kerjasama/${id}`;
+
+    const response = await axios.delete(url);
+    return response;
+  }
+  async function DeletePengajuanJualBeli(id){
+    const url = baseUrl + `/pengajuan/jualbeli/${id}`;
+
+    const response = await axios.delete(url);
+    return response;
+  }
+  async function DeletePengajuanSimpanan(id){
+    const url = baseUrl + `/pengajuan/sukarela/${id}`;
+
+    const response = await axios.delete(url);
+    return response;
+  }
+
+  async function ApprovePengajuanKerjasama(id){
+    const url = baseUrl + `/pengajuan/kerjasama/approve/${id}`;
 
     const response = await axios.put(url);
     return response;
   }
   async function ApprovePengajuanJualBeli(id){
-    const url = baseUrl + `/pengajuan/jualbeli/${id}`;
+    const url = baseUrl + `/pengajuan/jualbeli/approve/${id}`;
 
     const response = await axios.put(url);
     return response;
   }
   async function ApprovePengajuanSimpanan(id){
-    const url = baseUrl + `/pengajuan/sukarela/${id}`;
+    const url = baseUrl + `/pengajuan/sukarela/approve/${id}`;
 
-    const response = await axios.put(url, {});
+    const response = await axios.put(url);
     return response;
   }
+
+  //Kas
+  async function GetKas(type){
+    let url = baseUrl + `/kas${type ? `?type=${type}` : ''}`;
+
+    const response = await axios.get(url);
+    if(response.data.data.length === 0){
+      return [];
+    }
+    return response.data.data;
+  }
+
+  async function CreateKas(data){
+    const url = baseUrl + `/kas`;
+
+    const data_create = {
+      jenis_transaksi: data.jenis_transaksi,
+      nominal: data.nominal,
+      catatan: data.catatan,
+    }
+
+    const response = await axios.post(url, data_create);
+    return response;
+  }
+
+  //Simpanan
+  async function GetSimpananPokok(){
+    const url = baseUrl + `/simpanan/pokok`;
+
+    const response = await axios.get(url);
+    if(response.data.data.length === 0){
+      return [];
+    }
+    return response.data.data;
+  }
+
+  async function GetSimpananWajib(type){
+    let url = baseUrl + `/simpanan/wajib`;
+
+    if(type){
+      url += `?type=${type}`;
+    }
+
+    const response = await axios.get(url);
+    if(response.data.data.length === 0){
+      return [];
+    }
+    return response.data.data;
+  }
+
+  async function GetSimpananSukarela(type){
+    let url = baseUrl + `/simpanan/sukarela`;
+
+    if(type){
+      url += `?type=${type}`;
+    }
+    
+    const response = await axios.get(url);
+    if(response.data.data.length === 0){
+      return [];
+    }
+    return response.data.data;
+  }
+
+  
+
   return {
     Login,
     Refresh,
@@ -208,9 +307,17 @@ const api = (() => {
     CreatePengajuanKerjasama,
     CreatePengajuanJualBeli,
     CreatePengajuanSimpanan,
+    DeletePengajuanSimpanan,
+    DeletePengajuanKerjasama,
+    DeletePengajuanJualBeli,
     ApprovePengajuanKerjasama,
     ApprovePengajuanJualBeli,
     ApprovePengajuanSimpanan,
+    GetSimpananPokok,
+    GetSimpananWajib,
+    GetSimpananSukarela,
+    GetKas,
+    CreateKas,
   };
 })();
 

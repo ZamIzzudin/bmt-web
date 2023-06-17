@@ -5,6 +5,7 @@ import { showLoading, hideLoading } from "react-redux-loading-bar";
 import { ShowSuccess } from '../success/middleware';
 import { ShowError } from '../error/middleware';
 
+//PENGAJUAN KERJASAMA
 function AsyncGetPengajuanKerjasama(type){
     return async dispatch => {
         dispatch(showLoading());
@@ -17,7 +18,35 @@ function AsyncGetPengajuanKerjasama(type){
         dispatch(hideLoading());
     }
 }
+function AsyncCreatePengajuanKerjasama(data){
+    return async dispatch => {    
+        try {
+            const result = await api.CreatePengajuanKerjasama(data);
+            console.info(result)
+            dispatch(ShowSuccess("Berhasil menambah Pengajuan"));
+            dispatch(AsyncGetPengajuanKerjasama("nasabah"));
+        } catch (err) {
+            console.error(err);
+            dispatch(ShowError("Gagal menambah Pengajuan"));
+        }
+    }
+}
 
+function AsyncDeletePengajuanKerjasama(id){
+    return async dispatch => {
+        try {
+            const result = await api.DeletePengajuanKerjasama(id);
+            console.info(result)
+            dispatch(ShowSuccess("Berhasil menghapus Pengajuan"));
+            dispatch(AsyncGetPengajuanKerjasama("nasabah"));
+        } catch (err) {
+            console.error(err);
+            dispatch(ShowError("Gagal menghapus Pengajuan"));
+        }
+    }
+}
+
+//PENGAJUAN JUALBELI
 function AsyncGetPengajuanJualBeli(type){
     return async dispatch => {
         dispatch(showLoading());
@@ -31,6 +60,35 @@ function AsyncGetPengajuanJualBeli(type){
     }
 }
 
+function AsyncCreatePengajuanJualBeli(data){
+    return async dispatch => {    
+        try {
+            const result = await api.CreatePengajuanJualBeli(data);
+            console.info(result)
+            dispatch(ShowSuccess("Berhasil menambah Pengajuan"));
+            dispatch(AsyncGetPengajuanJualBeli("nasabah"));
+        } catch (err) {
+            console.error(err);
+            dispatch(ShowError("Gagal menambah Pengajuan"));
+        }
+    }
+}
+
+function AsyncDeletePengajuanJualBeli(id){
+    return async dispatch => {
+        try {
+            const result = await api.DeletePengajuanJualBeli(id);
+            console.info(result)
+            dispatch(ShowSuccess("Berhasil menghapus Pengajuan"));
+            dispatch(AsyncGetPengajuanKerjasama("nasabah"));
+        } catch (err) {
+            console.error(err);
+            dispatch(ShowError("Gagal menghapus Pengajuan"));
+        }
+    }
+}
+
+//PENGAJUAN SIMPANAN
 function AsyncGetPengajuanSimpanan(type){
     return async dispatch => {
         dispatch(showLoading());
@@ -44,44 +102,30 @@ function AsyncGetPengajuanSimpanan(type){
     }
 }
 
-function AsyncCreatePengajuanKerjasama(data){
-    return async dispatch => {    
-        try {
-            const result = await api.CreatePengajuanKerjasama(data);
-            dispatch(ShowSuccess("Berhasil menambah Pengajuan"));
-            console.info(result)
-            dispatch(AsyncGetPengajuanKerjasama("nasabah"));
-        } catch (err) {
-            console.error(err);
-            dispatch(ShowError("Gagal menambah Pengajuan"));
-        }
-    }
-}
-
-function AsyncCreatePengajuanJualBeli(data){
-    return async dispatch => {    
-        try {
-            const result = await api.CreatePengajuanJualBeli(data);
-            dispatch(ShowSuccess("Berhasil menambah Pengajuan"));
-            console.info(result)
-            dispatch(AsyncGetPengajuanJualBeli("nasabah"));
-        } catch (err) {
-            console.error(err);
-            dispatch(ShowError("Gagal menambah Pengajuan"));
-        }
-    }
-}
-
 function AsyncCreatePengajuanSimpanan(data){
     return async dispatch => {    
         try {
             const result = await api.CreatePengajuanSimpanan(data);
-            dispatch(ShowSuccess("Berhasil menambah Pengajuan"));
             console.info(result)
+            dispatch(ShowSuccess("Berhasil menambah Pengajuan"));
             dispatch(AsyncGetPengajuanSimpanan("nasabah"));
         } catch (err) {
             console.error(err);
             dispatch(ShowError("Gagal menambah Pengajuan"));
+        }
+    }
+}
+
+function AsyncDeletePengajuanSimpanan(id){
+    return async dispatch => {
+        try {
+            const result = await api.DeletePengajuanSimpanan(id);
+            console.info(result)
+            dispatch(ShowSuccess("Berhasil menghapus Pengajuan"));
+            dispatch(AsyncGetPengajuanSimpanan("nasabah"));
+        } catch (err) {
+            console.error(err);
+            dispatch(ShowError("Gagal menghapus Pengajuan"));
         }
     }
 }
@@ -139,6 +183,9 @@ export {
     AsyncCreatePengajuanKerjasama,
     AsyncCreatePengajuanJualBeli,
     AsyncCreatePengajuanSimpanan,
+    AsyncDeletePengajuanSimpanan,
+    AsyncDeletePengajuanKerjasama,
+    AsyncDeletePengajuanJualBeli,
     AsyncApprovePengajuanKerjasama,
     AsyncApprovePengajuanJualBeli,
     AsyncApprovePengajuanSimpanan,

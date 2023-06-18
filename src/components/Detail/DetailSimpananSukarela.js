@@ -10,12 +10,12 @@ import { HideError } from '../../state/error/middleware'
 import { HideSuccess } from '../../state/success/middleware'
 import InfoModal from '../../components/InfoModal'
 
-import { AsyncGetAngsuranSukarela } from "../../state/angsuran/middleware";
+import { AsyncGetTransaksiSukarela } from "../../state/transaksi/middleware";
 
 import { ReactComponent as BackButton } from "../../assets/icons/arrow_back.svg";
 
 export default function DetailSimpananSukarela({ backButton, currentData }) {
-  const { auth = {}, angsuran = [], error, success } = useSelector((states) => states);
+  const { auth = {}, transaksi = [], error, success } = useSelector((states) => states);
   const dispatch = useDispatch();
   const [showModal, setShowModal] = useState(false);
   const [showModal2, setShowModal2] = useState(false);
@@ -31,7 +31,7 @@ function handleModal() {
 }
 
 useEffect(() => {
-  dispatch(AsyncGetAngsuranSukarela(currentData.id_simpanan));
+  dispatch(AsyncGetTransaksiSukarela(currentData.id_simpanan));
 }, [dispatch, currentData.id_simpanan]);
 
 
@@ -123,7 +123,7 @@ useEffect(() => {
               <th>Nominal</th>
               <th>Transaski</th>
             </tr>
-            {angsuran.map((each, index) => (
+            {transaksi.map((each, index) => (
               <tr>
                 <td>{index + 1}</td>
                 <td>{moment.utc(each.created_at).format("DD MMMM YYYY")}</td>

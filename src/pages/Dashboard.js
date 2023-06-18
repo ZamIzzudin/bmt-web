@@ -1,24 +1,26 @@
 // eslint-disable-next-line
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
+import { useEffect } from 'react';
+
+import { AsyncGetRekapKasNasabah, AsyncGetRekapKasPengelola } from '../state/rekap/middleware';
+
 import '../styles/pages/Dashboard.css'
 
 export default function Dashboard() {
-  const { auth = {} } = useSelector(states => states)
-
-  const total_pembiayaan = 3700000
-  const simpanan_pokok = 50000
-  const simpanan_wajib = 10000
-  const total_tabungan = 550000
-
-  const kas_masuk = 260564749000
-  const kas_keluar = 25786534
-  const anggota = 13
-  const nasabah = 3
-  const saldo_sementara = kas_masuk - kas_keluar
+  const { auth = {}, rekap = [] } = useSelector(states => states)
+  const dispatch = useDispatch();
 
   function formatMoney(amount) {
     return new Intl.NumberFormat('id-ID', { maximumSignificantDigits: 3 }).format(amount);
   }
+
+  useEffect(() => {
+    if(auth.role === 'NASABAH'){
+      dispatch(AsyncGetRekapKasNasabah())
+      return;
+    }
+    dispatch(AsyncGetRekapKasPengelola())
+  }, [dispatch, auth.role])
 
   return (
     <main>
@@ -26,14 +28,14 @@ export default function Dashboard() {
         <p>Selamat datang di <span>BMT AL FATH IKMI,</span></p>
         <h1 className="dashboard-page-header">DASHBOARD</h1>
       </div>
-      {auth.role !== 'user' ? (
+      {auth.role !== 'NASABAH' ? (
         <section className="dashboard">
           <div className="dashboard-item dashboard-anggota">
             <span>
               Jumlah Nasabah
             </span>
             <span style={{fontSize: '40px', fontWeight: 'normal'}}>
-              {anggota}
+              {rekap.jumlah_nasabah}
             </span>
           </div>
           <div className="dashboard-item dashboard-nasabah">
@@ -41,7 +43,7 @@ export default function Dashboard() {
               Total Simpanan Sukarela
             </span>
             <span style={{fontSize: '40px', fontWeight: 'normal'}}>
-              {nasabah}
+            Rp. {formatMoney(rekap.total_simpanan_sukarela)}
             </span>
           </div>
           <div className="dashboard-item dashboard-kas-masuk">
@@ -49,7 +51,7 @@ export default function Dashboard() {
               Total Simpanan Pokok
             </span>
             <span style={{fontSize: '32px', fontWeight: 'normal'}}>
-            Rp. {formatMoney(kas_masuk)}
+            Rp. {formatMoney(rekap.total_simpanan_pokok)}
             </span>
           </div>
           <div className="dashboard-item dashboard-kas-keluar">
@@ -57,7 +59,7 @@ export default function Dashboard() {
               Total Simpanan Wajib
             </span>
             <span style={{fontSize: '32px', fontWeight: 'normal'}}>
-            Rp. {formatMoney(kas_keluar)}
+            Rp. {formatMoney(rekap.total_simpanan_wajib)}
             </span>
           </div>
           <div className="dashboard-item dashboard-simpanan-pokok">
@@ -65,7 +67,7 @@ export default function Dashboard() {
               Total Kas Masuk
             </span>
             <span style={{fontSize: '32px', fontWeight: 'normal'}}>
-            Rp. {formatMoney(simpanan_pokok)}
+            Rp. {formatMoney(rekap.kas_masuk)}
             </span>
           </div>
           <div className="dashboard-item dashboard-simpanan-wajib">
@@ -73,7 +75,7 @@ export default function Dashboard() {
               Total Kas Keluar
             </span>
             <span style={{fontSize: '32px', fontWeight: 'normal'}}>
-            Rp. {formatMoney(simpanan_wajib)}
+            Rp. {formatMoney(rekap.kas_keluar)}
             </span>
           </div>
           <div className="dashboard-item dashboard-saldo">
@@ -84,7 +86,7 @@ export default function Dashboard() {
               Akumulasi total saldo dari tiap transaksi
             </span>
             <span style={{fontSize: '32px', fontWeight: 'normal'}}>
-              Rp. {formatMoney(saldo_sementara)}
+            Rp. {formatMoney(rekap.total_saldo_sementara)}
             </span>
           </div>
         </section>
@@ -95,15 +97,15 @@ export default function Dashboard() {
               Total Pembiayaan
             </span>
             <span>
-              Rp.{total_pembiayaan}
+            Rp. {formatMoney(rekap.total_pembiayaan)}
             </span>
           </div>
           <div className="dashboard-item dashboard-tabungan">
             <span>
-              Total Tabungan
+              Total Simpanan Wajib
             </span>
             <span>
-              Rp.{total_tabungan}
+            Rp. {formatMoney(rekap.total_simpanan_wajib)}
             </span>
           </div>
           <div className="dashboard-item dashboard-simpanan-pokok">
@@ -111,15 +113,15 @@ export default function Dashboard() {
               Total Simpanan Pokok
             </span>
             <span>
-              Rp.{simpanan_pokok}
+            Rp. {formatMoney(rekap.total_simpanan_pokok)}
             </span>
           </div>
           <div className="dashboard-item dashboard-simpanan-wajib">
             <span>
-              Total Simpanan Wajib
+              Total Simpanan Sukarela
             </span>
             <span>
-              Rp.{simpanan_wajib}
+            Rp. {formatMoney(rekap.total_simpanan_sukarela)}
             </span>
           </div>
         </section>

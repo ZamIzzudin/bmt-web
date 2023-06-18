@@ -246,9 +246,28 @@ const api = (() => {
       nominal: data.nominal,
       catatan: data.catatan,
     }
-
     const response = await axios.post(url, data_create);
     return response;
+  }
+
+  async function GetRekapPengelola(){
+    const url = baseUrl + `/kas/rekap`;
+
+    const response = await axios.get(url);
+    if(response.data.data.length === 0){
+      return [];
+    }
+    return response.data.data;
+  }
+
+  async function GetRekapNasabah(){
+    const url = baseUrl + `/kas/rekap/profile`;
+
+    const response = await axios.get(url);
+    if(response.data.data.length === 0){
+      return [];
+    }
+    return response.data.data;
   }
 
   //Simpanan
@@ -344,7 +363,92 @@ const api = (() => {
     return response;
   }
 
-  
+  //PEMBIAYAAN & ANGSURAN
+
+  //===============================================Kerjasama
+  async function GetPembiayaanKerjasama(type){
+    const url = baseUrl + `/pembiayaan/kerjasama`;
+
+    const response = await axios.get(url);
+
+    if(response.data.data.length === 0){
+      return [];
+    }
+    return response.data.data;
+  }
+
+  async function GetDetailTransaksiPembiayaanKerjasama(id){
+    const url = baseUrl + `/angsuran/kerjasama/${id}`;
+
+    const response = await axios.get(url);
+    if(response.data.data.length === 0){
+      return [];
+    }
+    return response.data.data;
+  }
+
+  async function GetNotLunasPembiayaanKerjasama(bulan, tahun){
+    const url = baseUrl + `/pembiayaan/kerjasama/check/belum-setor?bulan=${bulan}&tahun=${tahun}`;
+
+    const response = await axios.get(url);
+    if(response.data.data.length === 0){
+      return [];
+    }
+    return response.data.data;
+  }
+
+  async function SetorPembiayaanKerjasama(data){
+    const url = baseUrl + `/angsuran/kerjasama/setor/${data.id}`;
+
+    const data_post = {
+      nominal: Number(data.nominal),
+    }
+    const response = await axios.post(url, data_post);
+    return response;
+  }
+
+  //======================================Jual Beli
+
+  async function GetPembiayaanJualBeli(type){
+    const url = baseUrl + `/pembiayaan/jualbeli`;
+
+    const response = await axios.get(url);
+
+    if(response.data.data.length === 0){
+      return [];
+    }
+    return response.data.data;
+  }
+
+  async function GetDetailTransaksiPembiayaanJualBeli(id){
+    const url = baseUrl + `/angsuran/jualbeli/${id}`;
+
+    const response = await axios.get(url);
+    if(response.data.data.length === 0){
+      return [];
+    }
+    return response.data.data;
+  }
+
+  async function GetNotLunasPembiayaanJualBeli(bulan, tahun){
+    const url = baseUrl + `/pembiayaan/jualbeli/check/belum-setor?bulan=${bulan}&tahun=${tahun}`;
+
+    const response = await axios.get(url);
+    if(response.data.data.length === 0){
+      return [];
+    }
+    return response.data.data;
+  }
+
+  async function SetorPembiayaanJualBeli(data){
+    const url = baseUrl + `/angsuran/jualbeli/setor/${data.id}`;
+
+    const data_post = {
+      nominal: Number(data.nominal),
+    }
+    const response = await axios.post(url, data_post);
+    return response;
+  }
 
   return {
     Login,
@@ -376,8 +480,18 @@ const api = (() => {
     SetorSimpananSukarela,
     TarikSimpananSukarela,
     GetDetailTransaksiSukarela,
+    GetPembiayaanKerjasama,
+    GetDetailTransaksiPembiayaanKerjasama,
+    GetNotLunasPembiayaanKerjasama,
+    SetorPembiayaanKerjasama,
+    GetPembiayaanJualBeli,
+    GetDetailTransaksiPembiayaanJualBeli,
+    GetNotLunasPembiayaanJualBeli,
+    SetorPembiayaanJualBeli,
     GetKas,
     CreateKas,
+    GetRekapNasabah,
+    GetRekapPengelola,
   };
 })();
 

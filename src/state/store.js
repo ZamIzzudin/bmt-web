@@ -8,7 +8,9 @@ import UsersReducer from "./users/reducer"
 import PengajuanReducer from "./pengajuan/reducer"
 import KasReducer from './kas/reducer';
 import SimpananReducer from './simpanan/reducer';
-import AngsuranReducer from './angsuran/reducer';
+import TransaksiReducer from "./transaksi/reducer"
+import PembiayaanReducer from "./pembiayaan/reducer"
+import RekapReducer from "./rekap/reducer"
 
 const store = configureStore({
     reducer: {
@@ -20,7 +22,9 @@ const store = configureStore({
         pengajuan: PengajuanReducer,
         kas: KasReducer,
         simpanan: SimpananReducer,
-        angsuran: AngsuranReducer,
+        pembiayaan: PembiayaanReducer,
+        transaksi: TransaksiReducer,
+        rekap: RekapReducer,
     },
 });
 

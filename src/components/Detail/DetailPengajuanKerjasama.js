@@ -16,6 +16,11 @@ export default function DetailPengajuanKerjasama({ backButton, currentData }) {
     const attach_kk = JSON.parse(currentData.attach_kk)
     const dokumen_rab = JSON.parse(currentData.attach_lainnya)
 
+    function formatMoney(amount) {
+        return new Intl.NumberFormat('id-ID', { maximumSignificantDigits: 3 }).format(amount);
+    }
+
+
     return (
         <main>
             <h1 className="page-header">Detail Pengajuan {type}</h1>
@@ -44,11 +49,11 @@ export default function DetailPengajuanKerjasama({ backButton, currentData }) {
                             </tr>
                             <tr>
                                 <td>Nominal Pembiayaan</td>
-                                <td>{currentData.nominal_awal}</td>
+                                <td>{`Rp. ${formatMoney(currentData.nominal_awal)}`}</td>
                             </tr>
                             <tr>
                                 <td>Nominal Pelunasan</td>
-                                <td>{currentData.nominal_akhir}</td>
+                                <td>{`Rp. ${formatMoney(currentData.nominal_akhir)}`}</td>
                             </tr>
                             <tr>
                                 <td>Tanggal Pengajuan</td>

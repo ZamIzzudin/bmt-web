@@ -1,86 +1,56 @@
 import React from "react";
 
 import "../../styles/components/details/Rekapitulasi.css";
+import moment from "moment";
 
-const data = [
-        {
-            no: 1,
-            nama: "Agus",
-            nominal: "Rp.200.000",
-            angsuran: "Rp.68.333",
-            tanggal: "09/05/2022",
-            sisa_angsuran: "Rp.205.000",
-            status: "Belum Lunas",
-            transaksi: "Setor"
-        },
-        {
-            no: 2,
-            nama: "Agus",
-            jenis: "Mudharabah",
-            nominal: "Rp.200.000",
-            tanggal: "09/05/2022",
-            sisa_angsuran: "Rp.205.000",
-            status: "Belum Lunas",
-            transaksi: "Setor"
-        },
-        {
-            no: 3,
-            nama: "Agus",
-            nominal: "Rp.200.000",
-            angsuran: "Rp.68.333",
-            tanggal: "09/05/2022",
-            sisa_angsuran: "Rp.205.000",
-            status: "Lunas",
-            transaksi: "Setor"
-        }
-    ]
+const Rekapitulasi = ({ showForm, dataRekapitulasi, dataPembiayaan }) => {
 
-const Rekapitulasi = () => {
+  function formatMoney(amount) {
+    return new Intl.NumberFormat('id-ID', { maximumSignificantDigits: 3 }).format(amount);
+}
   return (
     <section className="section-rekapitulasi">
       <div className="user-information">
         <div class="detail">
           <div class="detail-label">Nama</div>
-          <div class="detail-value">: Amir Kholiluddin</div>
+          <div class="detail-value">: {dataPembiayaan.nama}</div>
         </div>
         <div class="detail">
           <div class="detail-label">Jenis Pembiayaan</div>
-          <div class="detail-value">: Mudharabah</div>
+          <div class="detail-value">: {dataPembiayaan.produk_pembiayaan}</div>
         </div>
         <div class="detail">
           <div class="detail-label">Nominal Pembiayaan</div>
-          <div class="detail-value">: Rp 800.000</div>
+          <div class="detail-value">: {`Rp. ${formatMoney(dataPembiayaan.nominal)}`}</div>
         </div>
         <div class="detail">
           <div class="detail-label">Nominal Pelunasan</div>
-          <div class="detail-value">: Rp 805.000</div>
+          <div class="detail-value">: {`Rp. ${formatMoney(dataPembiayaan.pelunasan)}`}</div>
         </div>
         <div class="detail">
           <div class="detail-label">Status</div>
-          <div class="detail-value">: Lunas</div>
+          <div class="detail-value">: {dataPembiayaan.status}</div>
         </div>
       </div>
 
       <div style={{paddingTop: '20px'}}>
         <table>
-          <tr>
-            <th>No.</th>
-            <th>Tanggal</th>
-            <th>Teller</th>
-            <th>Nominal</th>
-            <th>Sisa Angsuran</th>
-            <th>Transaksi</th>
-          </tr>
-          {data.map((each) => (
             <tr>
-              <td>{each.no}</td>
-              <td>{each.tanggal}</td>
-              <td>{each.nominal}</td>
-              <td>{each.nominal}</td>
-              <td>{each.sisa_angsuran}</td>
-              <td>{each.transaksi}</td>
+              <th>No.</th>
+              <th>Tanggal</th>
+              <th>Teller</th>
+              <th>Nominal</th>
+              <th>Transaksi</th>
             </tr>
-          ))}
+            {dataRekapitulasi.map((each, index) => (
+              <tr>
+                <td>{index + 1}</td>
+                <td>{moment.utc(each.created_at).format("DD MMMM YYYY")}</td>
+                <td>{each.teller}</td>
+                <td>{formatMoney(each.nominal)}</td>
+                <td>{each.tipe_angsuran}</td>
+              </tr>
+            ))}
         </table>
       </div>
 

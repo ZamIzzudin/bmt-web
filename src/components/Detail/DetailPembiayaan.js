@@ -1,64 +1,55 @@
-import { useSelector } from "react-redux";
-import { useLocation, Link } from "react-router-dom";
-import { useState } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { useLocation } from "react-router-dom";
+import { useState, useEffect } from "react";
 
 import SetorModal from "../Modal/SetorModal";
+import Rekapitulasi from "./Rekapitulasi";
+
+import { HideError } from '../../state/error/middleware'
+import { HideSuccess } from '../../state/success/middleware'
+import InfoModal from '../../components/InfoModal'
+
+import { AsyncGetTransaksiKerjasama } from "../../state/transaksi/middleware";
 
 import { ReactComponent as BackButton } from "../../assets/icons/arrow_back.svg";
+import moment from "moment";
 
-export default function DetailPembiayaan({ backButton, data }) {
-  const { auth = { status: false, role: null } } = useSelector((states) => states);
-
+export default function DetailPembiayaan({ backButton, currentData }) {
+  const { auth = {}, transaksi = [], error, success } = useSelector((states) => states);
+  const dispatch = useDispatch();
   const location = useLocation().pathname;
   const [showModal, setShowModal] = useState(false);
+  const [showRekapitulasi, setShowRekapitulasi] = useState(false);
 
-  const detail = {
-    id: "SMPSKR-001",
-    anggota: "Agus Mulyadi (NSB-001)",
-    jenis_pembiayaan: "Murabahah",
-    nominal_pembiayaan: "Rp. 800.000",
-    nominal_pelunasasn: "Rp. 805.000",
-    angsuran_bulanan: "Rp. 200.000",
-    durasi_pembiayaan: "4 Bulan",
-    tanggal_pembuatan: "09/06/2020",
-    tanggal_pembayaran: "12/11/2023",
-    status_pembiayaan: "Lunas",
-  };
+  function formatMoney(amount) {
+    return new Intl.NumberFormat('id-ID', { maximumSignificantDigits: 3 }).format(amount);
+}
 
-  const transaksi = [
-    {
-      no: 1,
-      tanggal: "12/10/2023",
-      nama: "Mawar",
-      sisa_angsuran: "Rp. 0",
-      nominal: "Rp.205.000",
-      jenis: "Setor",
-    },
-    {
-      no: 2,
-      tanggal: "07/09/2023",
-      nama: "Mawar",
-      sisa_angsuran: "Rp.205.000",
-      nominal: "Rp.200.000",
-      jenis: "Setor",
-    },
-    {
-      no: 3,
-      tanggal: "19/08/2023",
-      nama: "Mawar",
-      sisa_angsuran: "Rp.405.000",
-      nominal: "Rp.200.000",
-      jenis: "Setor",
-    },
-    {
-      no: 4,
-      tanggal: "09/07/2023",
-      nama: "Mawar",
-      sisa_angsuran: "Rp.605.000",
-      nominal: "Rp.200.000",
-      jenis: "Setor",
-    },
-  ];
+function handleModal() {
+  dispatch(HideError())
+  dispatch(HideSuccess())
+}
+
+useEffect(() => {
+  dispatch(AsyncGetTransaksiKerjasama(currentData.id_pembiayaan));
+}, [dispatch, currentData.id_pembiayaan]);
+
+  if (showRekapitulasi) {
+    return (
+        <main>
+            <h1 className="page-header">Rekapitulasi Pembiayaan</h1>
+            <section className="content-section">
+                <div className="section-header-container">
+                    <h4 className="section-header">Form Rekapitulasi</h4>
+                    <button onClick={() => { setShowRekapitulasi(false) }} className="section-add-btn">-</button>
+                </div>
+                <div className="section-body">
+                    <Rekapitulasi showForm={setShowRekapitulasi} dataRekapitulasi={transaksi} dataPembiayaan={currentData} />
+                </div>
+            </section>
+        </main>
+    )
+}
 
   return (
     <main>
@@ -71,7 +62,7 @@ export default function DetailPembiayaan({ backButton, data }) {
       >
         {location.includes("/pembiayaan/kerjasama") ? (
           <h1 className="page-header">Daftar Pembiayaan Kerjasama</h1>
-          ) : (
+        ) : (
           <h1 className="page-header">Daftar Pembiayaan Jual Beli</h1>
         )}
         <div style={{ paddingRight: "100px", cursor: "pointer" }}>
@@ -84,29 +75,69 @@ export default function DetailPembiayaan({ backButton, data }) {
         </div>
         <div className="section-body">
           <table className="detail-table">
-            {Object.keys(detail).map((each) => (
               <tr>
-                <td>{each.replace("_", " ")}</td>
-                <td>{detail[each]}</td>
+                <td>ID Transaksi</td>
+                <td>{`PMBKRJ-${currentData.id_pembiayaan.substr(0,3)}`}</td>
               </tr>
-            ))}
+              <tr>
+                <td>Nasabah</td>
+                <td>{`${currentData.nama} (NSB-${currentData.id_nasabah.substr(0,3)})`}</td>
+              </tr>
+              <tr>
+                <td>Jenis Pembiayaan</td>
+                <td>{currentData.produk_pembiayaan}</td>
+              </tr>
+              <tr>
+                <td>Nominal Pembiayaan</td>
+                <td>{`Rp. ${formatMoney(currentData.nominal)}`}</td>
+              </tr>
+              <tr>
+                <td>Nominal Pelunasan</td>
+                <td>{`Rp. ${formatMoney(currentData.pelunasan)}`}</td>
+              </tr>
+              <tr>
+                <td>Angsuran Bulanan</td>
+                <td>{`Rp. ${formatMoney(currentData.min_angsuran)}`}</td>
+              </tr>
+              <tr>
+                <td>Durasi Pembiayaan</td>
+                <td>{currentData.durasi} Bulan</td>
+              </tr>
+              <tr>
+                <td>Tanggal Pembuatan</td>
+                <td>{moment.utc(currentData.created_at).format("DD MMMM YYYY")}</td>
+              </tr>
+              <tr>
+                <td>Tenggat Pembayaran</td>
+                <td>{moment.unix(currentData.tenggat_pelunasan).format("DD MMMM YYYY")}</td>
+              </tr>
+              <tr>
+                <td>Sisa Angsuran</td>
+                <td>{`Rp. ${formatMoney(currentData.sisa_angsuran)}`}</td>
+              </tr>
+              <tr>
+                <td>Status Pembiayaan</td>
+                <td>{currentData.status}</td>
+              </tr>
           </table>
-          {auth.role === "admin" ? (
+          {auth.role === "ADMIN" || auth.role === "ADMIN_MASTER" ? (
             <div className="form-cta gap-3">
               {location.includes("/pembiayaan/kerjasama") ? (
-                <Link
-                  to={"/rekapitulasi-pembiayaan-kerjasama"}
-                  className="form-submit-button"
-                >
-                  Cetak Transaksi
-                </Link>
+                <>
+                  <button
+                    onClick={() => { setShowRekapitulasi(true) }}
+                    className="form-submit-button"
+                  >
+                    Cetak Transaksi
+                  </button>
+                </>
               ) : (
-                <Link
-                  to={"/rekapitulasi-pembiayaan-jualbeli"}
+                  <button
+                  onClick={() => { setShowRekapitulasi(true) }}
                   className="form-submit-button"
                 >
                   Cetak Transaksi
-                </Link>
+                </button>
               )}
               <button
                 onClick={() => setShowModal(true)}
@@ -116,17 +147,14 @@ export default function DetailPembiayaan({ backButton, data }) {
                 Setor
               </button>
             </div>
-          ) : auth.role === "manager" ? (
+          ) : auth.role === "MANAGER" ? (
               <button
-                onClick={() => setShowModal(true)}
-                className="form-submit-button"
-                type="button"
-              >
-                Setor
-              </button>
-          ) : (
-            null
-          )}
+              onClick={() => { setShowRekapitulasi(true) }}
+              className="form-submit-button"
+            >
+              Cetak Transaksi
+            </button> 
+          ) : null}
         </div>
       </section>
       <section className="content-section">
@@ -141,23 +169,26 @@ export default function DetailPembiayaan({ backButton, data }) {
               <th>Tanggal</th>
               <th>Teller</th>
               <th>Nominal</th>
-              <th>Sisa Angsuran</th>
-              <th>Transaski</th>
+              <th>Transaksi</th>
             </tr>
-            {transaksi.map((each) => (
+            {transaksi.map((each, index) => (
               <tr>
-                <td>{each.no}</td>
-                <td>{each.tanggal}</td>
-                <td>{each.nama}</td>
-                <td>{each.nominal}</td>
-                <td>{each.sisa_angsuran}</td>
-                <td>{each.jenis}</td>
+                <td>{index + 1}</td>
+                <td>{moment.utc(each.created_at).format("DD MMMM YYYY")}</td>
+                <td>{each.teller}</td>
+                <td>{formatMoney(each.nominal)}</td>
+                <td>{each.tipe_angsuran}</td>
               </tr>
             ))}
           </table>
         </div>
       </section>
-      <SetorModal show={showModal} setShow={setShowModal} />
+      <SetorModal show={showModal} setShow={setShowModal} data={currentData}/>
+
+       {/* Error Modal */}
+       <InfoModal show={error.status} setShow={handleModal} value={error.message} type="error" />
+      {/* Success Draft*/}
+      <InfoModal show={success.status} setShow={handleModal} value={success.message} type="success" />
     </main>
   );
 }

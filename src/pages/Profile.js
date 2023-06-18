@@ -175,9 +175,9 @@ export default function Profile() {
               <Form.Label>Role <span className="required">*</span></Form.Label>
               <Form.Control required disabled value={auth.role} />
             </Form.Group>
-            <div className="form-cta">
+            {/* <div className="form-cta">
               <button className="form-submit-button" type="submit">Simpan</button>
-            </div>
+            </div> */}
           </Form>
         </div>
       </section>

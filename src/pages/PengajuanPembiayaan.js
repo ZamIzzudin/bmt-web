@@ -125,7 +125,7 @@ export default function PengajuanPembiayaan() {
                                 <td>{`NSB-${each.id_nasabah.substring(0,3)}`}</td>
                                 <td>{each.nama}</td>
                                 <td>{each.produk_pengajuan}</td>
-                                <td>{formatMoney(each.nominal_akhir)}</td>
+                                <td>{`Rp. ${formatMoney(each.nominal_akhir)}`}</td>
                                 <td>{each.durasi} Bulan</td>
                                 <td>{moment(each.tanggal_pengajuan).format("DD MMMM YYYY")}</td>
                                 <td>{each.status_pengajuan}</td>

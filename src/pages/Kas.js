@@ -10,11 +10,12 @@ import { HideSuccess } from '../state/success/middleware'
 import InfoModal from '../components/InfoModal'
 
 import { AsyncGetKas } from '../state/kas/middleware';
+import { AsyncGetRekapKasPengelola } from '../state/rekap/middleware';
 
 import TambahKas from '../components/Form/TambahKas'
 
 export default function Kas() {
-    const { auth = {}, kas = [], success, error } = useSelector(states => states)
+    const { auth = {}, kas = [], rekap = [], success, error } = useSelector(states => states)
     const dispatch = useDispatch()
     const location = useLocation().pathname
     const type = location.split('/')[2]
@@ -39,6 +40,7 @@ export default function Kas() {
             return;
         } else if(type === 'rekap') {
             dispatch(AsyncGetKas())
+            dispatch(AsyncGetRekapKasPengelola())
             return;
         }
     }, [dispatch, type])
@@ -59,13 +61,11 @@ export default function Kas() {
             </main>
         )
     }
-
     return (
         <main>
             <h1 className="page-header">Laporan Kas</h1>
 
             <div style={{ paddingRight: "50px", display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                <a className={`section-edit-btn ${auth.role === 'user' ? ('hidden') : null}`} href="/" target="_blank">Cetak</a>
                 <button
                     onClick={() => setShowAddForm(true)}
                     className={`section-add-btn ${auth.role !== "user" && type !== 'rekap' ? null : "hidden"}`}
@@ -175,9 +175,9 @@ export default function Kas() {
                                 <th className="text-center">Saldo Sementara</th>
                             </tr>
                             <tr>
-                                <td className="text-center">Rp.150.000 (+)</td>
-                                <td className="text-center">Rp.10.000 (-)</td>
-                                <td className="text-center">Rp.140.000</td>
+                                <td className="text-center">{`${formatMoney(rekap.kas_masuk)}`} (+)</td>
+                                <td className="text-center">{`${formatMoney(rekap.kas_keluar)}`} (-)</td>
+                                <td className="text-center">{`${formatMoney(rekap.total_saldo_sementara)}`}</td>
                             </tr>
                         </table>
                     </div>

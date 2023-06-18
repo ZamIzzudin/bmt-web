@@ -2,7 +2,7 @@ import { Modal, Form } from 'react-bootstrap'
 import { useState } from 'react'
 import { useDispatch } from 'react-redux';
 
-import { AsyncTarikSimpananSukarela } from "../../state/angsuran/middleware";
+import { AsyncTarikSimpananSukarela } from "../../state/pembiayaan/middleware";
 
 import '../../styles/components/CTAModal.css'
 

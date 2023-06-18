@@ -15,10 +15,19 @@ export default function FormPengajuanPembiayaan({ showForm }) {
     const [produk_pembiayaan, setProdukPembiayaan] = useState('Mudharabah')
     const [durasi_pembiayaan, setDurasiPembiayaan] = useState('1')
     const [nominal_pembiayaan, setNominalPembiayaan] = useState()
-    const [nominal_pelunasan, setNominalPelunasan] = useState()
     const [foto_ktp, setGambarKTP] = useState(null)
     const [foto_kk, setGambarKK] = useState(null)
     const [dokumen_rab, setDokumenRKB] = useState(null)
+    
+    const calculateNominalPelunasan = (durasi) => {
+            const percentage = parseInt(durasi) * 2;
+            return parseInt(nominal_pembiayaan) + (percentage / 100) * parseInt(nominal_pembiayaan);
+        }
+    const nominal_pelunasan = calculateNominalPelunasan(durasi_pembiayaan) || 0
+
+    function formatMoney(amount) {
+        return new Intl.NumberFormat('id-ID', { maximumSignificantDigits: 3 }).format(amount);
+    }
 
     function handleSubmitPengajuan(e) {
         e.preventDefault()
@@ -75,7 +84,19 @@ export default function FormPengajuanPembiayaan({ showForm }) {
                             <option value={'9'}>9</option>
                             <option value={'10'}>10</option>
                             <option value={'11'}>11</option>
-                            <option value={'12'}>12</option>
+                            <option value={'12'}>12 (1 Tahun)</option>
+                            <option value={'13'}>13</option>
+                            <option value={'14'}>14</option>
+                            <option value={'15'}>15</option>
+                            <option value={'16'}>16</option>
+                            <option value={'17'}>17</option>
+                            <option value={'18'}>18</option>
+                            <option value={'19'}>19</option>
+                            <option value={'20'}>20</option>
+                            <option value={'21'}>21</option>
+                            <option value={'22'}>22</option>
+                            <option value={'23'}>23</option>
+                            <option value={'24'}>24 (2 Tahun)</option>
                         </Form.Select>
                     </Form.Group>
                 </Col>
@@ -84,13 +105,13 @@ export default function FormPengajuanPembiayaan({ showForm }) {
                 <Col>
                     <Form.Group>
                         <Form.Label>Nominal Pembiayaan (Rp)<span className="required">*</span></Form.Label>
-                        <Form.Control required value={nominal_pembiayaan} onChange={e => setNominalPembiayaan(e.target.value)} />
+                        <Form.Control required value={nominal_pembiayaan} onChange={e => setNominalPembiayaan(e.target.value)} type='text' />
                     </Form.Group>
                 </Col>
                 <Col>
                     <Form.Group>
                         <Form.Label>Nominal Pelunasan (Rp)<span className="required">*</span></Form.Label>
-                        <Form.Control required value={nominal_pelunasan} onChange={e => setNominalPelunasan(e.target.value)} />
+                        <Form.Control required value={`Rp. ${formatMoney(nominal_pelunasan)}`} disabled />
                     </Form.Group>
                 </Col>
             </Row>

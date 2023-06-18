@@ -1,95 +1,47 @@
 import { useState } from "react";
 import { useLocation } from "react-router-dom";
-// import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 
-import TambahPembiayaan from "../components/Form/TambahPembiayaan";
 import DetailPembiayaan from "../components/Detail/DetailPembiayaan";
 
+import { AsyncGetPembiayaanJualBeli } from "../state/pembiayaan/middleware";
+
 import { ReactComponent as Search } from "../assets/icons/search.svg";
+import { useEffect } from "react";
+import moment from "moment";
 
 export default function PembiayaanJualBeli() {
-//   const { auth = { status: false, role: null } } = useSelector(
-//     (states) => states
-//   );
+  const { auth = {}, pembiayaan = [] } = useSelector((states) => states);
+  const dispatch = useDispatch();
 
   const location = useLocation().pathname;
   const type = location.split("/")[2];
 
-  const [showAddForm, setShowAddForm] = useState(false);
   const [showDetail, setShowDetail] = useState(false);
+  const [selectedData, setSelectedData] = useState(null);
 
   function backButton() {
     setShowDetail(false);
   }
 
-  const data = [
-    {
-      no: 1,
-      id: "NSB-001",
-      nama: "Agus",
-      jenis: "Hawalah",
-      nominal: "Rp.200.000",
-      pelunasan: "Rp.205.000",
-      durasi: "3 bln",
-      angsuran: "Rp.68.333",
-      laba: "0%",
-      tenggat: "09/05/2022",
-      status: "Belum Lunas",
-    },
-    {
-      no: 2,
-      id: "NSB-001",
-      nama: "Agus",
-      jenis: "Mudharabah",
-      nominal: "Rp.200.000",
-      pelunasan: "Rp.205.000",
-      durasi: "5 bln",
-      angsuran: "Rp.68.333",
-      laba: "5%",
-      tenggat: "09/05/2022",
-      status: "Belum Lunas",
-    },
-    {
-      no: 3,
-      id: "NSB-001",
-      nama: "Agus",
-      jenis: "Qardul Hasan",
-      nominal: "Rp.200.000",
-      pelunasan: "Rp.205.000",
-      durasi: "3 bln",
-      angsuran: "Rp.68.333",
-      laba: "0%",
-      tenggat: "09/05/2022",
-      status: "Lunas",
-    },
-  ];
+  function formatMoney(amount) {
+    return new Intl.NumberFormat("id-ID", {
+      maximumSignificantDigits: 3,
+    }).format(amount);
+  }
+
+  useEffect(() => {
+    if (auth.role === "NASABAH") {
+      dispatch(AsyncGetPembiayaanJualBeli("nasabah"));
+      return;
+    }
+    dispatch(AsyncGetPembiayaanJualBeli("pengelola"));
+  }, [dispatch, auth.role]);
 
   // Form that shown when parameter (true)
   if (showDetail) {
-    return <DetailPembiayaan backButton={backButton} />;
-  }
-
-  if (showAddForm) {
     return (
-      <main>
-        <h1 className="page-header">Pengajuan Simpanan</h1>
-        <section className="content-section">
-          <div className="section-header-container">
-            <h4 className="section-header">Form Pengajuan</h4>
-            <button
-              onClick={() => {
-                setShowAddForm(false);
-              }}
-              className="section-add-btn"
-            >
-              -
-            </button>
-          </div>
-          <div className="section-body">
-            <TambahPembiayaan showForm={setShowAddForm} />
-          </div>
-        </section>
-      </main>
+      <DetailPembiayaan backButton={backButton} currentData={selectedData} />
     );
   }
 
@@ -103,12 +55,6 @@ export default function PembiayaanJualBeli() {
         }}
       >
         <h1 className="page-header">Daftar Pembiayaan</h1>
-        <div style={{ paddingRight: "50px" }}>
-          <button
-            onClick={() => setShowAddForm(true)}
-            className={`section-add-btn ${type === "rekap" ? "hidden" : null}`}
-          >+</button>
-        </div>
       </div>
       <section className="content-section">
         <div className="section-header-container">
@@ -152,22 +98,27 @@ export default function PembiayaanJualBeli() {
               <th>Status</th>
               <th className="text-center">Action</th>
             </tr>
-            {data.map((each) => (
+            {pembiayaan.map((each, index) => (
               <tr>
-                <td>{each.no}</td>
-                <td>{each.id}</td>
+                <td>{index + 1}</td>
+                <td>{`NSB-${each.id_nasabah.substr(0, 3)}`}</td>
                 <td>{each.nama}</td>
-                <td>{each.jenis}</td>
-                <td>{each.nominal}</td>
-                <td>{each.pelunasan}</td>
-                <td>{each.durasi}</td>
-                <td>{each.angsuran}</td>
-                <td>{each.tenggat}</td>
+                <td>{each.produk_pembiayaan}</td>
+                <td>{`Rp. ${formatMoney(each.nominal)}`}</td>
+                <td>{`Rp. ${formatMoney(each.pelunasan)}`}</td>
+                <td>{each.durasi} Bulan</td>
+                <td>{`Rp. ${formatMoney(each.min_angsuran)}`}</td>
+                <td>
+                  {moment.unix(each.tenggat_pelunasan).format("DD/MM/YYYY")}
+                </td>
                 <td>{each.status}</td>
                 <td className="table-cta">
                   <div className="table-cta-container">
                     <button
-                      onClick={() => setShowDetail(true)}
+                      onClick={() => {
+                        setShowDetail(true);
+                        setSelectedData(each);
+                      }}
                       className="section-edit-btn"
                     >
                       Detail

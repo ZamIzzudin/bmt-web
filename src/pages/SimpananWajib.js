@@ -32,7 +32,6 @@ export default function SimpananWajib() {
     setShowNotLunas(false);
     dispatch(AsyncGetSimpananWajib());
   }
-  console.info(simpanan);
 
   function formatMoney(amount) {
     return new Intl.NumberFormat('id-ID', { maximumSignificantDigits: 3 }).format(amount);

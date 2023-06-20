@@ -14,6 +14,7 @@ function AsyncGetSimpananPokok(){
                         dispatch(GetSimpananAction(data));
                 } catch (err) {
                         console.error(err);
+                        dispatch(GetSimpananAction([]));
                 }
                 dispatch(hideLoading());
         }
@@ -28,6 +29,7 @@ function AsyncGetSimpananWajib(){
                         dispatch(GetSimpananAction(data));
                 } catch (err) {
                         console.error(err);
+                        dispatch(GetSimpananAction([]));
                 }
                 dispatch(hideLoading());
         }
@@ -84,6 +86,7 @@ function AsyncGetSimpananSukarela(type){
                         dispatch(GetSimpananAction(data));
                 } catch (err) {
                         console.error(err);
+                        dispatch(GetSimpananAction([]));
                 }
                 dispatch(hideLoading());
         }

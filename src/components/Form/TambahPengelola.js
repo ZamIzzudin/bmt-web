@@ -10,7 +10,7 @@ import { ReactComponent as BackButton } from '../../assets/icons/arrow_back.svg'
 export default function TambahPengelola({ backButton }) {
   const dispatch = useDispatch();
 
-  const [role, setRole] = useState('');
+  const [role, setRole] = useState('Admin');
   const [nama, setNama] = useState('');
   const [password, setPassword] = useState('');
   const [email, setEmail] = useState('');
@@ -36,6 +36,7 @@ export default function TambahPengelola({ backButton }) {
     catch(err) {
       console.error(err);
     }
+    backButton();
   }
     return(
       <main>
@@ -105,8 +106,8 @@ export default function TambahPengelola({ backButton }) {
               <Col md={6}>
                 <Form.Group>
                     <Form.Label>Role<span className="required">*</span></Form.Label>
-                        <Form.Select onChange={e => setRole(e.target.value)}>                
-                            <option value="Admin" selected>Admin</option>
+                        <Form.Select onChange={e => setRole(e.target.value)} value={role}>                
+                            <option  value="Admin" selected>Admin</option>
                             <option value="Manager">Manager</option>
                             <option value="Officer">Account Officer</option>
                             <option value="Admin Master">Admin Master</option>

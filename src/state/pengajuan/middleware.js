@@ -14,6 +14,7 @@ function AsyncGetPengajuanKerjasama(type){
             dispatch(GetPengajuanAction(data));
         } catch (err) {
             console.error(err);
+            dispatch(GetPengajuanAction([]));
         }
         dispatch(hideLoading());
     }
@@ -52,9 +53,11 @@ function AsyncGetPengajuanJualBeli(type){
         dispatch(showLoading());
         try {
             const data = await api.GetPengajuanJualBeli(type);
+
             dispatch(GetPengajuanAction(data));
         } catch (err) {
             console.error(err);
+            dispatch(GetPengajuanAction([]));
         }
         dispatch(hideLoading());
     }
@@ -97,6 +100,7 @@ function AsyncGetPengajuanSimpanan(type){
             dispatch(GetPengajuanAction(data));
         } catch (err) {
             console.error(err);
+            dispatch(GetPengajuanAction([]));
         }
         dispatch(hideLoading());
     }

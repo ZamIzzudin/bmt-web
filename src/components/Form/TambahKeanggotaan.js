@@ -86,7 +86,7 @@ export default function TambahKeanggotaan({ showForm }) {
                 <Col>
                     <Form.Group>
                         <Form.Label>Password <span className="required">*</span></Form.Label>
-                        <Form.Control required value={password} onChange={(e) => setPassword(e.target.value)} />
+                        <Form.Control type='password' required value={password} onChange={(e) => setPassword(e.target.value)} />
                     </Form.Group>
                 </Col>
             </Row>
@@ -117,32 +117,13 @@ export default function TambahKeanggotaan({ showForm }) {
                     </Form.Group>
                 </Col>
             </Row>
-            {/* <Row>
-                <Col>
-                <Form.Group>
-                    <Form.Label>Produk Simpanan <span className="required">*</span></Form.Label>
-                    <Form.Select required value={} >
-                        <option value={'Simpanan Pokok'}>Simpanan Pokok</option>
-                    </Form.Select>
-                </Form.Group>
-                </Col>
-                <Col>
-                    <Form.Group>
-                        <Form.Label>Nominal Simpanan Pokok <span className="required">*</span></Form.Label>
-                            <div style={{display: 'flex', gap: '10px'}}>
-                                <p style={{fontSize: '18px', fontWeight: '600'}}>Rp.</p>
-                                <Form.Control required />
-                            </div>
-                    </Form.Group>
-                </Col>
-            </Row> */}
             <Row>
                 <Col md={6}>
                     <Form.Group>
                         <Form.Label>Role <span className="required">*</span></Form.Label>
                         <Form.Select value={role} onChange={(e) => setRole(e.target.value)}>
                             <option></option>
-                            <option value={'Nasabah'}>Anggota</option>
+                            <option value={'Nasabah'}>Nasabah</option>
                         </Form.Select>
                     </Form.Group>
                 </Col>

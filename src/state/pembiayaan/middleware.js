@@ -17,6 +17,7 @@ function AsyncGetPembiayaanKerjasama(type){
                         dispatch(GetPembiayaanAction(data));
                 } catch (err) {
                         console.error(err);
+                        dispatch(GetPembiayaanAction([]));
                 }
                 dispatch(hideLoading());
         }     
@@ -35,6 +36,7 @@ function AsyncSetorPembiayaanKerjasama(data){
                 } catch (err) {
                         console.error(err);
                         dispatch(ShowError("Gagal setor/tarik pembiayaan"));
+                        
                 }
                 dispatch(hideLoading());
         }
@@ -49,6 +51,7 @@ function AsyncGetPembiayaanJualBeli(type){
                         dispatch(GetPembiayaanAction(data));
                 } catch (err) {
                         console.error(err);
+                        dispatch(GetPembiayaanAction([]));
                 }
                 dispatch(hideLoading());
         }     

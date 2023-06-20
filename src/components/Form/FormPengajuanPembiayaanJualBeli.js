@@ -111,7 +111,7 @@ export default function FormPengajuanJualBeli({ showForm }) {
                 <Col>
                     <Form.Group>
                         <Form.Label>Nominal Pelunasan (Rp)<span className="required">*</span></Form.Label>
-                        <Form.Control required value={`Rp. ${formatMoney(nominal_pelunasan)}`} />
+                        <Form.Control required disabled value={`Rp. ${formatMoney(nominal_pelunasan)}`} />
                     </Form.Group>
                 </Col>
             </Row>

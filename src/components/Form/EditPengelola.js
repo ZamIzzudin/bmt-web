@@ -107,10 +107,10 @@ export default function EditPengelola({ backButton, currentData }) {
                 <Form.Group>
                     <Form.Label>Role<span className="required">*</span></Form.Label>
                         <Form.Select value={role} onChange={e => setRole(e.target.value)} disabled>
-                          <option>Admin Master</option>
-                          <option>Admin</option>
-                          <option>Manager</option>
-                          <option>Officer</option>
+                          <option value={"Admin Master"}>Admin Master</option>
+                          <option>Admin={"Admin"}</option>
+                          <option>Manager={"Manager"}</option>
+                          <option>Officer={"Officer"}</option>
                         </Form.Select>
                 </Form.Group>
               </Col>

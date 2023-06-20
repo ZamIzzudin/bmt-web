@@ -13,6 +13,7 @@ function AsyncGetKas(type){
                         dispatch(GetKasAction(data));
                 } catch (err) {
                         console.error(err);
+                        dispatch(GetKasAction([]));
                 }
                 dispatch(hideLoading());
         }

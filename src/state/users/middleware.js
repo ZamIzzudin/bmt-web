@@ -13,6 +13,7 @@ function AsyncGetUsers(type) {
             dispatch(GetUsersActions(data));
         } catch (err) {
             console.error(err);
+            dispatch(GetUsersActions([]));
         }
         dispatch(hideLoading());
     }

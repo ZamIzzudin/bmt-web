@@ -46,7 +46,10 @@ const api = (() => {
     const response = await axios.get(url);
 
     if (response.data.data.length === 0) {
-      return {};
+      return [];
+    }
+    if(response.status === 400){
+      return [];
     }
     return response.data.data;
   }
@@ -118,6 +121,9 @@ const api = (() => {
     if(response.data.data.length === 0){
       return [];
     }
+    if(response.data.status === 400 || response.data.status === 500){
+      return [];
+    }
     return response.data.data;
   }
 
@@ -129,6 +135,9 @@ const api = (() => {
     if(response.data.data.length === 0){
       return [];
     }
+    if(response.data.status === 400 || response.data.status === 500){
+      return [];
+    }
     return response.data.data;
   }
 
@@ -136,8 +145,11 @@ const api = (() => {
     const url = baseUrl + `/pengajuan/sukarela?type=${type}`;
 
     const response = await axios.get(url);;
-    
+    console.info("test" ,response);
     if(response.data.data.length === 0){
+      return [];
+    }
+    if(response.data.status === 400 || response.data.status === 500){
       return [];
     }
     return response.data.data;

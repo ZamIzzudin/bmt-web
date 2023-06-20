@@ -41,6 +41,12 @@ function AsyncEditUser(data, type) {
                 role: data.role
             }
             const result = await api.EditUser(editData, type);
+
+            if(data.path === 'profile'){
+                dispatch(ShowSuccess("Berhasil, silahkan login kembali"));
+                dispatch(AsyncGetUsers(type));
+                return;
+            }
             dispatch(ShowSuccess("Berhasil mengedit User"));
             console.info(result)
             dispatch(AsyncGetUsers(type));

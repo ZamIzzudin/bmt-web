@@ -13,6 +13,10 @@ export default function Simpanan() {
   const location = useLocation().pathname;
   const type = location.split("/")[2];
 
+  function formatMoney(amount) {
+    return new Intl.NumberFormat('id-ID', { maximumSignificantDigits: 3 }).format(amount);
+}
+
   useEffect(() => {
     dispatch(AsyncGetSimpananPokok());
   }, [dispatch])
@@ -61,7 +65,7 @@ export default function Simpanan() {
                 <td>{index + 1}</td>
                 <td>{`NSB-${each.id_nasabah.substring(0,3)}`}</td>
                 <td>{each.nama}</td>
-                <td>{each.nominal}</td>
+            <td>{`Rp. ${formatMoney(each.nominal)}`}</td>
                 <td>{moment.utc(each.created_at).format("DD MMMM YYYY")}</td>
               </tr>
             ))}

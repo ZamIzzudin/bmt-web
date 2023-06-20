@@ -4,11 +4,15 @@ import { useSelector, useDispatch } from 'react-redux';
 
 import { AsyncEditUser } from '../state/users/middleware';
 
+import InfoModal from '../components/InfoModal'
+import { HideError } from '../state/error/middleware'
+import { HideSuccess } from '../state/success/middleware'
+
 import '../styles/components/FormLayout.css'
 import moment from 'moment';
 
 export default function Profile() {
-  const { auth = {} } = useSelector(states => states)
+  const { auth = {}, success, error } = useSelector(states => states)
   const dispatch = useDispatch();
 
   const [username, setUsername] = useState(auth?.username)
@@ -21,6 +25,11 @@ export default function Profile() {
   const [pekerjaan, setPekerjaan] = useState(auth?.pekerjaan)
   const [noRekening, setNoRekening] = useState(auth?.no_rekening)
   const [statusPerkawinan, setStatusPerkawinan] = useState(auth?.status_perkawinan)
+
+  function handleModal() {
+    dispatch(HideError())
+    dispatch(HideSuccess())
+}
   
   const handleEditAnggota = (e) => {
     e.preventDefault();
@@ -40,6 +49,7 @@ export default function Profile() {
           pekerjaan,
           noTelp,
           alamat,
+          path: 'profile',
         }, "nasabah"));
         return;
       }
@@ -149,7 +159,7 @@ export default function Profile() {
               <Col md={6}>
                 <Form.Group>
                     <Form.Label>Status Perkawinan<span className="required">*</span></Form.Label>
-                        <Form.Select required value={auth.status_perkawinan} onChange={(e) => setStatusPerkawinan(e.target.value)}>
+                        <Form.Select required value={statusPerkawinan} onChange={(e) => setStatusPerkawinan(e.target.value)}>
                             <option value={'Belum Kawin'}>Belum Kawin</option>
                             <option value={'Kawin'}>Kawin</option>
                             <option value={'Janda'}>Janda</option>
@@ -164,6 +174,10 @@ export default function Profile() {
           </Form>
         </div>
       </section>
+      {/* Error Modal */}
+      <InfoModal show={error.status} setShow={handleModal} value={error.message} type="error" />
+      {/* Success Draft*/}
+      <InfoModal show={success.status} setShow={handleModal} value={success.message} type="success" />
     </main>
     )
   }
@@ -238,6 +252,10 @@ export default function Profile() {
           </Form>
         </div>
       </section>
+      {/* Error Modal */}
+      <InfoModal show={error.status} setShow={handleModal} value={error.message} type="error" />
+       {/* Success Draft*/}
+       <InfoModal show={success.status} setShow={handleModal} value={success.message} type="success" />
     </main>
   );
 }

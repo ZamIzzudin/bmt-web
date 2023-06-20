@@ -185,7 +185,7 @@ export default function SimpananWajib() {
                 <td>{each.bulan}</td>
                 <td>{each.tahun}</td>
                 <td>{each.teller}</td>
-                <td>{formatMoney(each.nominal)} / {formatMoney(each.nominal)}</td>
+                <td>Rp. {formatMoney(each.nominal)} / {formatMoney(each.nominal)}</td>
                 <td>{each.status}</td>
               </tr>
             ))}

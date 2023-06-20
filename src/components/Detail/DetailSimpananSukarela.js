@@ -73,7 +73,7 @@ useEffect(() => {
               </tr>
               <tr>
                 <td>Jumlah Simpanan</td>
-                <td>{formatMoney(currentData.nominal)}</td>
+                <td>Rp. {formatMoney(currentData.nominal)}</td>
               </tr>
               <tr>
                 <td>Tanggal Pembuatan</td>
@@ -128,7 +128,7 @@ useEffect(() => {
                 <td>{index + 1}</td>
                 <td>{moment.utc(each.created_at).format("DD MMMM YYYY")}</td>
                 <td>{each.teller}</td>
-                <td>{formatMoney(each.nominal)}</td>
+                <td>Rp. {formatMoney(each.nominal)}</td>
                 <td>{each.tipe_angsuran}</td>
               </tr>
             ))}

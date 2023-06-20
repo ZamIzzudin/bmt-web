@@ -90,7 +90,7 @@ export default function Simpanan() {
                 <td>{`NSB-${each.id_nasabah.substr(0,3)}`}</td>
                 <td>{each.nama}</td>
                 <td>{each.produk_simpanan}</td>
-                <td>{formatMoney(each.nominal)}</td>
+                <td>Rp. {formatMoney(each.nominal)}</td>
                 <td className="table-cta">
                   <div className="table-cta-container">
                     <button

@@ -109,7 +109,7 @@ export default function Router() {
                             </Switch>
                         </>
                     )}
-                    {auth?.role === 'manager' && (
+                    {auth?.role === 'MANAGER' && (
                         <>
                             <Header />
                             <Sidebar />

@@ -144,7 +144,7 @@ const api = (() => {
   async function GetPengajuanSimpanan(type){
     const url = baseUrl + `/pengajuan/sukarela?type=${type}`;
 
-    const response = await axios.get(url);;
+    const response = await axios.get(url);
     if(response.data.data.length === 0){
       return [];
     }

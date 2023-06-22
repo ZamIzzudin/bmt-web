@@ -1,6 +1,6 @@
 import { useSelector, useDispatch } from 'react-redux'
 import { useLocation } from 'react-router-dom'
-import { AsyncApprovePengajuanSimpanan } from '../../state/pengajuan/middleware';
+import { AsyncApprovePengajuanSimpanan, AsyncRejectPengajuanSimpanan } from '../../state/pengajuan/middleware';
 
 import moment from 'moment/moment';
 
@@ -51,17 +51,16 @@ export default function DetailPengajuanSimpanan({ backButton, currentData }) {
                                 <td>{currentData.status_pengajuan}</td>
                             </tr>
                     </table>
-                    {auth.role === 'OFFICER' && currentData.status_pengajuan === 'BELUM DISETUJUI' ? (
+                    {(auth.role === 'OFFICER' || auth.role === 'ADMIN') && currentData.status_pengajuan === 'BELUM DISETUJUI' ? (
                         <div className="form-cta gap-3">
                             <button className="form-submit-button" onClick={() => {dispatch(AsyncApprovePengajuanSimpanan(currentData.id_pengajuan)); backButton()}} type="button">Setujui</button>
-                            <button className="form-cancel-button" type="button">Tolak</button>
+                            <button className="form-cancel-button" type="button" onClick={() => {dispatch(AsyncRejectPengajuanSimpanan(currentData.id_pengajuan)); backButton()}}>Tolak</button>
                         </div>
                     ) : (
                         <div className="form-cta gap-3">
                             <button onClick={() => backButton()} className="form-submit-button" type="button">Kembali</button>
                         </div>
                     )}
-
                 </div>
             </section>
         </main >

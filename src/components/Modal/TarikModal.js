@@ -22,6 +22,9 @@ export default function TarikModal({ show, setShow, data }) {
             console.log(e)
         }
         setShow(false);
+        setTimeout(() => {
+            window.location.reload();
+        }, 5000)
     }
     return (
         <Modal

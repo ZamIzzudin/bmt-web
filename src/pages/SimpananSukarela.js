@@ -81,7 +81,7 @@ export default function Simpanan() {
               <th>ID</th>
               <th>Nama</th>
               <th>Produk Simpanan</th>
-              <th>Nominal/Bln</th>
+              <th>Nominal</th>
               <th className="text-center">Action</th>
             </tr>
             {simpanan.map((each, index) => (

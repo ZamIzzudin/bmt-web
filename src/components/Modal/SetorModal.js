@@ -26,6 +26,9 @@ export default function SetorModal({ show, setShow, data }) {
                     id: data.id_pembiayaan,
                     nominal: nominal,
                 }))
+                setTimeout(() => {
+                    window.location.reload();
+                }, 5000)
                 return;
             }
             else if(data.tipe_pembiayaan === 'JUAL BELI'){
@@ -40,17 +43,24 @@ export default function SetorModal({ show, setShow, data }) {
                     id: data.id_pembiayaan,
                     nominal: nominal,
                 }))
+                setTimeout(() => {
+                    window.location.reload();
+                }, 5000)
                 return;
             }
             dispatch(AsyncSetorSimpananSukarela({
                 id: data.id_simpanan,
                 nominal: nominal,
         }))
+        setTimeout(() => {
+            window.location.reload();
+        }, 5000)
         }
         catch(e){
             console.log(e)
         }
         setShow(false);
+
     }
     return (
         <Modal

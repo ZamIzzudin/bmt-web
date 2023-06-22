@@ -17,10 +17,10 @@ export default function Header() {
     function handleLogout() {
         dispatch(asyncLogout())
     }
-
     useEffect(() => {
         dispatch(asyncCheckLogin())
     }, [dispatch])
+
     return (
         <header>
             <Loading />

@@ -149,7 +149,7 @@ export default function SimpananWajib() {
                   <td>{`NSB-${each.id_nasabah.substr(0,3)}`}</td>
                   <td>{each.nama}</td>
                   <td>{each.tahun}</td>
-                  <td>{formatMoney(each.nominal)} / {formatMoney(each.nominal)}</td>
+                  <td>{formatMoney(each.nominal)} / 1 Bln</td>
                   <td className="table-cta">
                     <div className="table-cta-container">
                       <button
@@ -177,7 +177,6 @@ export default function SimpananWajib() {
               <th>Status</th>
             </tr>
             {simpanan.map((each, index) => (
-              
               <tr>
                 <td>{index + 1}</td>
                 <td>{`NSB-${each.id_nasabah.substr(0,3)}`}</td>
@@ -185,7 +184,7 @@ export default function SimpananWajib() {
                 <td>{each.bulan}</td>
                 <td>{each.tahun}</td>
                 <td>{each.teller}</td>
-                <td>Rp. {formatMoney(each.nominal)} / {formatMoney(each.nominal)}</td>
+                <td>Rp. {formatMoney(each.nominal)} / 1 Bln</td>
                 <td>{each.status}</td>
               </tr>
             ))}

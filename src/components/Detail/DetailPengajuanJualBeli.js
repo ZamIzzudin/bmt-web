@@ -1,7 +1,7 @@
 import { useSelector, useDispatch } from 'react-redux'
 import { useLocation } from 'react-router-dom'
 
-import { AsyncApprovePengajuanJualBeli } from '../../state/pengajuan/middleware'
+import { AsyncApprovePengajuanJualBeli, AsyncRejectPengajuanJualBeli } from '../../state/pengajuan/middleware'
 
 import moment from 'moment'
 
@@ -53,7 +53,7 @@ export default function DetailPengajuanJualBeli({ backButton, currentData }) {
                             </tr>
                             <tr>
                                 <td>Nominal Pelunasan</td>
-                                <td>Rp. {formatMoney(currentData.akhir)}</td>
+                                <td>Rp. {formatMoney(currentData.nominal_akhir)}</td>
                             </tr>
                             <tr>
                                 <td>Tanggal Pengajuan</td>
@@ -86,11 +86,12 @@ export default function DetailPengajuanJualBeli({ backButton, currentData }) {
                                 <td className="centered"><img src={dokumen_rab.url} width={500} alt="attachment" /></td>
                             </tr>
                     </table>
-                    {auth.role === 'OFFICER' && currentData.status_pengajuan === 'BELUM DISETUJUI' ? (
+                    {(auth.role === 'OFFICER' || auth.role === 'ADMIN') && currentData.status_pengajuan === 'BELUM DISETUJUI' ? (
                         <div className="form-cta gap-3">
                             <button className="form-submit-button" type="button" onClick={() => { backButton(); 
                                 dispatch(AsyncApprovePengajuanJualBeli(currentData.id_pengajuan))}}>Setujui</button>
-                            <button className="form-cancel-button" type="button">Tolak</button>
+                            <button className="form-cancel-button" type="button" onClick={() => { backButton(); 
+                                dispatch(AsyncRejectPengajuanJualBeli(currentData.id_pengajuan))}}>Tolak</button>
                         </div>
                     ) : (
                         <div className="form-cta gap-3">

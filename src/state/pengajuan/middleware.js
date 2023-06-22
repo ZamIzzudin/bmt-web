@@ -180,6 +180,53 @@ function AsyncApprovePengajuanSimpanan(data){
     }
 }
 
+//REJECTION
+
+function AsyncRejectPengajuanKerjasama(data){
+    return async dispatch => {    
+        try {
+            const result = await api.TolakPengajuanKerjasama(data);
+            dispatch(ShowSuccess("Pengajuan Tidak Disetujui"));
+            console.info(result)
+            dispatch(AsyncGetPengajuanKerjasama("nasabah"));
+            dispatch(AsyncGetPengajuanKerjasama("pengelola"));
+        } catch (err) {
+            console.error(err);
+            dispatch(ShowError("Terjadi kesalahan"));
+        }
+    }
+}
+
+function AsyncRejectPengajuanJualBeli(data){
+    return async dispatch => {    
+        try {
+            const result = await await api.TolakPengajuanJualBeli(data);
+            dispatch(ShowSuccess("Pengajuan Tidak Disetujui"));
+            console.info(result)
+            dispatch(AsyncGetPengajuanJualBeli("nasabah"));
+            dispatch(AsyncGetPengajuanJualBeli("pengelola"));
+        } catch (err) {
+            console.error(err);
+            dispatch(ShowError("Terjadi kesalahan"));
+        }
+    }
+}
+
+function AsyncRejectPengajuanSimpanan(data){
+    return async dispatch => {    
+        try {
+            const result = await api.TolakPengajuanSimpanan(data);
+            dispatch(ShowSuccess("Pengajuan Tidak Disetujui"));
+            console.info(result)
+            dispatch(AsyncGetPengajuanSimpanan("nasabah"));
+            dispatch(AsyncGetPengajuanSimpanan("pengelola"));
+        } catch (err) {
+            console.error(err);
+            dispatch(ShowError("Terjadi kesalahan"));
+        }
+    }
+}
+
 export {
     AsyncGetPengajuanKerjasama,
     AsyncGetPengajuanJualBeli,
@@ -193,4 +240,7 @@ export {
     AsyncApprovePengajuanKerjasama,
     AsyncApprovePengajuanJualBeli,
     AsyncApprovePengajuanSimpanan,
+    AsyncRejectPengajuanKerjasama,
+    AsyncRejectPengajuanJualBeli,
+    AsyncRejectPengajuanSimpanan,
 }

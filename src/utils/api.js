@@ -145,7 +145,6 @@ const api = (() => {
     const url = baseUrl + `/pengajuan/sukarela?type=${type}`;
 
     const response = await axios.get(url);;
-    console.info("test" ,response);
     if(response.data.data.length === 0){
       return [];
     }
@@ -226,14 +225,37 @@ const api = (() => {
     const response = await axios.put(url);
     return response;
   }
+
+  async function TolakPengajuanKerjasama(id){
+    const url = baseUrl + `/pengajuan/kerjasama/reject/${id}`;
+
+    const response = await axios.put(url);
+    return response;
+  }
+
   async function ApprovePengajuanJualBeli(id){
     const url = baseUrl + `/pengajuan/jualbeli/approve/${id}`;
 
     const response = await axios.put(url);
     return response;
   }
+  
+  async function TolakPengajuanJualBeli(id){
+    const url = baseUrl + `/pengajuan/jualbeli/reject/${id}`;
+
+    const response = await axios.put(url);
+    return response;
+  }
+
   async function ApprovePengajuanSimpanan(id){
     const url = baseUrl + `/pengajuan/sukarela/approve/${id}`;
+
+    const response = await axios.put(url);
+    return response;
+  }
+
+  async function TolakPengajuanSimpanan(id){
+    const url = baseUrl + `/pengajuan/sukarela/reject/${id}`;
 
     const response = await axios.put(url);
     return response;
@@ -379,7 +401,7 @@ const api = (() => {
 
   //===============================================Kerjasama
   async function GetPembiayaanKerjasama(type){
-    const url = baseUrl + `/pembiayaan/kerjasama`;
+    const url = baseUrl + `/pembiayaan/kerjasama?type=${type}`;
 
     const response = await axios.get(url);
 
@@ -422,7 +444,7 @@ const api = (() => {
   //======================================Jual Beli
 
   async function GetPembiayaanJualBeli(type){
-    const url = baseUrl + `/pembiayaan/jualbeli`;
+    const url = baseUrl + `/pembiayaan/jualbeli?type=${type}`;
 
     const response = await axios.get(url);
 
@@ -504,6 +526,9 @@ const api = (() => {
     CreateKas,
     GetRekapNasabah,
     GetRekapPengelola,
+    TolakPengajuanKerjasama,
+    TolakPengajuanJualBeli,
+    TolakPengajuanSimpanan
   };
 })();
 

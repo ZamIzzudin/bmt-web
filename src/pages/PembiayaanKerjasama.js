@@ -14,7 +14,6 @@ import moment from 'moment'
 export default function PembiayaanKerjasama() {
     const { auth = {}, pembiayaan = [] } = useSelector(states => states)
     const dispatch = useDispatch();
-
     const location = useLocation().pathname
     const type = location.split('/')[2]
 
@@ -30,7 +29,7 @@ export default function PembiayaanKerjasama() {
     }
 
     useEffect(() => {
-        if(auth.role === 'NASABAH'){
+        if(auth.role.toLowerCase() === 'nasabah'){
             dispatch(AsyncGetPembiayaanKerjasama("nasabah"))
             return;
         }

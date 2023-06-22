@@ -64,8 +64,8 @@ export default function FormPengajuanJualBeli({ showForm }) {
                     <Form.Group>
                         <Form.Label>Produk Pembiayaan<span className="required">*</span></Form.Label>
                         <Form.Select value={produk_pembiayaan} onChange={e => setProdukPembiayaan(e.target.value)} required>
-                            <option selected value={'Mudharabah'}>Mudharabah</option>
-                            <option value={'Musyarakah'}>Musyarakah</option>
+                            <option selected value={'Murabahah'}>Murabahah</option>
+                            <option value={'Istishna'}>Istishna</option>
                         </Form.Select>
                     </Form.Group>
                 </Col>

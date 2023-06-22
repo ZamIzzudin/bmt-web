@@ -18,9 +18,7 @@ export default function TambahKeanggotaan({ showForm }) {
     const [noTelp, setNoTelp] = useState('')
     const [alamat, setAlamat] = useState('')
     const [pekerjaan, setPekerjaan] = useState('')
-    const [noRekening, setNoRekening] = useState('')
     const [statusPerkawinan, setStatusPerkawinan] = useState('Belum Kawin')
-    const [role, setRole] = useState('')
 
    const handleRegister = (e) => {
        e.preventDefault();
@@ -35,9 +33,8 @@ export default function TambahKeanggotaan({ showForm }) {
                 noTelp,
                 alamat,
                 pekerjaan,
-                noRekening,
                 statusPerkawinan,   
-                role,
+                role: "Nasabah",
             }, "nasabah"))
         }
         catch (err){
@@ -107,23 +104,6 @@ export default function TambahKeanggotaan({ showForm }) {
                             <option value={'Menikah'}>Menikah</option>
                             <option value={'Janda'}>Janda</option>
                             <option value={'Duda'}>Duda</option>
-                        </Form.Select>
-                    </Form.Group>
-                </Col>
-                <Col md={6}>
-                    <Form.Group>
-                        <Form.Label>No Rekening <span className="required">*</span></Form.Label>
-                        <Form.Control required value={noRekening} onChange={(e) => setNoRekening(e.target.value)} />
-                    </Form.Group>
-                </Col>
-            </Row>
-            <Row>
-                <Col md={6}>
-                    <Form.Group>
-                        <Form.Label>Role <span className="required">*</span></Form.Label>
-                        <Form.Select value={role} onChange={(e) => setRole(e.target.value)}>
-                            <option></option>
-                            <option value={'Nasabah'}>Nasabah</option>
                         </Form.Select>
                     </Form.Group>
                 </Col>

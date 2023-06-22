@@ -11,11 +11,11 @@ import { ReactComponent as BackButton } from '../../assets/icons/arrow_back.svg'
 export default function EditProfileNasabah({ backButton, currentData }) {
     const { auth = {} } = useSelector(states => states);
     const dispatch = useDispatch();
+    const noRekening = currentData.no_rekening;
     const [username, setUsername] = useState(currentData.username);
     const [nama, setNama] = useState(currentData.nama);
     const [password, setPassword] = useState(null);
     const [jenisKelamin, setJenisKelamin] = useState(currentData.jenis_kelamin);
-    const [noRekening, setNoRekening] = useState(currentData.no_rekening);
     const [nik, setNik] = useState(currentData.nik);
     const [email, setEmail] = useState(currentData.email);
     const [noTelp, setNoTelp] = useState(currentData.no_hp);
@@ -105,7 +105,7 @@ export default function EditProfileNasabah({ backButton, currentData }) {
               <Col>
                 <Form.Group>
                   <Form.Label>No Rek <span className="required">*</span></Form.Label>
-                  <Form.Control required value={noRekening} onChange={(e) => setNoRekening(e.target.value)} />
+                  <Form.Control required value={noRekening} disabled />
                 </Form.Group>
               </Col>
             </Row>
@@ -141,7 +141,7 @@ export default function EditProfileNasabah({ backButton, currentData }) {
               <Col>
                 <Form.Group>
                   <Form.Label>Password <span className="required">*</span></Form.Label>
-                  <Form.Control type='password'value={password} onChange={(e) => setPassword(e.target.value)} />
+                  <Form.Control type='password'value={password} onChange={(e) => setPassword(e.target.value)} placeholder='kosongkan jika tidak diperlukan' />
                 </Form.Group>
               </Col>
             </Row>

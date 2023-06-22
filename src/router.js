@@ -59,10 +59,13 @@ export default function Router() {
             <Loading />
             {!auth.role ? (
                 // Route if user doesnt Login
-                <Switch>
-                    <Route exact path="/" component={Login} />
-                    <Route path="*" component={Page404} />
-                </Switch>
+                <>
+                    <Header />
+                    <Switch>
+                        <Route exact path="/" component={Login} />
+                        <Route path="*" component={Page404} />
+                    </Switch>
+                </>
             ) : (
                 // Route if user already Login
                 <>

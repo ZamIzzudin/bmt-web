@@ -36,7 +36,7 @@ function asyncLogin(email, password) {
             }
 
             axios.defaults.headers.common['Authorization'] = `Bearer ${response.data.access_token}`
-            localStorage.setItem('bmt_login_data', JSON.stringify(data))
+            sessionStorage.setItem('bmt_login_data', JSON.stringify(data))
             dispatch(LoginAction(data))
             // Pass to Action
             // dispatch(LoginAction(data))
@@ -72,13 +72,13 @@ function asyncCheckLogin() {
         
         try {
             // Get From Session Storage
-            let auth_data = JSON.parse(localStorage.getItem('bmt_login_data'));
+            let auth_data = JSON.parse(sessionStorage.getItem('bmt_login_data'));
             //Setup Cookies 
             cookies.remove('refreshToken')
             cookies.add('refreshToken', auth_data.token, 7)
 
             axios.defaults.headers.common['Authorization'] = `Bearer ${auth_data.token}`
-            localStorage.setItem('bmt_login_data', JSON.stringify(auth_data))
+            sessionStorage.setItem('bmt_login_data', JSON.stringify(auth_data))
 
             // Pass to Action
             dispatch(LoginAction(auth_data))
@@ -98,17 +98,17 @@ function asyncRefreshToken() {
             // cookies.remove('token')
             cookies.add('refreshToken', response.data.accessToken, 7)
 
-            let auth_data = JSON.parse(localStorage.getItem('bmt_login_data'));
+            let auth_data = JSON.parse(sessionStorage.getItem('bmt_login_data'));
             auth_data.token = response.data.access_token
 
             axios.defaults.headers.common['Authorization'] = `Bearer ${response.data.access_token}`
-            localStorage.setItem('bmt_login_data', JSON.stringify(auth_data))
+            sessionStorage.setItem('bmt_login_data', JSON.stringify(auth_data))
 
             dispatch(RefreshTokenAction(response.data.access_token))
         } catch (err) {
             dispatch(LogoutAction())
             cookies.remove('refreshToken')
-            localStorage.clear()
+            sessionStorage.clear()
 
             // Set Route to default
             window.location.assign("/")
@@ -122,7 +122,7 @@ function asyncLogout() {
 
         try {
             dispatch(LogoutAction())
-            localStorage.clear();
+            sessionStorage.clear();
             // Set Route to default
             window.location.assign("/")
         } catch (err) {

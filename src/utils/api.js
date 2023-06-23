@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const api = (() => {
-  const baseUrl = "https://bmt-gateway.vercel.app";
+  const baseUrl = "https://bmt-gateaway.vercel.app";
 
   // Auth
   async function Login(email, password) {

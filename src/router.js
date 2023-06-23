@@ -27,32 +27,6 @@ import KeanggotaanAdmin from "./pages/KeanggotaanAdmin"
 
 export default function Router() {
     const { auth = {} } = useSelector(states => states)
-    // const dispatch = useDispatch()
-
-        // Refresh Token Cycle
-        // useEffect(() => {
-        //     // do refresh token where token is'nt undefined
-        //     if (auth.token !== undefined) {
-        //         try {
-        //             // Do in 8 minutes
-        //             const interval = setInterval(() => {
-        //                 dispatch(asyncRefreshToken())
-        //             }, 30000);
-    
-        //             return () => clearInterval(interval);
-        //         } catch (err) {
-        //             // dispatch(asyncLogout())
-        //         }
-        //     } 
-        //     // else {
-        //     //     // Try Tto get token from Session Storage
-        //     //     try {
-        //     //         dispatch(asyncCheckLogin())
-        //     //     } catch (err) {
-        //     //         dispatch(asyncLogout())
-        //     //     }
-        //     // }
-        // }, [auth, dispatch])
 
     return (
         <BrowserRouter>

@@ -20,14 +20,16 @@ export default function Header() {
     useEffect(() => {
         dispatch(asyncCheckLogin())
     }, [dispatch])
-
-    return (
-        <header>
-            <Loading />
-            <section className="header-cta">
-                <span className="role-name">Halo, {auth.username}</span>
-                <button onClick={() => handleLogout()} className="logout-button"><Logout /></button>
-            </section>
-        </header>
-    )
+    
+  if(auth.role){
+      return (
+          <header>
+              <Loading />
+              <section className="header-cta">
+                  <span className="role-name">Halo, {auth.username}</span>
+                  <button onClick={() => handleLogout()} className="logout-button"><Logout /></button>
+              </section>
+          </header>
+      )
+  }
 }

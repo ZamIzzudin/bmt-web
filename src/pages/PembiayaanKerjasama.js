@@ -19,6 +19,7 @@ export default function PembiayaanKerjasama() {
 
     const [showDetail, setShowDetail] = useState(false)
     const [selectedData, setSelectedData] = useState(null)
+    const [search, setSearch] = useState("");
 
     function backButton() {
         setShowDetail(false)
@@ -35,6 +36,21 @@ export default function PembiayaanKerjasama() {
         }
         dispatch(AsyncGetPembiayaanKerjasama("pengelola"))
     }, [dispatch, auth.role])
+
+    function handleSearchPembiayaan(query) {
+        if (query === null) {
+          return;
+        }
+        try {
+          if (auth.role === "NASABAH") {
+            dispatch(AsyncGetPembiayaanKerjasama("nasabah", query));
+          } else {
+            dispatch(AsyncGetPembiayaanKerjasama("pengelola", query));
+          }
+        } catch (e) {
+          console.log(e);
+        }
+      }
 
     // Form that shown when parameter (true)
     if (showDetail) {
@@ -62,6 +78,10 @@ export default function PembiayaanKerjasama() {
               type="text"
               className="section-search"
               required
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              onKeyPress={(e) => e.key === "Enter" && handleSearchPembiayaan(search)}
+              placeholder="masukan nama"
               style={{
                 width: "100%",
                 height: "24px",
@@ -78,6 +98,7 @@ export default function PembiayaanKerjasama() {
                 transform: "translate(-50%, -50%)",
                 cursor: "pointer",
               }}
+              onClick={() => handleSearchPembiayaan(search)}
             />
           </div>
         </div>

@@ -5,11 +5,11 @@ import { showLoading, hideLoading } from "react-redux-loading-bar";
 import { ShowSuccess } from '../success/middleware';
 import { ShowError } from '../error/middleware';
 
-function AsyncGetKas(type){
+function AsyncGetKas(type, search){
         return async dispatch => {
                 dispatch(showLoading());
                 try {
-                        const data = await api.GetKas(type);
+                        const data = await api.GetKas(type, search);
                         dispatch(GetKasAction(data));
                 } catch (err) {
                         console.error(err);

@@ -4,7 +4,7 @@ import { useSelector, useDispatch } from 'react-redux'
 import { asyncLogin } from '../state/auth/middleware'
 
 import ErrorMsg from '../components/ErrorMsg'
-import HIMSI_LOGO from '../assets/HIMSI_LOGO.webp'
+import BMT_LOGO from '../assets/BMT_LOGO.webp'
 import { ReactComponent as EyeIcon } from '../assets/icons/Eye-on.svg'
 
 import '../styles/pages/Login.css'
@@ -28,8 +28,8 @@ export default function Login() {
     return (
         <main className="login-page">
             <section className="login-card">
-                <img src={HIMSI_LOGO} width="120px" height="auto" alt="Logo HIMSI" />
-                <h2 className="login-title">Login Admin</h2>
+                <img src={BMT_LOGO} width="120px" height="auto" alt="Logo HIMSI" />
+                <h2 className="login-title">Login BMT</h2>
 
                 {/* Error Display */}
                 {error.status && (

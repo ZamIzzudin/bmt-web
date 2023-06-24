@@ -40,8 +40,8 @@ const api = (() => {
   }
 
   //User
-  async function GetUsers(type) {
-    const url = baseUrl + `/user?type=${type}`;
+  async function GetUsers(type, search) {
+    const url = baseUrl + `/user?type=${type} ${search ? `&search=${search}`:''}`;
 
     const response = await axios.get(url);
 
@@ -113,8 +113,8 @@ const api = (() => {
   }
 
   //MODUL PENGAJUAN
-  async function GetPengajuanKerjasama(type){
-    const url = baseUrl + `/pengajuan/kerjasama?type=${type}`;
+  async function GetPengajuanKerjasama(type, search){
+    const url = baseUrl + `/pengajuan/kerjasama?type=${type} ${search ? `&search=${search}`:''}`;
 
     const response = await axios.get(url);;
     
@@ -127,8 +127,8 @@ const api = (() => {
     return response.data.data;
   }
 
-  async function GetPengajuanJualBeli(type){
-    const url = baseUrl + `/pengajuan/jualbeli?type=${type}`;
+  async function GetPengajuanJualBeli(type, search){
+    const url = baseUrl + `/pengajuan/jualbeli?type=${type} ${search ? `&search=${search}`:''}`;
 
     const response = await axios.get(url);;
     
@@ -141,8 +141,8 @@ const api = (() => {
     return response.data.data;
   }
 
-  async function GetPengajuanSimpanan(type){
-    const url = baseUrl + `/pengajuan/sukarela?type=${type}`;
+  async function GetPengajuanSimpanan(type, search){
+    const url = baseUrl + `/pengajuan/sukarela?type=${type} ${search ? `&search=${search}`:''}`;
 
     const response = await axios.get(url);
     if(response.data.data.length === 0){
@@ -262,8 +262,8 @@ const api = (() => {
   }
 
   //Kas
-  async function GetKas(type){
-    let url = baseUrl + `/kas${type ? `?type=${type}` : ''}`;
+  async function GetKas(type, search){
+    let url = baseUrl + `/kas?${type ? `type=${type}` : null}${search ? `&search=${search}`:''}`;
 
     const response = await axios.get(url);
     if(response.data.data.length === 0){
@@ -305,8 +305,8 @@ const api = (() => {
   }
 
   //Simpanan
-  async function GetSimpananPokok(){
-    const url = baseUrl + `/simpanan/pokok`;
+  async function GetSimpananPokok(search){
+    const url = baseUrl + `/simpanan/pokok?${search ? `search=${search}`:''}`;
 
     const response = await axios.get(url);
     if(response.data.data.length === 0){
@@ -315,8 +315,8 @@ const api = (() => {
     return response.data.data;
   }
 
-  async function GetSimpananWajib(){
-    let url = baseUrl + `/simpanan/wajib`;
+  async function GetSimpananWajib(search){
+    let url = baseUrl + `/simpanan/wajib${search ? `?search=${search}`:''}`;
 
     const response = await axios.get(url);
     if(response.data.data.length === 0){
@@ -325,8 +325,9 @@ const api = (() => {
     return response.data.data;
   }
 
-  async function GetDetailSimpananWajib(id){
-    const url = baseUrl + `/simpanan/wajib/${id}`;
+  async function GetDetailSimpananWajib(id, search) {
+    let url = baseUrl + `/simpanan/wajib/${id}${search ? `?search=${search}` : ''}`;
+
 
     const response = await axios.get(url);
     console.info(response);
@@ -336,8 +337,8 @@ const api = (() => {
     return response.data.data;
   }
 
-  async function GetNotLunasSimpananWajib(bulan, tahun){
-    const url = baseUrl + `/simpanan/wajib/check/belum-setor?bulan=${bulan}&tahun=${tahun}`;
+  async function GetNotLunasSimpananWajib(bulan, tahun, search){
+const url = baseUrl + `/simpanan/wajib/check/belum-setor?bulan=${bulan}&tahun=${tahun}${search ? `&search=${search}`:''}`;
 
     const response = await axios.get(url);
     if(response.data.data.length === 0){
@@ -353,12 +354,8 @@ const api = (() => {
     return response;
   }
 
-  async function GetSimpananSukarela(type){
-    let url = baseUrl + `/simpanan/sukarela`;
-
-    if(type){
-      url += `?type=${type}`;
-    }
+  async function GetSimpananSukarela(type, search){
+    const url = baseUrl + `/simpanan/sukarela${type ? `?type=${type}` : ''} ${search ? `&search=${search}`:''}`;
 
     const response = await axios.get(url);
     if(response.data.data.length === 0){
@@ -400,8 +397,8 @@ const api = (() => {
   //PEMBIAYAAN & ANGSURAN
 
   //===============================================Kerjasama
-  async function GetPembiayaanKerjasama(type){
-    const url = baseUrl + `/pembiayaan/kerjasama?type=${type}`;
+  async function GetPembiayaanKerjasama(type, search){
+    const url = baseUrl + `/pembiayaan/kerjasama?type=${type} ${search ? `&search=${search}`:''}`;
 
     const response = await axios.get(url);
 
@@ -443,8 +440,8 @@ const api = (() => {
 
   //======================================Jual Beli
 
-  async function GetPembiayaanJualBeli(type){
-    const url = baseUrl + `/pembiayaan/jualbeli?type=${type}`;
+  async function GetPembiayaanJualBeli(type, search){
+    const url = baseUrl + `/pembiayaan/jualbeli?type=${type}${search ? `&search=${search}`:''}`;
 
     const response = await axios.get(url);
 

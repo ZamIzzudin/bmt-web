@@ -22,6 +22,8 @@ export default function PengajuanPembiayaan() {
     const [showDetail, setShowDetail] = useState(false)
     const [selectedData, setSelectedData] = useState(null)
 
+    const [search, setSearch] = useState('')
+
     function backButton() {
         setShowDetail(false)
     }
@@ -42,6 +44,21 @@ export default function PengajuanPembiayaan() {
         }
            dispatch(AsyncGetPengajuanJualBeli("pengelola"))
     }, [dispatch, auth.role])
+
+    function handleSearchPengajuan(query) {
+        if (query === null) {
+          return;
+        }
+        try {
+          if(auth.role === "NASABAH"){
+            dispatch(AsyncGetPengajuanJualBeli("nasabah", query))
+            return;
+          }
+          dispatch(AsyncGetPengajuanJualBeli("pengelola", query))
+        } catch (e) {
+          console.log(e);
+        }
+      }
 
     // Form that shown when parameter (true)
     if (showDetail) {
@@ -88,6 +105,9 @@ export default function PengajuanPembiayaan() {
                             type="text"
                             className="section-search"
                             required
+                            onChange={(e) => setSearch(e.target.value)}
+                            onKeyPress={(e) => e.key === "Enter" && handleSearchPengajuan(search)}
+                            placeholder={`${auth.role === "NASABAH" ? "id pengajuan" : "nama nasabah"}`}
                             style={{
                                 width: "100%",
                                 height: "24px",
@@ -104,6 +124,7 @@ export default function PengajuanPembiayaan() {
                                 transform: "translate(-50%, -50%)",
                                 cursor: "pointer",
                             }}
+                            onClick={() => handleSearchPengajuan(search)}
                         />
                     </div>                </div>
                 <div className="section-body">
@@ -122,7 +143,7 @@ export default function PengajuanPembiayaan() {
                         {pengajuan.map((each, index) => (
                             <tr>
                                 <td>{index + 1}</td>
-                                <td>{`NSB-${each.id_nasabah.substring(0,3)}`}</td>
+                                <td>{`PMBJBL-${each.id_pengajuan.substring(0,3)}`}</td>
                                 <td>{each.nama}</td>
                                 <td>{each.produk_pengajuan}</td>
                                 <td>{`Rp. ${formatMoney(each.nominal_akhir)}`}</td>

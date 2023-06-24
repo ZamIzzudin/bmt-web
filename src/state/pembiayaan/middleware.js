@@ -9,11 +9,11 @@ import { ShowSuccess } from '../success/middleware';
 import { ShowError } from '../error/middleware';
 
 //Angsuran Kerjasama
-function AsyncGetPembiayaanKerjasama(type){
+function AsyncGetPembiayaanKerjasama(type, search){
         return async dispatch => {
                 dispatch(showLoading());
                 try {
-                        const data = await api.GetPembiayaanKerjasama(type);
+                        const data = await api.GetPembiayaanKerjasama(type, search);
                         dispatch(GetPembiayaanAction(data));
                 } catch (err) {
                         console.error(err);
@@ -43,11 +43,11 @@ function AsyncSetorPembiayaanKerjasama(data){
 }
 
 //Angsuran Jual Beli
-function AsyncGetPembiayaanJualBeli(type){
+function AsyncGetPembiayaanJualBeli(type, search){
         return async dispatch => {
                 dispatch(showLoading());
                 try {
-                        const data = await api.GetPembiayaanJualBeli(type);
+                        const data = await api.GetPembiayaanJualBeli(type, search);
                         dispatch(GetPembiayaanAction(data));
                 } catch (err) {
                         console.error(err);

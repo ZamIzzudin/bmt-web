@@ -6,11 +6,11 @@ import { ShowSuccess } from '../success/middleware';
 import { ShowError } from '../error/middleware';
 
 //PENGAJUAN KERJASAMA
-function AsyncGetPengajuanKerjasama(type){
+function AsyncGetPengajuanKerjasama(type, search){
     return async dispatch => {
         dispatch(showLoading());
         try {
-            const data = await api.GetPengajuanKerjasama(type);
+            const data = await api.GetPengajuanKerjasama(type, search);
             dispatch(GetPengajuanAction(data));
         } catch (err) {
             console.error(err);
@@ -48,11 +48,11 @@ function AsyncDeletePengajuanKerjasama(id){
 }
 
 //PENGAJUAN JUALBELI
-function AsyncGetPengajuanJualBeli(type){
+function AsyncGetPengajuanJualBeli(type, search){
     return async dispatch => {
         dispatch(showLoading());
         try {
-            const data = await api.GetPengajuanJualBeli(type);
+            const data = await api.GetPengajuanJualBeli(type, search);
 
             dispatch(GetPengajuanAction(data));
         } catch (err) {
@@ -92,11 +92,11 @@ function AsyncDeletePengajuanJualBeli(id){
 }
 
 //PENGAJUAN SIMPANAN
-function AsyncGetPengajuanSimpanan(type){
+function AsyncGetPengajuanSimpanan(type, search){
     return async dispatch => {
         dispatch(showLoading());
         try {
-            const data = await api.GetPengajuanSimpanan(type);
+            const data = await api.GetPengajuanSimpanan(type, search);
             dispatch(GetPengajuanAction(data));
         } catch (err) {
             console.error(err);

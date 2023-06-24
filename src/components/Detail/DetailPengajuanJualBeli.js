@@ -33,7 +33,7 @@ export default function DetailPengajuanJualBeli({ backButton, currentData }) {
                     <table className="detail-table">
                             <tr>
                                 <td>ID Pengajuan</td>
-                                <td>{`SMPSKR-${currentData.id_pengajuan.substring(0,3)}`}</td>
+                                <td>{`PMBJBL-${currentData.id_pengajuan.substring(0,3)}`}</td>
                             </tr>
                             <tr>
                                 <td>Anggota</td>

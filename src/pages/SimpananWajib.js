@@ -27,6 +27,8 @@ export default function SimpananWajib() {
 
   const [currentData, setCurrentData] = useState(null);
 
+  const [search, setSearch] = useState('');
+
   function backButton() {
     setShowDetail(false);
     setShowNotLunas(false);
@@ -44,6 +46,21 @@ export default function SimpananWajib() {
       dispatch(AsyncGetSimpananWajib());
   }, [dispatch, auth.role, auth.id])
 
+  function handleSearchSimpanan(query) {
+    if (query === null) {
+      return;
+    }
+    try {
+      if(auth.role === "NASABAH"){
+        dispatch(AsyncGetDetailSimpananWajib(auth.id, query));
+        return;
+      }
+        dispatch(AsyncGetSimpananWajib(query));
+    } catch (e) {
+      console.log(e);
+    }
+  }
+
   // Form that shown when parameter (true)
   if (showDetail) {
     return <DetailSimpananWajib backButton={backButton} id={currentData} />;
@@ -57,7 +74,6 @@ export default function SimpananWajib() {
     dispatch(HideError())
     dispatch(HideSuccess())
 }
-
 
   if (showAddForm) {
     return (
@@ -112,6 +128,10 @@ export default function SimpananWajib() {
                 type="text"
                 className="section-search"
                 required
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
+                onKeyPress={(e) => e.key === "Enter" && handleSearchSimpanan(search)}
+                placeholder={`${auth.role === "NASABAH" ? "tahun/bulan" : "nama nasabah"}`}
                 style={{
                   width: "100%",
                   height: "24px",
@@ -128,6 +148,7 @@ export default function SimpananWajib() {
                   transform: "translate(-50%, -50%)",
                   cursor: "pointer",
                 }}
+                onClick={() => handleSearchSimpanan(search)}
               />
             </div>
         </div>
@@ -164,7 +185,6 @@ export default function SimpananWajib() {
               ))}
             </table>
           ) : (
-
             <table>
             <tr>
               <th>No.</th>

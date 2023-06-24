@@ -21,6 +21,7 @@ export default function Kas() {
     const type = location.split('/')[2]
 
     const [showAddForm, setShowAddForm] = useState(false)   
+    const [search, setSearch] = useState('');
 
     function formatMoney(amount) {
         return new Intl.NumberFormat('id-ID', { maximumSignificantDigits: 3 }).format(amount);
@@ -44,6 +45,28 @@ export default function Kas() {
             return;
         }
     }, [dispatch, type])
+
+    function handleSearchKas(query) {
+        if (query === null) {
+          return;
+        }
+        try {
+          if(type === "masuk"){
+            dispatch(AsyncGetKas("masuk", query))
+            return;
+          }
+          else if (type === "keluar") {
+            dispatch(AsyncGetKas("keluar", query))
+            return;
+          } else if(type === "rekap"){
+            dispatch(AsyncGetKas(null , query))
+            dispatch(AsyncGetRekapKasPengelola())
+            return;
+          }
+        } catch (e) {
+          console.log(e);
+        }
+      }
 
     if (showAddForm) {
         return (
@@ -78,6 +101,10 @@ export default function Kas() {
                         <input
                             type="text"
                             className="section-search"
+                            placeholder='id transaksi'
+                            value={search}
+                            onChange={(e) => setSearch(e.target.value)}
+                            onKeyPress={(e) => e.key === "Enter" && handleSearchKas(search)}
                             required
                             style={{
                                 width: "100%",
@@ -95,6 +122,7 @@ export default function Kas() {
                                 transform: "translate(-50%, -50%)",
                                 cursor: "pointer",
                             }}
+                            onClick={() => handleSearchKas(search)}
                         />
                     </div>                </div>
                 <div className="section-body">

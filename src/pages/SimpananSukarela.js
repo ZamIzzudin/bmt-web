@@ -1,5 +1,5 @@
 import { useLocation } from "react-router-dom";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 
 import { AsyncGetSimpananSukarela } from "../state/simpanan/middleware";
@@ -7,7 +7,6 @@ import { AsyncGetSimpananSukarela } from "../state/simpanan/middleware";
 import DetailSimpananSukarela from "../components/Detail/DetailSimpananSukarela";
 
 import { ReactComponent as Search } from "../assets/icons/search.svg";
-import { useEffect } from "react";
 
 export default function Simpanan() {
   const { auth = {}, simpanan = [] } = useSelector(states => states);
@@ -17,6 +16,8 @@ export default function Simpanan() {
 
   const [showDetail, setShowDetail] = useState(false);
   const [selectedData, setSelectedData] = useState(null);
+
+  const [search, setSearch] = useState("");
 
   function backButton() {
     setShowDetail(false);
@@ -33,6 +34,21 @@ export default function Simpanan() {
     }
     dispatch(AsyncGetSimpananSukarela('pengelola'));
   }, [dispatch, auth.role])
+
+  function handleSearchSimpanan(query) {
+    if (query === null) {
+      return;
+    }
+    try {
+      if(auth.role === "NASABAH"){
+        dispatch(AsyncGetSimpananSukarela('nasabah', query));
+        return;
+      }
+      dispatch(AsyncGetSimpananSukarela('pengelola', query));
+    } catch (e) {
+      console.log(e);
+    }
+  }
 
   // Form that shown when parameter (true)
   if (showDetail) {
@@ -55,6 +71,7 @@ export default function Simpanan() {
               type="text"
               className="section-search"
               required
+              placeholder={auth.role === "NASABAH" ? "produk simpanan" : "nama nasabah"}
               style={{
                 width: "100%",
                 height: "24px",
@@ -62,6 +79,9 @@ export default function Simpanan() {
                 borderRadius: "18px",
                 fontSize: "16px",
               }}
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              onKeyPress={(e) => e.key === "Enter" && handleSearchSimpanan(search)}
             />
             <Search
               style={{
@@ -71,6 +91,7 @@ export default function Simpanan() {
                 transform: "translate(-50%, -50%)",
                 cursor: "pointer",
               }}
+              onClick={() => handleSearchSimpanan(search)}
             />
           </div>
         </div>

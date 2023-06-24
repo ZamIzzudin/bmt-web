@@ -23,6 +23,8 @@ export default function PengajuanKerjasama() {
     const [showDetail, setShowDetail] = useState(false)
     const [selectedData, setSelectedData] = useState(null)
 
+    const [search, setSearch] = useState('');
+
     function handleModal() {
         dispatch(HideError())
         dispatch(HideSuccess())
@@ -43,6 +45,21 @@ export default function PengajuanKerjasama() {
         }
            dispatch(AsyncGetPengajuanKerjasama("pengelola"))
     }, [dispatch, auth.role])
+
+    function handleSearchPengajuan(query) {
+        if (query === null) {
+          return;
+        }
+        try {
+          if(auth.role === "NASABAH"){
+            dispatch(AsyncGetPengajuanKerjasama("nasabah", query))
+            return;
+          }
+          dispatch(AsyncGetPengajuanKerjasama("pengelola", query))
+        } catch (e) {
+          console.log(e);
+        }
+      }
 
     // Form that shown when parameter (true)
     if (showDetail) {
@@ -89,6 +106,10 @@ export default function PengajuanKerjasama() {
                             type="text"
                             className="section-search"
                             required
+                            value={search}
+                            onChange={(e) => setSearch(e.target.value)}
+                            onKeyPress={(e) => e.key === "Enter" && handleSearchPengajuan(search)}
+                            placeholder={`${auth.role === "NASABAH" ? "id pengajuan" : "nama nasabah"}`}
                             style={{
                                 width: "100%",
                                 height: "24px",
@@ -105,6 +126,7 @@ export default function PengajuanKerjasama() {
                                 transform: "translate(-50%, -50%)",
                                 cursor: "pointer",
                             }}
+                            onClick={() => handleSearchPengajuan(search)}
                         />
                     </div>
                 </div>
@@ -124,7 +146,7 @@ export default function PengajuanKerjasama() {
                         {pengajuan.map((each, index) => (
                             <tr>
                                 <td>{index + 1}</td>
-                                <td>{`NSB-${each.id_nasabah.substring(0,3)}`}</td>
+                                <td>{`PMBKRJ-${each.id_pengajuan.substring(0,3)}`}</td>
                                 <td>{each.nama}</td>
                                 <td>{each.produk_pengajuan}</td>
                                 <td>{`Rp. ${formatMoney(each.nominal_akhir)}`}</td>

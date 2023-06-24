@@ -5,11 +5,11 @@ import { showLoading, hideLoading } from "react-redux-loading-bar";
 import { ShowSuccess } from '../success/middleware';
 import { ShowError } from '../error/middleware';
 
-function AsyncGetUsers(type) {
+function AsyncGetUsers(type, search) {
     return async dispatch => {
         dispatch(showLoading());
         try {
-            const data = await api.GetUsers(type);
+            const data = await api.GetUsers(type, search);
             dispatch(GetUsersActions(data));
         } catch (err) {
             console.error(err);

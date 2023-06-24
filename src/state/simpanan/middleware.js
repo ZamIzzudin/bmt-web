@@ -6,11 +6,11 @@ import { ShowSuccess } from '../success/middleware';
 import { ShowError } from '../error/middleware';
 
 //SIMPANAN POKOK
-function AsyncGetSimpananPokok(){
+function AsyncGetSimpananPokok(search){
         return async dispatch => {
                 dispatch(showLoading());
                 try {
-                        const data = await api.GetSimpananPokok();
+                        const data = await api.GetSimpananPokok(search);
                         dispatch(GetSimpananAction(data));
                 } catch (err) {
                         console.error(err);
@@ -21,11 +21,11 @@ function AsyncGetSimpananPokok(){
 }
 
 //SIMPANAN WAJIB
-function AsyncGetSimpananWajib(){
+function AsyncGetSimpananWajib(search){
         return async dispatch => {
                 dispatch(showLoading());
                 try {
-                        const data = await api.GetSimpananWajib();
+                        const data = await api.GetSimpananWajib(search);
                         dispatch(GetSimpananAction(data));
                 } catch (err) {
                         console.error(err);
@@ -35,24 +35,25 @@ function AsyncGetSimpananWajib(){
         }
 }
 
-function AsyncGetDetailSimpananWajib(id){
+function AsyncGetDetailSimpananWajib(id, tahun){
         return async dispatch => {
                 dispatch(showLoading());
                 try {
-                        const data = await api.GetDetailSimpananWajib(id);
+                        const data = await api.GetDetailSimpananWajib(id, tahun);
                         dispatch(GetDetailSimpananAction(data));
                 } catch (err) {
                         console.error(err);
+                        dispatch(GetDetailSimpananAction([]));
                 }
                 dispatch(hideLoading());
         }
 }
 
-function AsyncGetNotLunas(bulan, tahun){
+function AsyncGetNotLunas(bulan, tahun, search){
         return async dispatch => {
                 dispatch(showLoading());
                 try {
-                        const data = await api.GetNotLunasSimpananWajib(bulan, tahun);
+                        const data = await api.GetNotLunasSimpananWajib(bulan, tahun, search);
                         dispatch(GetSimpananAction(data));
                 } catch (err) {
                         console.error(err);
@@ -78,11 +79,11 @@ function AsyncSetorSimpananWajib(id){
 }
 
 //SIMPANAN SUKARELA
-function AsyncGetSimpananSukarela(type){
+function AsyncGetSimpananSukarela(type, search){
         return async dispatch => {
                 dispatch(showLoading());
                 try {
-                        const data = await api.GetSimpananSukarela(type);
+                        const data = await api.GetSimpananSukarela(type, search);
                         dispatch(GetSimpananAction(data));
                 } catch (err) {
                         console.error(err);

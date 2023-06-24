@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import moment from "moment";
 
 import { ReactComponent as Search } from "../assets/icons/search.svg";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { AsyncGetSimpananPokok } from "../state/simpanan/middleware";
 
 export default function Simpanan() {
@@ -13,6 +13,8 @@ export default function Simpanan() {
   const location = useLocation().pathname;
   const type = location.split("/")[2];
 
+  const [search, setSearch] = useState("");
+
   function formatMoney(amount) {
     return new Intl.NumberFormat('id-ID', { maximumSignificantDigits: 3 }).format(amount);
 }
@@ -20,6 +22,17 @@ export default function Simpanan() {
   useEffect(() => {
     dispatch(AsyncGetSimpananPokok());
   }, [dispatch])
+
+  function handleSearchSimpanan(query) {
+    if (query === null) {
+      return;
+    }
+    try {
+        dispatch(AsyncGetSimpananPokok(query));
+    } catch (e) {
+      console.log(e);
+    }
+  }
 
   return (
     <main>
@@ -32,6 +45,10 @@ export default function Simpanan() {
               type="text"
               className="section-search"
               required
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              onKeyPress={(e) => e.key === "Enter" && handleSearchSimpanan(search)}
+              placeholder="nama nasabah"
               style={{
                 width: "100%",
                 height: "24px",
@@ -48,6 +65,7 @@ export default function Simpanan() {
                 transform: "translate(-50%, -50%)",
                 cursor: "pointer",
               }}
+              onClick={() => handleSearchSimpanan(search)}
             />
           </div>
         </div>

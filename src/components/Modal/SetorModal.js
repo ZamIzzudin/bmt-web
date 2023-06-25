@@ -1,6 +1,7 @@
 import { Modal, Form } from 'react-bootstrap'
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
+import formatRupiah from '../../utils/formatRupiah';
 
 import { AsyncSetorSimpananSukarela } from "../../state/pembiayaan/middleware";
 import { AsyncSetorPembiayaanKerjasama } from '../../state/pembiayaan/middleware';
@@ -11,6 +12,14 @@ import '../../styles/components/CTAModal.css'
 export default function SetorModal({ show, setShow, data }) {
     const dispatch = useDispatch();
     const [nominal, setNominal] = useState()
+    const [showedNominal, setShowedNominal] = useState()
+
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const value = e.target.value;
+        const numericValue = parseFloat(value.replace(/[^,\d]/g, '').replace(',', ''));
+        setShowedNominal(formatRupiah(value, 'Rp. '));
+        setNominal(numericValue.toString());
+      };
     function handleSetor(e){
         e.preventDefault();
         try{
@@ -24,7 +33,7 @@ export default function SetorModal({ show, setShow, data }) {
                 }
                 dispatch(AsyncSetorPembiayaanKerjasama({
                     id: data.id_pembiayaan,
-                    nominal: nominal,
+                    nominal: parseInt(nominal),
                 }))
                 setTimeout(() => {
                     window.location.reload();
@@ -41,7 +50,7 @@ export default function SetorModal({ show, setShow, data }) {
                 }
                 dispatch(AsyncSetorPembiayaanJualBeli({
                     id: data.id_pembiayaan,
-                    nominal: nominal,
+                    nominal: parseInt(nominal),
                 }))
                 setTimeout(() => {
                     window.location.reload();
@@ -50,7 +59,7 @@ export default function SetorModal({ show, setShow, data }) {
             }
             dispatch(AsyncSetorSimpananSukarela({
                 id: data.id_simpanan,
-                nominal: nominal,
+                nominal: parseInt(nominal),
         }))
         setTimeout(() => {
             window.location.reload();
@@ -73,7 +82,7 @@ export default function SetorModal({ show, setShow, data }) {
                 <Form onSubmit={ handleSetor }>
                     <Form.Group>
                         <Form.Label>Nominal (Rp)<span className="required">*</span></Form.Label>
-                        <Form.Control required type='number' value={nominal} onChange={(e) => setNominal(e.target.value)} />
+                        <Form.Control required value={showedNominal} onChange={handleChange} />
                     </Form.Group>
                     <div className="form-cta gap-3">
                         <button className="form-submit-button" type="submit">Setor</button>

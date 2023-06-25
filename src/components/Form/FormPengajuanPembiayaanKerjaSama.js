@@ -1,6 +1,7 @@
 import { Form, Row, Col } from 'react-bootstrap'
 import { useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
+import formatRupiah from '../../utils/formatRupiah'
 
 import { AsyncCreatePengajuanKerjasama } from '../../state/pengajuan/middleware'
 
@@ -14,6 +15,7 @@ export default function FormPengajuanPembiayaan({ showForm }) {
     const { auth = {} } = useSelector(states => states)
     const [produk_pembiayaan, setProdukPembiayaan] = useState('Mudharabah')
     const [durasi_pembiayaan, setDurasiPembiayaan] = useState('1')
+    const [showedNominal, setShowedNominal] = useState('')
     const [nominal_pembiayaan, setNominalPembiayaan] = useState()
     const [foto_ktp, setGambarKTP] = useState(null)
     const [foto_kk, setGambarKK] = useState(null)
@@ -25,9 +27,17 @@ export default function FormPengajuanPembiayaan({ showForm }) {
         }
     const nominal_pelunasan = calculateNominalPelunasan(durasi_pembiayaan) || 0
 
+
     function formatMoney(amount) {
-        return new Intl.NumberFormat('id-ID', { maximumSignificantDigits: 3 }).format(amount);
+        return new Intl.NumberFormat('id-ID').format(amount);
     }
+
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const value = e.target.value;
+        const numericValue = parseFloat(value.replace(/[^,\d]/g, '').replace(',', ''));
+        setShowedNominal(formatRupiah(value, 'Rp. '));
+        setNominalPembiayaan(numericValue.toString());
+      };
 
     function handleSubmitPengajuan(e) {
         e.preventDefault()
@@ -105,7 +115,7 @@ export default function FormPengajuanPembiayaan({ showForm }) {
                 <Col>
                     <Form.Group>
                         <Form.Label>Nominal Pembiayaan (Rp)<span className="required">*</span></Form.Label>
-                        <Form.Control required value={nominal_pembiayaan} onChange={e => setNominalPembiayaan(e.target.value)} type='text' />
+                        <Form.Control required value={showedNominal} onChange={handleChange} type='text' />
                     </Form.Group>
                 </Col>
                 <Col>

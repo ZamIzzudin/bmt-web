@@ -1,13 +1,11 @@
 import React from "react";
 
 import "../../styles/components/details/Rekapitulasi.css";
+import formatRupiah from "../../utils/formatRupiah";
 import moment from "moment";
 
 const Rekapitulasi = ({ showForm, dataRekapitulasi, dataPembiayaan }) => {
 
-  function formatMoney(amount) {
-    return new Intl.NumberFormat('id-ID', { maximumSignificantDigits: 3 }).format(amount);
-}
   return (
     <section className="section-rekapitulasi">
       <div className="user-information">
@@ -21,11 +19,11 @@ const Rekapitulasi = ({ showForm, dataRekapitulasi, dataPembiayaan }) => {
         </div>
         <div class="detail">
           <div class="detail-label">Nominal Pembiayaan</div>
-          <div class="detail-value">: {`Rp. ${formatMoney(dataPembiayaan.nominal)}`}</div>
+          <div class="detail-value">: {`Rp. ${formatRupiah(dataPembiayaan.nominal)}`}</div>
         </div>
         <div class="detail">
           <div class="detail-label">Nominal Pelunasan</div>
-          <div class="detail-value">: {`Rp. ${formatMoney(dataPembiayaan.pelunasan)}`}</div>
+          <div class="detail-value">: {`Rp. ${formatRupiah(dataPembiayaan.pelunasan)}`}</div>
         </div>
         <div class="detail">
           <div class="detail-label">Status</div>
@@ -47,7 +45,7 @@ const Rekapitulasi = ({ showForm, dataRekapitulasi, dataPembiayaan }) => {
                 <td>{index + 1}</td>
                 <td>{moment.utc(each.created_at).format("DD MMMM YYYY")}</td>
                 <td>{each.teller}</td>
-                <td>{formatMoney(each.nominal)}</td>
+                <td>{formatRupiah(each.nominal)}</td>
                 <td>{each.tipe_angsuran}</td>
               </tr>
             ))}

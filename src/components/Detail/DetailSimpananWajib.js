@@ -2,6 +2,7 @@
 import { useEffect } from "react";
 
 import { useDispatch, useSelector } from "react-redux";
+import formatRupiah from "../../utils/formatRupiah";
 
 import { AsyncGetDetailSimpananWajib, AsyncSetorSimpananWajib } from "../../state/simpanan/middleware";
 
@@ -10,10 +11,6 @@ import { ReactComponent as BackButton } from "../../assets/icons/arrow_back.svg"
 export default function DetailSimpananWajib({ backButton, id }) {
   const { simpanan = [] } = useSelector((states) => states);
   const dispatch = useDispatch();
-
-  function formatMoney(amount) {
-    return new Intl.NumberFormat('id-ID', { maximumSignificantDigits: 3 }).format(amount);
-}
 
   useEffect(() => {
     dispatch(AsyncGetDetailSimpananWajib(id));
@@ -56,7 +53,7 @@ export default function DetailSimpananWajib({ backButton, id }) {
                 <td>{each.bulan}</td>
                 <td>{each.tahun}</td>
                 <td>{each.id_teller}</td>
-                <td>Rp. {formatMoney(each.nominal)}</td>
+                <td>Rp. {formatRupiah(each.nominal)}</td>
                 <td>{each.status}</td>
                 {each.status === "BELUM LUNAS" && (
                   <td>

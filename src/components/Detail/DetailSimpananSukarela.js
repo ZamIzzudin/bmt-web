@@ -1,6 +1,7 @@
 import { useSelector, useDispatch } from "react-redux";
 import { useState, useEffect } from "react";
 import moment from "moment";
+import formatRupiah from "../../utils/formatRupiah";
 
 import SetorModal from "../Modal/SetorModal";
 import TarikModal from "../Modal/TarikModal";
@@ -20,10 +21,6 @@ export default function DetailSimpananSukarela({ backButton, currentData }) {
   const [showModal, setShowModal] = useState(false);
   const [showModal2, setShowModal2] = useState(false);
   // const [showDetailTabungan, setShowDetailTabungan] = useState(false);
-
-  function formatMoney(amount) {
-    return new Intl.NumberFormat('id-ID', { maximumSignificantDigits: 3 }).format(amount);
-}
 
 function handleModal() {
   dispatch(HideError())
@@ -73,7 +70,7 @@ useEffect(() => {
               </tr>
               <tr>
                 <td>Jumlah Simpanan</td>
-                <td>Rp. {formatMoney(currentData.nominal)}</td>
+                <td>Rp. {formatRupiah(currentData.nominal)}</td>
               </tr>
               <tr>
                 <td>Tanggal Pembuatan</td>
@@ -82,13 +79,6 @@ useEffect(() => {
           </table>
           {(auth.role === "ADMIN" || auth.role === 'ADMIN_MASTER') ? (
             <div className="form-cta gap-3">
-              {/* <button
-                onClick={() => setShowDetailTabungan(true)}
-                className="form-submit-button"
-                type="button"
-              >
-                Cetak Laporan
-              </button> */}
               <button
                 onClick={() => setShowModal2(true)}
                 className="form-submit-button"
@@ -128,7 +118,7 @@ useEffect(() => {
                 <td>{index + 1}</td>
                 <td>{moment.utc(each.created_at).format("DD MMMM YYYY")}</td>
                 <td>{each.teller}</td>
-                <td>Rp. {formatMoney(each.nominal)}</td>
+                <td>Rp. {formatRupiah(each.nominal)}</td>
                 <td>{each.tipe_angsuran}</td>
               </tr>
             ))}
@@ -136,7 +126,7 @@ useEffect(() => {
           <table>
             <tr style={{ width: "100%" }}>
               <th>Total</th>
-              <th style={{ transform: 'translateX(65%)' }}>Rp. {formatMoney(currentData.nominal)}</th>
+              <th style={{ transform: 'translateX(65%)' }}>Rp. {formatRupiah(currentData.nominal)}</th>
             </tr>
           </table>
         </div>

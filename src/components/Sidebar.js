@@ -171,6 +171,9 @@ export default function Sidebar() {
                     <li className="navbar-link-item">
                         <Accordion isActive={location.includes('/pengajuan/') ? true : false} dynamicData={pengajuan} title={{ title: 'Pengajuan', payload: 'pengajuan' }} />
                     </li>
+                    <li className="navbar-link-item">
+                            <Accordion isActive={location.includes('/kas/') ? true : false} dynamicData={admin_kas} title={{ title: 'Laporan', payload: 'kas' }} />
+                        </li>
                 </ul>
             )}
  

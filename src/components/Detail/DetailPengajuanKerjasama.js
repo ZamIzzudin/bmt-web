@@ -2,6 +2,7 @@ import { useSelector, useDispatch } from 'react-redux'
 import { useLocation } from 'react-router-dom'
 
 import { AsyncApprovePengajuanKerjasama, AsyncRejectPengajuanKerjasama } from '../../state/pengajuan/middleware'
+import formatRupiah from '../../utils/formatRupiah'
 
 import moment from 'moment'
 
@@ -15,10 +16,6 @@ export default function DetailPengajuanKerjasama({ backButton, currentData }) {
     const attach_ktp = JSON.parse(currentData.attach_ktp)
     const attach_kk = JSON.parse(currentData.attach_kk)
     const dokumen_rab = JSON.parse(currentData.attach_lainnya)
-
-    function formatMoney(amount) {
-        return new Intl.NumberFormat('id-ID', { maximumSignificantDigits: 3 }).format(amount);
-    }
 
     return (
         <main>
@@ -48,11 +45,11 @@ export default function DetailPengajuanKerjasama({ backButton, currentData }) {
                             </tr>
                             <tr>
                                 <td>Nominal Pembiayaan</td>
-                                <td>{`Rp. ${formatMoney(currentData.nominal_awal)}`}</td>
+                                <td>{`Rp. ${formatRupiah(currentData.nominal_awal)}`}</td>
                             </tr>
                             <tr>
                                 <td>Nominal Pelunasan</td>
-                                <td>{`Rp. ${formatMoney(currentData.nominal_akhir)}`}</td>
+                                <td>{`Rp. ${formatRupiah(currentData.nominal_akhir)}`}</td>
                             </tr>
                             <tr>
                                 <td>Tanggal Pengajuan</td>
@@ -85,7 +82,7 @@ export default function DetailPengajuanKerjasama({ backButton, currentData }) {
                                 <td className="centered"><img src={dokumen_rab.url} width={500} alt="attachment" /></td>
                             </tr>
                     </table>
-                    {(auth.role === 'OFFICER' || auth.role === 'ADMIN') && currentData.status_pengajuan === 'BELUM DISETUJUI' ? (
+                    {(auth.role === 'OFFICER') && currentData.status_pengajuan === 'BELUM DISETUJUI' ? (
                         <div className="form-cta gap-3">
                             <button className="form-submit-button" type="button" onClick={() => { backButton(); 
                                 dispatch(AsyncApprovePengajuanKerjasama(currentData.id_pengajuan))}}>Setujui</button>

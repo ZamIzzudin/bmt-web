@@ -16,6 +16,10 @@ export default function AnggotaBelomLunas({ backButton }) {
   const [tahun, setTahun] = useState("2023");
   const [showModal, setShowModal] = useState(false);
 
+  function formatMoney(amount) {
+    return new Intl.NumberFormat('id-ID').format(amount);
+}
+
   return (
     <main>
       <div
@@ -103,7 +107,7 @@ export default function AnggotaBelomLunas({ backButton }) {
                 <td>{each.bulan}</td>
                 <td>{each.tahun}</td>
                 <td>{each.teller}</td>
-                <td>{each.nominal}</td>
+                <td>{`Rp. ${formatMoney(each.nominal)}`}</td>
                 <td>{each.status}</td>
                 <td>
                   <button

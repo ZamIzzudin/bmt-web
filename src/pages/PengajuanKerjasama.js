@@ -35,7 +35,7 @@ export default function PengajuanKerjasama() {
     }
 
     function formatMoney(amount) {
-        return new Intl.NumberFormat('id-ID', { maximumSignificantDigits: 3 }).format(amount);
+        return new Intl.NumberFormat('id-ID').format(amount);
     }
 
     useEffect(() => {

@@ -8,6 +8,7 @@ import Rekapitulasi from "./Rekapitulasi";
 import { HideError } from '../../state/error/middleware'
 import { HideSuccess } from '../../state/success/middleware'
 import InfoModal from '../../components/InfoModal'
+import formatRupiah from "../../utils/formatRupiah";
 
 import { AsyncGetTransaksiKerjasama } from "../../state/transaksi/middleware";
 
@@ -20,10 +21,6 @@ export default function DetailPembiayaan({ backButton, currentData }) {
   const location = useLocation().pathname;
   const [showModal, setShowModal] = useState(false);
   const [showRekapitulasi, setShowRekapitulasi] = useState(false);
-
-  function formatMoney(amount) {
-    return new Intl.NumberFormat('id-ID', { maximumSignificantDigits: 3 }).format(amount);
-}
 
 function handleModal() {
   dispatch(HideError())
@@ -89,15 +86,15 @@ useEffect(() => {
               </tr>
               <tr>
                 <td>Nominal Pembiayaan</td>
-                <td>{`Rp. ${formatMoney(currentData.nominal)}`}</td>
+                <td>{`Rp. ${formatRupiah(currentData.nominal)}`}</td>
               </tr>
               <tr>
                 <td>Nominal Pelunasan</td>
-                <td>{`Rp. ${formatMoney(currentData.pelunasan)}`}</td>
+                <td>{`Rp. ${formatRupiah(currentData.pelunasan)}`}</td>
               </tr>
               <tr>
                 <td>Angsuran Bulanan</td>
-                <td>{`Rp. ${formatMoney(currentData.min_angsuran)}`}</td>
+                <td>{`Rp. ${formatRupiah(currentData.min_angsuran)}`}</td>
               </tr>
               <tr>
                 <td>Durasi Pembiayaan</td>
@@ -113,7 +110,7 @@ useEffect(() => {
               </tr>
               <tr>
                 <td>Sisa Angsuran</td>
-                <td>{`Rp. ${formatMoney(currentData.sisa_angsuran)}`}</td>
+                <td>{`Rp. ${formatRupiah(currentData.sisa_angsuran)}`}</td>
               </tr>
               <tr>
                 <td>Status Pembiayaan</td>
@@ -124,20 +121,9 @@ useEffect(() => {
             <div className="form-cta gap-3">
               {location.includes("/pembiayaan/kerjasama") ? (
                 <>
-                  <button
-                    onClick={() => { setShowRekapitulasi(true) }}
-                    className="form-submit-button"
-                  >
-                    Cetak Transaksi
-                  </button>
                 </>
               ) : (
-                  <button
-                  onClick={() => { setShowRekapitulasi(true) }}
-                  className="form-submit-button"
-                >
-                  Cetak Transaksi
-                </button>
+                <></>
               )}
               <button
                 onClick={() => setShowModal(true)}
@@ -148,12 +134,7 @@ useEffect(() => {
               </button>
             </div>
           ) : auth.role === "MANAGER" ? (
-              <button
-              onClick={() => { setShowRekapitulasi(true) }}
-              className="form-submit-button"
-            >
-              Cetak Transaksi
-            </button> 
+            <></>
           ) : null}
         </div>
       </section>
@@ -176,7 +157,7 @@ useEffect(() => {
                 <td>{index + 1}</td>
                 <td>{moment.utc(each.created_at).format("DD MMMM YYYY")}</td>
                 <td>{each.teller}</td>
-                <td>{formatMoney(each.nominal)}</td>
+                <td>{formatRupiah(each.nominal)}</td>
                 <td>{each.tipe_angsuran}</td>
               </tr>
             ))}

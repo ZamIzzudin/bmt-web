@@ -26,10 +26,8 @@ export default function PembiayaanJualBeli() {
   }
 
   function formatMoney(amount) {
-    return new Intl.NumberFormat("id-ID", {
-      maximumSignificantDigits: 3,
-    }).format(amount);
-  }
+    return new Intl.NumberFormat('id-ID').format(amount);
+}
 
   useEffect(() => {
     if (auth.role === "NASABAH") {

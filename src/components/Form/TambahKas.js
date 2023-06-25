@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { useDispatch } from 'react-redux'
+import formatRupiah from '../../utils/formatRupiah'
 
 import { AsyncCreateKas } from '../../state/kas/middleware'
 import { Form, Row, Col } from 'react-bootstrap'
@@ -11,14 +12,22 @@ export default function TambahKas({ showForm }) {
 
     const [jenis_transaksi, setJenisTransaksi] = useState('MASUK')
     const [nominal, setNominal] = useState('')
+    const [showedNominal, setShowedNominal] = useState('')
     const [catatan, setCatatan] = useState('')
+
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const value = e.target.value;
+        const numericValue = parseFloat(value.replace(/[^,\d]/g, '').replace(',', ''));
+        setShowedNominal(formatRupiah(value, 'Rp. '));
+        setNominal(numericValue.toString());
+      };
 
     function handleSubmitKas(e){
         e.preventDefault();
         try{
             dispatch(AsyncCreateKas({
                 jenis_transaksi,
-                nominal,
+                nominal : parseInt(nominal),
                 catatan,
         }, jenis_transaksi.toLowerCase()))
         }
@@ -42,7 +51,7 @@ export default function TambahKas({ showForm }) {
                 <Col>
                     <Form.Group>
                         <Form.Label>Nominal (Rp)<span className="required">*</span></Form.Label>
-                        <Form.Control required type='number' value={nominal} onChange={(e) => setNominal(e.target.value)} />
+                        <Form.Control required value={showedNominal} onChange={handleChange} />
                     </Form.Group>
                 </Col>
             </Row>

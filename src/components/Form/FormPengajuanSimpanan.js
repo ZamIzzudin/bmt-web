@@ -3,6 +3,7 @@ import { Form, Row, Col } from 'react-bootstrap'
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux'
 import { AsyncCreatePengajuanSimpanan } from '../../state/pengajuan/middleware';
+import formatRupiah from '../../utils/formatRupiah';
 
 import '../../styles/components/FormLayout.css'
 
@@ -11,12 +12,20 @@ export default function FormPengajuanSimpanan({ showForm }) {
 
     const { auth = {} } = useSelector(states => states)
     const [produkSimpanan, setProdukSimpanan] = useState('Simpanan Idul Fitri')
-    const [setoranAwal, setSetoranAwal] = useState(50000)
+    const [showedNominal, setShowedNominal] = useState('')
+    const [setoranAwal, setSetoranAwal] = useState('')
+
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const value = e.target.value;
+        const numericValue = parseFloat(value.replace(/[^,\d]/g, '').replace(',', ''));
+        setShowedNominal(formatRupiah(value, 'Rp. '));
+        setSetoranAwal(numericValue.toString());
+      };
 
     const handleSubmitPengajuanSimpanan = (e) => {
         e.preventDefault()
         try{
-            dispatch(AsyncCreatePengajuanSimpanan({ id_nasabah: auth.id, produk_simpanan: produkSimpanan, setoran_awal: setoranAwal }))
+            dispatch(AsyncCreatePengajuanSimpanan({ id_nasabah: auth.id, produk_simpanan: produkSimpanan, setoran_awal: parseInt(setoranAwal) }))
         }
         catch(err){
             console.log(err)
@@ -51,7 +60,7 @@ export default function FormPengajuanSimpanan({ showForm }) {
                 <Col>
                     <Form.Group>
                         <Form.Label>Setoran Awal (Rp)<span className="required">*</span></Form.Label>
-                        <Form.Control type='number' value={setoranAwal} onChange={e => setSetoranAwal(e.target.value)} />
+                        <Form.Control value={showedNominal} onChange={handleChange} />
                     </Form.Group>
                 </Col>
             </Row>

@@ -11,7 +11,6 @@ import TambahPengelola from "../components/Form/TambahPengelola";
 import EditPengelola from "../components/Form/EditPengelola";
 import InfoModal from "../components/InfoModal";
 
-import { ReactComponent as Search } from "../assets/icons/search.svg";
 import { ReactComponent as Delete } from "../assets/icons/Delete.svg";
 
 export default function KeanggotaanAdmin(){
@@ -30,10 +29,6 @@ export default function KeanggotaanAdmin(){
   const [showEditForm, setShowEditForm] = useState(false);
   const [selectedData, setSelectedData] = useState(null);
 
-  const [searchAdminMaster, setAdminMaster] = useState("");
-  const [searchAdmin, setSearchAdmin] = useState("");
-  const [searchManager, setSearchManager] = useState("");
-  const [searchOfficer, setSearchOfficer] = useState("");
 
   function handleModal() {
     dispatch(HideError());
@@ -44,16 +39,6 @@ export default function KeanggotaanAdmin(){
     dispatch(AsyncGetUsers("pengelola"));
   }, [dispatch]);
 
-  function handleSearch(query) {
-    if (query === null) {
-      return;
-    }
-    try {
-      dispatch(AsyncGetUsers("pengelola", query));
-    } catch (e) {
-      console.log(e);
-    }
-  }
 
   if (showAddForm) {
     return <TambahPengelola backButton={() => setShowAddForm(false)} />;
@@ -98,31 +83,6 @@ export default function KeanggotaanAdmin(){
           >
             <h4 className="section-header">List Akun Admin Master</h4>
             <div style={{ position: "relative" }}>
-              <input
-                type="text"
-                className="section-search"
-                required
-                value={searchAdminMaster}
-                onChange={(e) => setAdminMaster(e.target.value)}
-                onKeyPress={(e) => e.key === "Enter" && handleSearch(searchAdminMaster)}
-                style={{
-                  width: "100%",
-                  height: "24px",
-                  padding: "15px 25px",
-                  borderRadius: "18px",
-                  fontSize: "16px",
-                }}
-              />
-              <Search
-                style={{
-                  position: "absolute",
-                  top: "50%",
-                  left: "90%",
-                  transform: "translate(-50%, -50%)",
-                  cursor: "pointer",
-                }}
-                onClick={() => handleSearch(searchAdminMaster)}
-              />
             </div>
           </div>
           <div className="section-body">
@@ -178,31 +138,6 @@ export default function KeanggotaanAdmin(){
           >
             <h4 className="section-header">List Akun Admin</h4>
             <div style={{ position: "relative" }}>
-              <input
-                type="text"
-                className="section-search"
-                value={searchAdmin}
-                onChange={(e) => setSearchAdmin(e.target.value)}
-                onKeyPress={(e) => e.key === "Enter" && handleSearch(searchAdmin)}
-                required
-                style={{
-                  width: "100%",
-                  height: "24px",
-                  padding: "15px 25px",
-                  borderRadius: "18px",
-                  fontSize: "16px",
-                }}
-              />
-              <Search
-                style={{
-                  position: "absolute",
-                  top: "50%",
-                  left: "90%",
-                  transform: "translate(-50%, -50%)",
-                  cursor: "pointer",
-                }}
-                onClick={() => handleSearch(searchAdmin)}
-              />
             </div>
           </div>
           <div className="section-body">
@@ -267,31 +202,6 @@ export default function KeanggotaanAdmin(){
           >
             <h4 className="section-header">List Akun Manager</h4>
             <div style={{ position: "relative" }}>
-              <input
-                type="text"
-                className="section-search"
-                value={searchManager}
-                onChange={(e) => setSearchManager(e.target.value)}
-                onKeyPress={(e) => e.key === "Enter" && handleSearch(searchManager)}
-                required
-                style={{
-                  width: "100%",
-                  height: "24px",
-                  padding: "15px 25px",
-                  borderRadius: "18px",
-                  fontSize: "16px",
-                }}
-              />
-              <Search
-                style={{
-                  position: "absolute",
-                  top: "50%",
-                  left: "90%",
-                  transform: "translate(-50%, -50%)",
-                  cursor: "pointer",
-                }}
-                onClick={() => handleSearch(searchManager)}
-              />
             </div>
           </div>
           <div className="section-body">
@@ -353,31 +263,6 @@ export default function KeanggotaanAdmin(){
           >
             <h4 className="section-header">List Akun Officer</h4>
             <div style={{ position: "relative" }}>
-              <input
-                type="text"
-                className="section-search"
-                value={searchOfficer}
-                onChange={(e) => setSearchOfficer(e.target.value)}
-                onKeyPress={(e) => e.key === "Enter" && handleSearch(searchOfficer)}
-                required
-                style={{
-                  width: "100%",
-                  height: "24px",
-                  padding: "15px 25px",
-                  borderRadius: "18px",
-                  fontSize: "16px",
-                }}
-              />
-              <Search
-                style={{
-                  position: "absolute",
-                  top: "50%",
-                  left: "90%",
-                  transform: "translate(-50%, -50%)",
-                  cursor: "pointer",
-                }}
-                onClick={() => handleSearch(searchOfficer)}
-              />
             </div>
           </div>
           <div className="section-body">

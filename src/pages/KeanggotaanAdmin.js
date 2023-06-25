@@ -14,7 +14,7 @@ import InfoModal from "../components/InfoModal";
 import { ReactComponent as Search } from "../assets/icons/search.svg";
 import { ReactComponent as Delete } from "../assets/icons/Delete.svg";
 
-export default function KeanggotaanAdmin() {
+export default function KeanggotaanAdmin(){
   const {
     auth = {},
     users = {},
@@ -30,7 +30,10 @@ export default function KeanggotaanAdmin() {
   const [showEditForm, setShowEditForm] = useState(false);
   const [selectedData, setSelectedData] = useState(null);
 
-  const [search, setSearch] = useState("");
+  const [searchAdminMaster, setAdminMaster] = useState("");
+  const [searchAdmin, setSearchAdmin] = useState("");
+  const [searchManager, setSearchManager] = useState("");
+  const [searchOfficer, setSearchOfficer] = useState("");
 
   function handleModal() {
     dispatch(HideError());
@@ -99,9 +102,9 @@ export default function KeanggotaanAdmin() {
                 type="text"
                 className="section-search"
                 required
-                value={search}
-                onChange={(e) => setSearch(e.target.value)}
-                onKeyPress={(e) => e.key === "Enter" && handleSearch(search)}
+                value={searchAdminMaster}
+                onChange={(e) => setAdminMaster(e.target.value)}
+                onKeyPress={(e) => e.key === "Enter" && handleSearch(searchAdminMaster)}
                 style={{
                   width: "100%",
                   height: "24px",
@@ -118,6 +121,7 @@ export default function KeanggotaanAdmin() {
                   transform: "translate(-50%, -50%)",
                   cursor: "pointer",
                 }}
+                onClick={() => handleSearch(searchAdminMaster)}
               />
             </div>
           </div>
@@ -177,6 +181,9 @@ export default function KeanggotaanAdmin() {
               <input
                 type="text"
                 className="section-search"
+                value={searchAdmin}
+                onChange={(e) => setSearchAdmin(e.target.value)}
+                onKeyPress={(e) => e.key === "Enter" && handleSearch(searchAdmin)}
                 required
                 style={{
                   width: "100%",
@@ -194,6 +201,7 @@ export default function KeanggotaanAdmin() {
                   transform: "translate(-50%, -50%)",
                   cursor: "pointer",
                 }}
+                onClick={() => handleSearch(searchAdmin)}
               />
             </div>
           </div>
@@ -262,6 +270,9 @@ export default function KeanggotaanAdmin() {
               <input
                 type="text"
                 className="section-search"
+                value={searchManager}
+                onChange={(e) => setSearchManager(e.target.value)}
+                onKeyPress={(e) => e.key === "Enter" && handleSearch(searchManager)}
                 required
                 style={{
                   width: "100%",
@@ -279,6 +290,7 @@ export default function KeanggotaanAdmin() {
                   transform: "translate(-50%, -50%)",
                   cursor: "pointer",
                 }}
+                onClick={() => handleSearch(searchManager)}
               />
             </div>
           </div>
@@ -344,6 +356,9 @@ export default function KeanggotaanAdmin() {
               <input
                 type="text"
                 className="section-search"
+                value={searchOfficer}
+                onChange={(e) => setSearchOfficer(e.target.value)}
+                onKeyPress={(e) => e.key === "Enter" && handleSearch(searchOfficer)}
                 required
                 style={{
                   width: "100%",
@@ -361,6 +376,7 @@ export default function KeanggotaanAdmin() {
                   transform: "translate(-50%, -50%)",
                   cursor: "pointer",
                 }}
+                onClick={() => handleSearch(searchOfficer)}
               />
             </div>
           </div>

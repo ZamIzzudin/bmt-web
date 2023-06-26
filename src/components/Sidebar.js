@@ -162,6 +162,9 @@ export default function Sidebar() {
                     <li className="navbar-link-item">
                         <Link to='/profile' className={location === '/profile' ? 'active' : null}>Profile</Link>
                     </li>
+                        <li className="navbar-link-item">
+                            <Accordion isActive={location.includes('/keanggotaan/') ? true : false} dynamicData={keanggotaan} title={{ title: 'Keanggotaan', payload: 'keanggotaan' }} />
+                        </li>
                     <li className="navbar-link-item">
                         <Accordion isActive={location.includes('/pembiayaan/') ? true : false} dynamicData={pembiayaan} title={{ title: 'Angsuran Pembiayaan', payload: 'pembiayaan' }} />
                     </li>

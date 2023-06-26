@@ -283,7 +283,6 @@ tr:first-child {
 }
 
 .centered {
-    background-color: salmon;
     display: flex;
     align-items: center;
     justify-content: center;

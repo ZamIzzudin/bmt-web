@@ -94,6 +94,7 @@ export default function Router() {
                                 <Route exact path="/" component={Dashboard} />
                                 <Route exact path="/pembiayaan/kerjasama" component={PembiayaanKerjasama} />
                                 <Route exact path="/profile" component={Profile} />
+                                <Route exact path="/keanggotaan/nasabah" component={Keanggotaan} />
                                 <Route exact path="/pembiayaan/jual-beli" component={PembiayaanJualBeli} />
                                 <Route exact path="/simpanan/pokok" component={SimpananPokok} />
                                 <Route exact path="/simpanan/wajib" component={SimpananWajib} />

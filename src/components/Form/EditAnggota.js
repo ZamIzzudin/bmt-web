@@ -166,9 +166,11 @@ export default function EditProfileNasabah({ backButton, currentData }) {
                 </Form.Group>
               </Col>
             </Row>
-            <div className="form-cta">
-              <button className="form-submit-button" type="submit">Simpan</button>
-            </div>
+            {(auth.role === 'ADMIN_MASTER' || auth.role === 'ADMIN') && (
+              <div className="form-cta">
+                <button className="form-submit-button" type="submit">Simpan</button>
+              </div>
+            )}
           </Form>
         </div>
       </section>

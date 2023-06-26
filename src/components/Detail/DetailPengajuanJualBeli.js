@@ -71,15 +71,15 @@ export default function DetailPengajuanJualBeli({ backButton, currentData }) {
                 <div className="section-body">
                     <table className="detail-table">
                             <tr>
-                                <td className="padding-l -50">BUKTI KTP</td>
+                                <td className="padding-l -50">Foto KTP</td>
                                 <td className="centered"><img src={attach_ktp.url} width={500} alt="attachment" /></td>
                             </tr>
                             <tr>
-                                <td className="padding-l -50">BUKTI KK</td>
+                                <td className="padding-l -50">Foto KK</td>
                                 <td className="centered"><img src={attach_kk.url} width={500} alt="attachment" /></td>
                             </tr>
                             <tr>
-                                <td className="padding-l -50">BUKTI DOKUMEN RAB</td>
+                                <td className="padding-l -50">Foto Dokumen RAB</td>
                                 <td className="centered"><img src={dokumen_rab.url} width={500} alt="attachment" /></td>
                             </tr>
                     </table>

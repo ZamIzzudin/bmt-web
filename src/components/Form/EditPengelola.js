@@ -94,7 +94,7 @@ export default function EditPengelola({ backButton, currentData }) {
               <Col>
                 <Form.Group>
                   <Form.Label>Password <span className="required">*</span></Form.Label>
-                  <Form.Control required type='password' value={password} onChange={(e) => setPassword(e.target.value)} />
+                  <Form.Control placeholder='kosongkan jika tidak ingin merubah' type='password' value={password} onChange={(e) => setPassword(e.target.value)} />
                 </Form.Group>
               </Col>
             </Row>

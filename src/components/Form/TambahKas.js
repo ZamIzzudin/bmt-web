@@ -42,7 +42,7 @@ export default function TambahKas({ showForm }) {
                 <Col>
                     <Form.Group>
                         <Form.Label>Jenis Transaksi <span className="required">*</span></Form.Label>
-                        <Form.Select required value={jenis_transaksi} onChange={(e) => setJenisTransaksi(e.target.value)} >
+                        <Form.Select required value={jenis_transaksi} onChange={(e) => setJenisTransaksi(e.target.value)}>
                             <option selected value={'MASUK'}>Masuk (Debit)</option>
                             <option value={'KELUAR'}>Keluar (Kredit)</option>
                         </Form.Select>
